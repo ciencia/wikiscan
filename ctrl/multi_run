@@ -1,0 +1,3 @@
+#!/bin/bash
+cd ..
+nice -n 9 /usr/bin/php ctrl/multi_run.php "$@"

@@ -1,0 +1,32 @@
+User-agent: *
+Crawl-delay: 1
+Disallow: /ip/
+Disallow: /w/
+Disallow: /wiki/Special:Search
+Disallow: /wiki/Special:Random
+Disallow: /wiki/Spécial:Search
+Disallow: /wiki/Spécial:Random
+Disallow: /wiki/Sp%C3%A9cial%3ASearch
+Disallow: /wiki/Sp%C3%A9cial%3ARandom
+Disallow: /wiki/Sp%C3%A9cial%3ASearch
+Disallow: /wiki/Sp%C3%A9cial%3ARandom
+Disallow: /wiki/Special%3ARandom
+Disallow: /wiki/Special%3ASearch
+Disallow: /download/
+Disallow: /plage-ip/
+Disallow: /?date_filter
+Disallow: /?usort
+Allow: /utilisateur
+Allow: /utilisateurs
+Allow: /user
+Allow: /users
+
+User-agent: bingbot
+Crawl-delay: 1
+
+User-agent: SemrushBot
+Crawl-delay: 10
+#Disallow: /
+
+User-agent: YandexBot
+#Disallow: /gimg.php

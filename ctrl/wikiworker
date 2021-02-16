@@ -1,0 +1,7 @@
+#!/bin/bash
+cd ..
+while true
+do
+    nice -n 9 /usr/bin/php ctrl/run.php worker "$@"
+    sleep 1
+done

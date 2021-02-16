@@ -1,0 +1,7 @@
+
+Wikiscan is a software package written in PHP. It compute and display statistics for a MediaWiki database.
+
+
+The development of Wikiscan started in 2011 by a single person on free time, it was only supporting fr.wikipedia.org.
+In 2016, with the help of a Wikimedia Foundation grant, Wikiscan is expended into a multi-wikis site, supporting hundreds of public Wikimedia wikis with the Labs database replicas. The source code is now open, the first public version is called 0.8.
+

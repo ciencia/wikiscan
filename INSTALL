@@ -1,0 +1,94 @@
+Installing Wikiscan
+
+Wikiscan is developed and tested on Linux platform, but it may also work on other platforms.
+
+Required softwares :
+* Web server with PHP (tested on 5.5.9), should be Apache for some url using mod_rewrite
+** Apache modules : mod_rewrite
+** PHP modules : mbstring, curl, gd, mysqlnd
+* MySQL server (tested on 5.5, MariaDB 5.5 and 10.1)
+
+Recommended :
+* Memcached server and PHP extension memcache
+
+
+*****************************************************************************************
+Installation for single wiki :
+*****************************************************************************************
+
+Sample installation :
+
+extract Wikiscan to a directory (example /var/www/wikiscan/)
+create a new Mysql database (example wikiscan_stats)
+import ctrl/stats.sql to create the tables
+Create or configure a Mysql user with access rights to the database (example wikiscan_user with password 'passw')
+
+go to config/ directory
+
+copy db_conf.sample.php to db_conf.php : cp db_conf.sample.php db_conf.php
+edit db_conf.php :
+  configure "db" with your Mediawiki database
+  configure "dbs" with the new stats database
+    example :
+    'dbs'=>array(
+        'host'=>'localhost',
+        'user'=>'wikiscan_user',
+        'password'=>'passw',
+        'database'=>'wikiscan_stats',
+        'charset'=>'binary',
+        ),
+
+copy local_conf.sample.php to local_conf.php : cp local_conf.sample.php local_conf.php
+edit local_conf.php to configure local paths and wiki urls
+   example :
+    $local_conf=array(
+        'root_path'=>'/var/www/wikiscan',
+        'multi_path'=>'/var/www/wikiscan/multi',
+        'sites_path'=>'/var/www/wikiscan/multi/sites',
+
+        'mw_api'=>'http://localhost/mediawiki/w/api.php',
+        'link_page'=>'https://localhost/mediawiki/wiki/',
+        'wiki'=>array(
+            'url'=>'http://localhost/mediawiki',
+            'site_host'=>'localhost',
+        ),
+    );
+
+The directories cache/ and img/* must be writable.
+
+Wikiscan is not actually designed to work in a web root subdirectory, you should create a dedicated virtual host.
+The site should work at this stage but without any statistics yet.
+
+********************
+To update statistics :
+********************
+
+Go to the ctrl/ directory
+To update all daily stats and user stats, execute : ./run fullupdate
+To update last hours/grid, execute : ./run updatestats_hours 24
+
+
+
+*****************************************************************************************
+Installation for multi wikis with Wikimedia Labs :
+*****************************************************************************************
+
+This is not explained in detail, to start in short :
+* the main web root and all subdomains should point to the "multi/" subdir
+* the "db" configuration to Mediawiki database should point to the labs database (with a ssh tunnel for example)
+* the "dbg" configuration must point to a new local database with tables imported from ctrl/wikiscan.sql
+* import the Labs wiki list with : ./run import_wikis
+* there is a worker system to update all wikis (./run worker_master)
+* to run a command on a specific wiki use multi_run : ./multi_run frwiki fullupdate
+...
+
+./multi_run frwiki update_date 2007
+./multi_run frwiki update_date 0
+
+./multi_run frwiki userstats
+
+./multi_run frwiki sumall
+./multi_run frwiki sumyears
+./multi_run frwiki sum 0
+
+
