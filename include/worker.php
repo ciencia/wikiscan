@@ -200,9 +200,23 @@ class Worker
         $min=date('YmdHis', strtotime('-1 day'));
         $max=date('YmdHis');
 
-        $s['logging_join']=$this->bench($db, "select /* bench */ logging.*, actor_user, actor_name from logging left join actor_logging on log_actor=actor_id where log_type!='patrol' and log_timestamp between '$min' and '$max' order by log_timestamp, log_id limit $limit");
+        $s['logging_join']=$this->bench($db, "select /* bench */ logging.*, actor_user, actor_name from logging left join actor on log_actor=actor_id and log_deleted&4 = 0 where log_type!='patrol' and log_timestamp between '$min' and '$max' order by log_timestamp, log_id limit $limit");
 
-        $s['revision_join']=$this->bench($db, "select /* bench */ r.*, page_id, page_title, page_namespace, page_is_redirect, rp.rev_len parent_len, comment_text, actor_user, actor_name from revision r left join page on r.rev_page=page_id left join revision rp on r.rev_parent_id=rp.rev_id left join comment_revision on r.rev_comment_id=comment_id left join actor_revision on r.rev_actor=actor_id where r.rev_timestamp between '$min' and '$max' order by r.rev_timestamp, r.rev_id limit $limit");
+        $q = "select /* bench */ r.*, page_id, page_title, page_namespace, page_is_redirect, rp.rev_len parent_len, comment_text, actor_user, actor_name ";
+        $q .= " from revision r left join page on r.rev_page=page_id left join revision rp on r.rev_parent_id=rp.rev_id ";
+        if($conf['stats_join_comment']) {
+            if($conf['stats_join_revision_comment_temp'])
+                $q.=" left join revision_comment_temp on revcomment_rev = r.rev_id and r.rev_deleted&2 = 0 left join comment on revcomment_comment_id=comment_id ";
+            else
+                $q.=" left join comment on r.rev_comment_id=comment_id and r.rev_deleted&2 = 0 ";
+        }
+        if($conf['stats_join_revision_actor_temp'])
+            $q .= " left join revision_actor_temp on revactor_rev = r.rev_id and r.rev_deleted&4 = 0 left join actor on revactor_actor=actor_id ";
+        else
+            $q .= " left join actor on r.rev_actor=actor_id and r.rev_deleted&4 = 0 ";
+        $q .= " where r.rev_timestamp between '$min' and '$max' order by r.rev_timestamp, r.rev_id limit $limit";
+        
+        $s['revision_join']=$this->bench($db, $q);
 
         pr($s);
     }

@@ -333,9 +333,16 @@ class UpdateStats
         $q.=" from revision r left join page on r.rev_page=page_id left join revision rp on r.rev_parent_id=rp.rev_id";
         if($conf['stats_join_rev_sha'])
             $q.=" left join revision rv on r.rev_page=rv.rev_page and r.rev_sha1=rv.rev_sha1 and r.rev_id!=rv.rev_id and r.rev_parent_id!=0 and r.rev_parent_id!=rv.rev_id and rv.rev_timestamp<r.rev_timestamp";
-        if($conf['stats_join_comment'])
-            $q.=" left join comment_revision on r.rev_comment_id=comment_id";
-        $q.=" left join actor_revision on r.rev_actor=actor_id";
+        if($conf['stats_join_comment']) {
+            if($conf['stats_join_revision_comment_temp'])
+                $q.=" left join revision_comment_temp on revcomment_rev = r.rev_id and r.rev_deleted&2 = 0 left join comment on revcomment_comment_id=comment_id ";
+            else
+                $q.=" left join comment on r.rev_comment_id=comment_id and r.rev_deleted&2 = 0 ";
+        }
+        if($conf['stats_join_revision_actor_temp'])
+            $q.=" left join revision_actor_temp on revactor_rev = r.rev_id and r.rev_deleted&4 = 0 left join actor on revactor_actor=actor_id ";
+        else
+            $q.=" left join actor on r.rev_actor=actor_id and r.rev_deleted&4 = 0 ";
         $q.=" where ";
         if($user!='')
             $q.="actor_name='".$this->db2->escape($user)."' and ";//TODO vérifier que l'index est utilisé avec cette jointure
@@ -453,7 +460,7 @@ class UpdateStats
     {
         //TODO chunks or remove
         $db=get_db();
-        $q="select /*SLOW_OK updatestats*/ logging.*, actor_user, actor_name from logging left join actor_logging on log_actor=actor_id where log_type!='patrol' and log_timestamp>='".$db->escape($start)."' and log_timestamp<'".$db->escape($end)."' order by log_timestamp,log_id";
+        $q="select /*SLOW_OK updatestats*/ logging.*, actor_user, actor_name from logging left join actor on log_actor=actor_id and log_deleted&4 = 0 where log_type!='patrol' and log_timestamp>='".$db->escape($start)."' and log_timestamp<'".$db->escape($end)."' order by log_timestamp,log_id";
         //todo join user
         echo " logs:";
         $t=microtime(true);
@@ -465,7 +472,7 @@ class UpdateStats
     function load_logs_query($start, $end)
     {
         $db=get_db();
-        return "select /*SLOW_OK updatestats*/ logging.*, actor_user, actor_name from logging left join actor_logging on log_actor=actor_id where log_type!='patrol' and log_timestamp>='".$db->escape($start)."' and log_timestamp<'".$db->escape($end)."' order by log_timestamp,log_id";
+        return "select /*SLOW_OK updatestats*/ logging.*, actor_user, actor_name from logging left join actor on log_actor=actor_id and log_deleted&4 = 0 where log_type!='patrol' and log_timestamp>='".$db->escape($start)."' and log_timestamp<'".$db->escape($end)."' order by log_timestamp,log_id";
     }
     function load_logs($start, $end)
     {

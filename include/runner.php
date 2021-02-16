@@ -204,7 +204,7 @@ class Runner
         $slow=@$p[2];
 
         $site=$conf['wiki_key'];
-        $s=wikis::get_site_stats($site);
+        $s=Wikis::get_site_stats($site);
         echo "$site total revs ".$s['total_rev']."\n";
 
         echo 'Memory : '.round(memory_get_usage(true)/1048576).'/'.round(memory_get_peak_usage(true)/1048576)."Mb\n";

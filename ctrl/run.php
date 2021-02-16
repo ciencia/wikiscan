@@ -22,11 +22,6 @@ define('DB_ALWAYS_RECONNECT',true);
 include('include/init.php');
 require_once('include/runner.php');
 ini_set('memory_limit', '128M');
-if(posix_geteuid()===0){
-    posix_setgid(33);
-    posix_setuid(33);//www-data
-    echo "uid ".posix_geteuid()."\n";
-}
 $run=new Runner();
 $run->run_args($argv);
 include('include/end.php');

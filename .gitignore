@@ -1,0 +1,6 @@
+.buildpath
+.project
+.settings
+config/local_conf.php
+config/db_conf.php
+

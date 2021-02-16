@@ -1217,7 +1217,7 @@ $(function () {
         echo "Sum users $year\n";
         $year=(int)$year;
         $this->reset();
-        $fields=array('ANY_VALUE(user) user', 'user_id', 'ANY_VALUE(user_type) user_type');
+        $fields=array('max(user) user', 'user_id', 'max(user_type) user_type');
         foreach($this->fields as $k=>$v)
             if($v['sum'])
                 $fields[]="sum(`$k`) `$k`";

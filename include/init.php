@@ -42,4 +42,10 @@ $InterfaceLanguage->load_messages($conf['interface_language']);
 $SiteLanguage=new Language();
 $SiteLanguage->load_messages($conf['site_language']);
 
+// XXHACK to autoload from includes, some files seem to not have been included manually
+spl_autoload_register(function($className)
+{
+    $class= sprintf("%s/%s.php", __DIR__, strtolower($className));
+    include_once($class);
+});
 ?>
