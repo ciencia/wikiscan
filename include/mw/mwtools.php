@@ -62,7 +62,7 @@ class mwTools
         $rows=$db->select('select user_name,ug_group from user_groups');
         if(empty($rows)){
             if($db=get_db()){
-                echo "load db groups\n";
+                //echo "load db groups\n";
                 $rows=$db->select('select /*SLOW_OK user_groups*/ user_name,ug_group from user_groups,user where ug_user=user_id');
             }
         }
