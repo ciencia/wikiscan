@@ -45,7 +45,7 @@ $SiteLanguage->load_messages($conf['site_language']);
 // XXHACK to autoload from includes, some files seem to not have been included manually
 spl_autoload_register(function($className)
 {
-    $class= sprintf("%s/%s.php", __DIR__, strtolower($className));
-    include_once($class);
+    $class= sprintf("%s/%s.php", __DIR__, lcfirst($className));
+    @include_once($class);
 });
 ?>

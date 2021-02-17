@@ -36,25 +36,24 @@ class mCache
             echo "Error no memcached host\n";
             return false;
         }
-        if(!class_exists('Memcache')){
-            echo "Memcache class not found\n";
+        if(!class_exists('Memcached')){
+            echo "Memcached class not found\n";
             return false;
         }
-        $this->m = new Memcache();
-        $this->m->connect($this->host,$this->port);
+        $this->m = new Memcached();
+        $this->m->addServer($this->host,$this->port);
     }
     function close()
     {
         if($this->m)
-            $this->m->close();
+            $this->m->quit();
     }
     function set($key,$val,$expire=0,$compress=false)
     {
         if(!$this->m)
             return false;
         //expire unix timestamp or max 2592000 s (1 month)
-        $flags = $compress ? MEMCACHE_COMPRESSED : null;
-        return $this->m->set($key, $val,$flags,$expire);
+        return $this->m->set($key, $val, $expire);
     }
     function get($key)
     {
@@ -72,7 +71,7 @@ class mCache
     {
         if(!$this->m)
             return false;
-        $s=$this->m->getExtendedStats();
+        $s=$this->m->getStats();
         print_r($s);
         list(,$v)=each($s);
         echo $v['curr_connections']." connections\n";
@@ -85,6 +84,7 @@ class mCache
     {
         if(!$this->m)
             return false;
+        // FIXME: This no longer works on the memcached extension, only on the legacy memcache extension
         $slabs=$this->m->getExtendedStats('slabs');
         foreach($slabs as $srv=>$u){
             echo "serveur : $srv\n";
@@ -92,6 +92,7 @@ class mCache
                 if(!is_array($v)||!is_numeric($k))
                     continue;
                 echo "slab $k\n";
+                // FIXME: This no longer works on the memcached extension, only on the legacy memcache extension
                 $keys=$this->m->getExtendedStats('cachedump',$k);
                 foreach($keys as $s=>$srv_keys){
                     foreach($srv_keys as $kk=>$vv)
