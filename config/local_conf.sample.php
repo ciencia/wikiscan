@@ -24,6 +24,8 @@ $local_conf=array(
     'wiki'=>array(
         'url'=>'http://localhost/mediawiki',
         'site_host'=>'localhost',
+        // This seems to be the "sitename"
+        'site_global_key'=>'MyWiki'
     ),
     'view_about_link'=>false,
 */

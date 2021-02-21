@@ -179,14 +179,16 @@ class mwns
         }
         if($this->file_cache && ($file=$this->cache_file())!==false){
             if(!is_dir(dirname($file))){
-                mkdir(dirname($file));
-                chmod(dirname($file), 0770);
-            }else
-                chmod(dirname($file), 0770);//TEMP
+                trigger_error(sprintf('Cache directory %s does not exist!', dirname($file)));
+                //mkdir(dirname($file));
+                //chmod(dirname($file), 0770);
+            }
+            //}else
+            //    chmod(dirname($file), 0770);//TEMP
             file_put_contents($file, serialize($data));
-            if(!chmod($file, 0660))
-                trigger_error("chmod fail $conf[wiki_key] $file");
-            chgrp($file, 'www-data');
+            //if(!chmod($file, 0660))
+            //    trigger_error("chmod fail $conf[wiki_key] $file");
+            //chgrp($file, 'www-data');
             if(DEBUG)
                 Debug::info('set ns cache file',$file);
         }

@@ -105,8 +105,15 @@ class WikiHome
         return $o;
     }
 
+    /*
+     * Average by day table
+     * 
+     * This table needs the fullupdate_months update to be run 
+     */
     function time_stats_table()
     {
+        if(!isset($this->data['total']['time']))
+            return false;
         $months=$this->data['total']['time'];
         krsort($months);
         $avg=[];

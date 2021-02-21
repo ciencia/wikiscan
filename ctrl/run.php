@@ -18,6 +18,8 @@
  * @file
  * @author Akeron
 **/
+chdir(__DIR__ . '/..');
+print(getcwd());
 define('DB_ALWAYS_RECONNECT',true);
 include('include/init.php');
 require_once('include/runner.php');

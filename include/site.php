@@ -30,7 +30,6 @@ class Site
     var $menus=array('home', 'live', 'grid', 'dates', 'userstats', 'ranges');//, 'userstats_ip'
     var $menu='home';
     var $menu_func;
-    var $wiki_link=false;
     var $date=0;
     var $list='pages';
     var $filter='main';
@@ -47,13 +46,13 @@ class Site
 
     function init()
     {
-        global $conf, $db_conf;
+        global $conf;
         $this->fr_multi_redirect();
         if($conf['multi'])
             $this->setup_multi();
         else{
-            remove_values($this->menus, array('home', 'ranges'));
-            $this->menu='live';
+            remove_values($this->menus, array('ranges'));
+            $this->menu='home';
             $this->menu_func='menu_'.$this->menu;
         }
         $this->load_params();
@@ -80,12 +79,7 @@ class Site
     {
         global $conf;
         if($conf['wiki_key']!=''){
-            if($conf['wiki_key']=='frwiki'){
-                //$this->wiki_link=true;
-            }else{
-                remove_values($this->menus, array('ranges'));
-                $this->wiki_link=false;
-            }
+            remove_values($this->menus, array('ranges'));
         }else{
             $this->menus=array();
             $this->menu='allsites';
@@ -210,8 +204,8 @@ class Site
         global $conf;
         if(!isset($conf['wiki']['url']) || $conf['wiki']['url']=='')
             return;
-        $link='<a href="'.$conf['wiki']['url'].'">'.$conf['wiki']['site_host'].'</a>';
-        $o="<div class=site_banner><span class=banner_text>".msg('banner_text')."</span><br>".$link."</div>";
+        $link='<a href="'.htmlspecialchars($conf['wiki']['url']).'">'.htmlspecialchars($conf['wiki']['site_host']).'</a>';
+        $o="<div class=site_banner><span class=banner_text>".htmlspecialchars(msg('banner_text'))."</span><br>".$link."</div>";
         return $o;
     }
 
@@ -298,14 +292,14 @@ class Site
 <html dir="ltr">
 <head>
 <title>';
-        $o.=$this->head_title();
+        $o.=htmlspecialchars($this->head_title());
         $o.='</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="source" content="'.$this->main_host.'"/>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
-<base href="'. $this->host_link() .'/">
-<link rel="stylesheet" href="'. $this->host_link() .'/wikiscan.css?ad"/>
-'.(isset($conf['icon']) && $conf['icon']!='' ? '<link rel="icon" href="'.$conf['icon'].'" type="image/png"/>' : '');
+<base href="'. htmlspecialchars($this->host_link()) .'/">
+<link rel="stylesheet" href="'. htmlspecialchars($this->host_link()) .'/wikiscan.css?ad"/>
+'.(isset($conf['icon']) && $conf['icon']!='' ? '<link rel="icon" href="'.htmlspecialchars($conf['icon']).'" type="image/png"/>' : '');
         $o.='<script type="text/javascript" src="/libs/jquery-3.5.0.min.js"></script>';
         $o.='<script type="text/javascript" src="wikiscan.js?ad"></script>';
 
@@ -484,11 +478,9 @@ class Site
             return;
         $o='<div class="menu">';
         if($conf['multi'])
-            $o.="<div class='menu_item'><a href='//{$this->main_host}'>".msg("menu-wikis")."</a></div>";
+            $o.="<div class='menu_item'><a href='//{$this->main_host}'>".htmlspecialchars(msg("menu-wikis"))."</a></div>";
         foreach($this->menus as $k)
-            $o.="<div class='menu_item".($k==$this->menu?'_sel':'')."'><a href='/".msg_site("urlpath-menu-$k")."'>".msg("menu-$k")."</a></div>";
-        if($this->wiki_link)
-            $o.="<div class='menu_item'><a href='/wiki/Accueil'>Wiki</a></div>";
+            $o.="<div class='menu_item".($k==$this->menu?'_sel':'')."'><a href='/".htmlspecialchars(msg_site("urlpath-menu-$k"))."'>".htmlspecialchars(msg("menu-$k"))."</a></div>";
         $o.="</div>\n";
         return $o;
     }

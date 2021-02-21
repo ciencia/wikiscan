@@ -515,14 +515,6 @@ class db
             return null;
         return $res[0];
     }
-    function selectone($q,$debug=false)
-    {
-        //deprecated
-        $res=$this->select($q,$debug);
-        if(!isset($res[0]))
-            return null;
-        return $res[0];
-    }
     function select_col($table,$col=false,$where='1',$debug=false)
     {
         if($col===false){

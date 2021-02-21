@@ -295,8 +295,14 @@ class Wikis extends site_page
     }
     static function get_site_stats($site)
     {
-        $dbg=get_dbg();
-        return $dbg->select1("select * from sites_stats where site_global_key='".$dbg->escape($site)."'");
+        global $conf;
+        if($conf['multi']) {
+            $dbg=get_dbg();
+            return $dbg->select1("select * from sites_stats where site_global_key='".$dbg->escape($site)."'");
+        } else {
+            $dbs=get_dbs();
+            return $dbs->select1("select * from site_stats");
+        }
     }
 
     static function get_global_stats($site)
@@ -317,6 +323,28 @@ class Wikis extends site_page
         $data=call_user_func($callback, $data);
         $data=self::write_global_data($data);
         $db->update('sites_stats', 'site_global_key', $site, array('data'=>$data));
+        $db->query('commit');
+    }
+    static function update_local_stats($callback)
+    {
+        $initialize=false;
+        $db=get_dbs();
+        $db->query('start transaction');
+        $data=$db->selectcol("select data from site_stats for update");
+        if($data===false){
+            $data=[];
+            $initialize=true;
+        }else{
+            if(isset($data['users']))//temp clean
+                unset($data['users']);
+            $data=self::read_global_data($data);
+        }
+        $data=call_user_func($callback, $data);
+        $data=self::write_global_data($data);
+        if($initialize)
+            $db->insert('site_stats', array('data'=>$data));
+        else
+            $db->update('site_stats', array('data'=>$data), '1=1');
         $db->query('commit');
     }
     static function read_global_data($data)

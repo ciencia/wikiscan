@@ -1722,7 +1722,7 @@ class UpdateStats
         $path=$this->path($date);
         if(!is_dir($path)){
             mkdir($path, 0770, true);
-            chgrp($path, 'www-data');
+            //chgrp($path, 'www-data');
         }
         if(!is_dir($path)){
             debug_print_backtrace();
@@ -1782,8 +1782,6 @@ class UpdateStats
     function save_global_stats($date)
     {
         global $conf;
-        if(!$conf['multi'])
-            return;
         require_once('include/wikis.php');
         if($date==0)
             $key='total';
@@ -1791,13 +1789,19 @@ class UpdateStats
             $key='live';
         else
             return;
-        Wikis::update_global_stats(function($data) use($key){
+        
+        $cbFunc = (function($data) use($key){
             if(isset($this->s['stats']))
                 $data[$key]['stats']=$this->s['stats'];
             if(isset($this->s['time']) && $key=='total')
                 $data[$key]['time']=self::average_time_months($this->s['time'], 4);
             return $data;
         });
+        
+        if($conf['multi'])
+            Wikis::update_global_stats($cbFunc);
+        else
+            Wikis::update_local_stats($cbFunc);
     }
 
     static function average_time_months($time, $round=false)
@@ -1941,8 +1945,8 @@ class UpdateStats
                 return false;
             }
             fclose($fp);
-            chgrp($file, 'www-data');
-            chmod($file, 0660);
+            //chgrp($file, 'www-data');
+            //chmod($file, 0660);
         }
         return false;
     }

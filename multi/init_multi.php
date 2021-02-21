@@ -18,7 +18,6 @@
 * @file
 * @author Akeron
 **/
-include('config/conf.php');
 include('include/init.php');
 
 global $conf;

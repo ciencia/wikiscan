@@ -610,7 +610,7 @@ $(function () {
     {
         global $conf;
         $u=$user;
-        $user=mwtools::encode_user($user);
+        $user=htmlspecialchars(mwtools::encode_user($user));
         $o='<div class="userlinks"><h3>'.msg('user-links_title').'</h3>';
         if($this->ip && preg_match('/^(\d{1,3}\.){3}\d{1,3}$/i',$user))
             $o.='<ul><li><a href="/plage-ip?ip='.$user.'">Plage de l\'IP '.htmlspecialchars($u).'</a></li></ul>';
@@ -860,11 +860,11 @@ $(function () {
 
     static function user_url($user)
     {
-        return '/'.msg('urlpath-user').'/'.mwtools::encode_user($user);
+        return '/'.msg('urlpath-user').'/'.htmlspecialchars(mwtools::encode_user($user));
     }
     static function ip_url($user)
     {
-        return '/'.msg('urlpath-ip').'/'.mwtools::encode_user($user);
+        return '/'.msg('urlpath-ip').'/'.htmlspecialchars(mwtools::encode_user($user));
     }
 
     function format_val($k, $v, $percent=false)
@@ -1335,10 +1335,8 @@ $(function () {
     function save_threshold_stats($date)
     {
         global $conf;
-        if(!$conf['multi'])
-            return;
         require_once('include/wikis.php');
-        Wikis::update_global_stats(function($data) use($date){
+        $cb_fn = (function($data) use($date){
             if($date===0)
                 $data['user_thresholds']['total']=$this->threshold_stats;
             elseif(strlen($date)==4)
@@ -1347,6 +1345,10 @@ $(function () {
                 $data['user_thresholds']['months'][$date]=$this->threshold_stats;
             return $data;
         });
+        if($conf['multi'])
+            Wikis::update_global_stats($cb_fn);
+        else
+            Wikis::update_local_stats($cb_fn);
     }
 
     function user_months($user, $user_id=null)

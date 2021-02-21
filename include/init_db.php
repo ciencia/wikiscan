@@ -22,25 +22,12 @@ require_once('include/common/db.php');
 
 function get_dbs($force_new=false, $allow_failure=false)
 {
-    global $dbs,$conf,$db_conf;
+    global $dbs,$db_conf;
     if($force_new || !is_object($dbs)){
         $dbs=init_db('dbs', false);
         //$dbs->profile=true;
         $base=$db_conf['dbs']['database'];
         if(!$dbs->select_db($base)){
-            if(@$conf['wiki_key']!=''){
-                //autocreate database tables
-                echo "\ncreate database '".htmlspecialchars($base)."'\n";
-                $dbs->query('create database '.$dbs->escape($base));
-                if($dbs->select_db($base)){
-                    if(file_exists($conf['root_path'].'/ctrl/stats.sql')){
-                        echo "import stats.sql\n";
-                        exec('/usr/bin/mysql -h '.escapeshellarg($db_conf['dbs']['host']).' -u '.escapeshellarg($db_conf['dbs']['user']).' -p'.escapeshellarg($db_conf['dbs']['password']).' '.escapeshellarg($base).' < '.$conf['root_path'].'/ctrl/stats.sql');
-                    }else
-                        die("SQL file not found : ".$conf['root_path'].'/ctrl/stats.sql');
-                    return $dbs;
-                }
-            }
             echo "Database error (dbs)";
             trigger_error(htmlspecialchars(date('Y-m-d H:i:s').' DB open failed for database '.htmlspecialchars($base).'. Error '.mysqli_connect_errno().' '.mysqli_connect_error()));
             if(!$allow_failure)
@@ -103,18 +90,20 @@ function init_db($conf_key, $open_database=true, $error_503=true, $quiet=false)
 function log_sql($sql, $time, $rows, $db)
 {
     global $conf;
-    $dbg=get_dbg();
-    $type='';
-    if(preg_match('!/\*(.+)\*/!', $sql, $r))
-        $type=trim(str_replace('SLOW_OK', '', $r[1]));
-    $dbg->insert('query_log', [
-        'base'=>$db->base,
-        'type'=>$type,
-        'query'=>$sql,
-        'time'=>$time,
-        'rows'=>$rows,
-        'date'=>date('Y-m-d H:i:s'),
-        ]);
+    if($conf['log_sql']) {
+        $dbg=get_dbg();
+        $type='';
+        if(preg_match('!/\*(.+)\*/!', $sql, $r))
+            $type=trim(str_replace('SLOW_OK', '', $r[1]));
+            $dbg->insert('query_log', [
+                'base'=>$db->base,
+                'type'=>$type,
+                'query'=>$sql,
+                'time'=>$time,
+                'rows'=>$rows,
+                'date'=>date('Y-m-d H:i:s'),
+            ]);
+    }
 }
 
 function close_db()

@@ -98,6 +98,8 @@ $conf=array(
         3=> 20000000,
         4=>300000000,
     ),
+    // Log sql queries to the query_log table of dbg. Set it to false to not log queries
+    'log_sql'=>true,
 );
 
 if(file_exists('config/local_conf.php')){

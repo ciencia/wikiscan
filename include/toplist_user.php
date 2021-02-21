@@ -173,13 +173,13 @@ class TopListUser extends TopList
 
             if($v['type']!='ip'){
                 $usert=mb_strlen($user)>$this->link_max_len ? mb_substr($user,0,$this->link_max_len-2).'…' : $user;
-                $o.='<td class="name"><a href="/utilisateur/'.mwtools::encode_user($user).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/utilisateur/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }else{
                 if(preg_match('/^((?:[\da-f]{1,4}:){4})([\da-f]{1,4}:){3}[\da-f]{1,4}$/i',$user,$res))
                     $usert=strtolower(substr($res[1],0,-1)).'…';
                 else
                     $usert=mb_strlen($user)>$this->link_max_len ? mb_substr($user,0,$this->link_max_len-2).'…' : $user;
-                $o.='<td class="name"><a href="/ip/'.mwtools::encode_user($user).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/ip/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }
             $o.'</tr>';
         }

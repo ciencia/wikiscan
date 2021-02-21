@@ -455,7 +455,7 @@ class ranges extends site_page
         foreach($this->range_titles() as $k=>$v)
             if(!is_numeric($k))
                 $cols[]="sum(`$v`) `$v`";
-        $row=$db->selectone("select ".implode(', ', $cols)." from ranges where ".$this->where);
+        $row=$db->select1("select ".implode(', ', $cols)." from ranges where ".$this->where);
         $row['range']='Total';
         $row['whois_owner']='';
         $row['blocked']=0;
