@@ -124,8 +124,9 @@ class TopList extends site_page
         if(isset($_GET['sort']))
             if(isset($this->sorts[$_GET['sort']]))
                 $this->sort=$_GET['sort'];
-            else
-                return false;
+            // We don't bother about invalid sorts!
+            //else
+            //    return false;
         if(isset($_GET['filter']))
             if(in_array($_GET['filter'], $this->filters))
                 $this->filter=$_GET['filter'];

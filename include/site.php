@@ -403,9 +403,10 @@ class Site
                 $o.="$name - ".msg('window_title-statitics').' Wikiscan';
                 break;
             case 'live'  :
-                $o.=msg('window_title-live', $this->date.'h');
             case 'dates' :
-                if($this->menu!='live')
+                if($this->menu==='live')
+                    $o.=msg('window_title-live', $this->date.'h');
+                else
                     if(@$_GET['menu']!='' && @$_GET['date']!='')
                         $o.=Dates::format($this->date);
                     else
