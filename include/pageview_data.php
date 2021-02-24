@@ -341,7 +341,7 @@ class pageview_data
             return false;
         $path.='/pageview/'.substr($day,0,4);
         if($create && !is_dir($path))
-            mkdir($path, 0777, true);
+            mkdir($path, 0755, true);
         return $path.'/'.$day;
     }
     function save_row_day($global_key, $title, $total)
@@ -571,7 +571,7 @@ class pageview_data
             return false;
         $path.='/pageview/hours';
         if($create && !is_dir($path))
-            mkdir($path, 0777, true);
+            mkdir($path, 0755, true);
         return $path.'/'.$date;
     }
     function compress_all_hour()

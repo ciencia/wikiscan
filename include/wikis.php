@@ -146,7 +146,7 @@ class Wikis extends site_page
         $this->site_path="$conf[sites_path]/{$this->site}";
         if(!is_dir($this->site_path)){
             //umask(0);
-            mkdir($this->site_path, 0770);
+            mkdir($this->site_path);
         }
         if(!chdir($this->site_path)){
             if(!$die)
@@ -160,7 +160,7 @@ class Wikis extends site_page
             symlink("$conf[multi_path]/gimg.php", "gimg.php");
         if(!is_dir('img')){
             //umask(0);
-            mkdir('img', 0770, true);
+            mkdir('img', 0755, true);
         }
     }
     function setup_wiki()

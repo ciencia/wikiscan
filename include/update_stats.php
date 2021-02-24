@@ -1721,7 +1721,7 @@ class UpdateStats
             $this->s[$stat]=array();
         $path=$this->path($date);
         if(!is_dir($path)){
-            mkdir($path, 0770, true);
+            mkdir($path, 0755, true);
             //chgrp($path, 'www-data');
         }
         if(!is_dir($path)){
