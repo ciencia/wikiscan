@@ -535,6 +535,50 @@ CREATE TABLE IF NOT EXISTS `user_groups` (
   KEY `ug_group` (`ug_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=binary;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `site_stats`
+--
+
+CREATE TABLE IF NOT EXISTS `site_stats` (
+  `disabled` tinyint(4) NOT NULL DEFAULT '0',
+  `score` decimal(8,5) UNSIGNED DEFAULT NULL,
+  `total_rev` int(10) UNSIGNED DEFAULT NULL,
+  `total_log` int(10) UNSIGNED DEFAULT NULL,
+  `total_archive` int(10) UNSIGNED DEFAULT NULL,
+  `total_user` int(10) UNSIGNED DEFAULT NULL,
+  `total_rev_user` int(10) UNSIGNED DEFAULT NULL,
+  `total_rev_log_user` int(10) UNSIGNED DEFAULT NULL,
+  `total_page` int(10) UNSIGNED DEFAULT NULL,
+  `total_redirect` int(10) UNSIGNED DEFAULT NULL,
+  `total_article` int(10) UNSIGNED DEFAULT NULL,
+  `total_file` int(10) UNSIGNED DEFAULT NULL,
+  `last_count` datetime DEFAULT NULL,
+  `last_stats` datetime DEFAULT NULL,
+  `duration_stats` int(11) DEFAULT NULL,
+  `last_live` datetime DEFAULT NULL,
+  `duration_live` int(11) DEFAULT NULL,
+  `last_sum` datetime DEFAULT NULL,
+  `duration_sum` int(11) DEFAULT NULL,
+  `last_groups` datetime DEFAULT NULL,
+  `last_misc` datetime DEFAULT NULL,
+  `users` int(10) UNSIGNED DEFAULT NULL,
+  `users_edit` int(10) UNSIGNED DEFAULT NULL,
+  `data` mediumblob
+) ENGINE=InnoDB DEFAULT CHARSET=binary ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `wiki_bots`
+--
+
+CREATE TABLE IF NOT EXISTS `wiki_bots` (
+  `user_name` varbinary(255) NOT NULL,
+  PRIMARY KEY (`user_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
