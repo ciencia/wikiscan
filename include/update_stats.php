@@ -1684,13 +1684,13 @@ class UpdateStats
             $date=(int)$date;
             $len=strlen($date);
             if($len==8)
-                $path=$path.'/'.substr($date,0,4).'/'.substr($date,4,2).'/'.substr($date,6,2);
+                $path=getcwd().'/'.$path.'/'.substr($date,0,4).'/'.substr($date,4,2).'/'.substr($date,6,2);
             if($len==6)
-                $path=$path.'/'.substr($date,0,4).'/'.substr($date,4,2);
+                $path=getcwd().'/'.$path.'/'.substr($date,0,4).'/'.substr($date,4,2);
             if($len==4)
-                $path=$path.'/'.substr($date,0,4);
+                $path=getcwd().'/'.$path.'/'.substr($date,0,4);
             if($len<=2)
-                $path=$path.'/live/'.$date;
+                $path=getcwd().'/'.$path.'/live/'.$date;
         }
         return $path;
     }
