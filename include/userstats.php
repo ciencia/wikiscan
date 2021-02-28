@@ -428,46 +428,47 @@ class UserStats extends site_page
         }
         $o.='</td><td>';
 
-        $wikis=Wikis::list_all_full();
-        $all=self::list_all_wikis($user);
-        $o.='<div class=user_wikis>';
-        $o.='<table class="user_totall">';
-        $o.='<tr><td colspan=2 class="title"><h3>'.msg('userstat-wikis_title-global').'</h3></td></tr>';
-        $key='wikis';
-        $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
-        $o.="<tr><td class='label'>".$label.'</td>';
-        $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
-        $key='total';
-        $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
-        $o.="<tr><td class='label'>".$label.'</td>';
-        $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
-        $key='edit';
-        $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
-        $o.="<tr><td class='label'>".$label.'</td>';
-        $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
-        $key='log';
-        $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
-        $o.="<tr><td class='label'>".$label.'</td>';
-        $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
-        $o.='</table>';
-        $o.='<table class="user_totall">';
-        $o.='<tr style="font-size:75%"><th>'.msg("userstat-wiki-short").'</th>';
-        unset($all['global']['wikis']);
-        foreach($all['global'] as $k=>$v)
-            $o.='<th>'.msg("userstat-$k-short").'</th>';
-        $o.='</tr>';
-        unset($all['global']);
-        foreach($all as $site=>$v){
-            $cls=$conf['wiki_key']==$site ? 'bold' : '';
-            $o.="<tr><td class='$cls'><small><a href='https://".Wikis::get_site_url($site)."/user/".urlencode($user)."'>".$wikis[$site]['site_host']."</a></small></td>";
-            $o.='<td>'.fnum($v['total']).'</td>';
-            $o.='<td>'.fnum($v['edit']).'</td>';
-            $o.='<td>'.fnum($v['log']).'</td>';
+        if($conf['multi']){
+            $wikis=Wikis::list_all_full();
+            $all=self::list_all_wikis($user);
+            $o.='<div class=user_wikis>';
+            $o.='<table class="user_totall">';
+            $o.='<tr><td colspan=2 class="title"><h3>'.msg('userstat-wikis_title-global').'</h3></td></tr>';
+            $key='wikis';
+            $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
+            $o.="<tr><td class='label'>".$label.'</td>';
+            $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
+            $key='total';
+            $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
+            $o.="<tr><td class='label'>".$label.'</td>';
+            $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
+            $key='edit';
+            $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
+            $o.="<tr><td class='label'>".$label.'</td>';
+            $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
+            $key='log';
+            $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
+            $o.="<tr><td class='label'>".$label.'</td>';
+            $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
+            $o.='</table>';
+            $o.='<table class="user_totall">';
+            $o.='<tr style="font-size:75%"><th>'.msg("userstat-wiki-short").'</th>';
+            unset($all['global']['wikis']);
+            foreach($all['global'] as $k=>$v)
+                $o.='<th>'.msg("userstat-$k-short").'</th>';
             $o.='</tr>';
+            unset($all['global']);
+            foreach($all as $site=>$v){
+                $cls=$conf['wiki_key']==$site ? 'bold' : '';
+                $o.="<tr><td class='$cls'><small><a href='https://".Wikis::get_site_url($site)."/user/".urlencode($user)."'>".$wikis[$site]['site_host']."</a></small></td>";
+                $o.='<td>'.fnum($v['total']).'</td>';
+                $o.='<td>'.fnum($v['edit']).'</td>';
+                $o.='<td>'.fnum($v['log']).'</td>';
+                $o.='</tr>';
+            }
+            $o.='</table>';
+            $o.='</div>';
         }
-        $o.='</table>';
-        $o.='</div>';
-
 
         $o.='</td></tr>';
         // *** Graph ****

@@ -9,7 +9,7 @@ RewriteRule ^date/(\d+)/?$ /index.php?menu=dates&date=$1&list=pages&sort=weight 
 RewriteRule ^date/(\d+)/([^&/]+)/?$ /index.php?menu=dates&date=$1&list=$2&sort=weight [QSA,L]
 RewriteRule ^(?:users|utilisateurs)$ /index.php?menu=userstats [QSA,L]
 RewriteRule ^(?:user|utilisateur)/?$ /index.php?menu=userstats [QSA,L]
-RewriteRule ^(?:user|utilisateur)/([^&]+)$ /index.php?menu=userstats&user=$1 [QSA,L]
+RewriteRule ^(?:user|utilisateur)/([^&]+)$ /index.php?menu=userstats&user=$1&usort=date [QSA,L]
 RewriteRule ^(?:user|utilisateur)/.+$ /index.php?menu=userstats&user=_ [QSA,L]
 RewriteRule ^(?:userlist|liste-utilisateurs)/([^&]+)$ /index.php?menu=userstats&userlist=$1 [QSA,L]
 RewriteRule ^IP$ /index.php?menu=userstats_ip [QSA,L]
