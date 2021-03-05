@@ -44,9 +44,11 @@ class StatsTables extends site_page
         $o.=$this->view_block("Répartition des éditions", $s['total']['nscateg']);
         $o.=$this->view_block("Répartition du temps", $s['total']['tot_time2_nscateg']);
         $o.='</div>';
-        echo '<pre>';
-        print_r($s);
-        echo '</pre>';
+        if(DEBUG){
+            echo '<pre>';
+            print_r($s);
+            echo '</pre>';
+        }
         return $o;
     }
     function view_block($title, $data)
