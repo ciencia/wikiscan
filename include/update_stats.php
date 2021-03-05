@@ -1679,18 +1679,18 @@ class UpdateStats
     static function path($date=0)
     {
         global $conf;
-        $path=self::data_path;
+        $path=getcwd().'/'.self::data_path;
         if($date!=0){
             $date=(int)$date;
             $len=strlen($date);
             if($len==8)
-                $path=getcwd().'/'.$path.'/'.substr($date,0,4).'/'.substr($date,4,2).'/'.substr($date,6,2);
+                $path=$path.'/'.substr($date,0,4).'/'.substr($date,4,2).'/'.substr($date,6,2);
             if($len==6)
-                $path=getcwd().'/'.$path.'/'.substr($date,0,4).'/'.substr($date,4,2);
+                $path=$path.'/'.substr($date,0,4).'/'.substr($date,4,2);
             if($len==4)
-                $path=getcwd().'/'.$path.'/'.substr($date,0,4);
+                $path=$path.'/'.substr($date,0,4);
             if($len<=2)
-                $path=getcwd().'/'.$path.'/live/'.$date;
+                $path=$path.'/live/'.$date;
         }
         return $path;
     }
