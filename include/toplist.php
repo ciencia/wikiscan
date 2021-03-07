@@ -196,7 +196,7 @@ class TopList extends site_page
         global $Site;
         if(!empty($this->filters)){
             foreach($this->filters as $k){
-                $v=msg("toplist-{$this->list}-filter-$k");
+                $v=htmlspecialchars(msg("toplist-{$this->list}-filter-$k"));
                 $oo[]=lnk($k===$this->filter ? "<b><u>$v</u></b>" : $v, array('menu'=>$Site->menu,'filter'=>$k,'sort'=>$this->sort));
             }
             return '<tr class="filters"><td colspan="20"><div class="list_filters">'.implode(' | ',$oo).'</div></td></tr>';
@@ -211,9 +211,9 @@ class TopList extends site_page
         $o='<tr class="sorts">';
         foreach($this->sort_cols as $k){
             if(isset($this->sort_images[$k]))
-                $title='<img src="'.$this->sort_images[$k].'" alt="'.msg("toplist-{$this->list}-sort-$k-alt").'"/>';
+                $title='<img src="'.htmlspecialchars($this->sort_images[$k]).'" alt="'.htmlspecialchars(msg("toplist-{$this->list}-sort-$k-alt")).'"/>';
             else
-                $title=msg("toplist-{$this->list}-sort-$k");
+                $title=htmlspecialchars(msg("toplist-{$this->list}-sort-$k"));
             $o.="<td class='tl-$k'>";
             if($link && isset($this->sorts[$k]))
                 $o.=lnk($title, array('menu'=>$Site->menu,'filter'=>$this->filter,'sort'=>$k));
@@ -233,7 +233,7 @@ class TopList extends site_page
         $o=array();
         foreach(array('pages', 'users', 'stats') as $k){
             $text=msg("toplist-menu-$k");
-            $link='<a href="/'.($Site->menu=='dates'? msg('urlpath-menu-date') : msg('urlpath-menu-live')).'/'.$this->date.'/'.$k.'">'.$text.'</a>';
+            $link='<a href="/'.htmlspecialchars(($Site->menu=='dates'? msg_site('urlpath-menu-date') : msg_site('urlpath-menu-live'))).'/'.htmlspecialchars($this->date).'/'.$k.'">'.htmlspecialchars($text).'</a>';
             $o[]='<div class="list_menu_item'.($this->list==$k?'_sel':'').'">'.$link.'</div>';
         }
         return '<div class="list_menu">'.implode('',$o).'</div>';

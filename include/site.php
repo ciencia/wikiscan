@@ -135,6 +135,9 @@ class Site
         }
         if(isset($_GET['list'])){
             $this->list=$_GET['list'];
+            // Sanity check
+            if (!in_array($this->list, ['pages','users','stats']))
+                $this->list='';
         }elseif($this->date==0 || strlen($this->date)==4)
             $this->list='stats';
         if(isset($_GET['filter'])){

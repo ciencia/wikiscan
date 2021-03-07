@@ -46,7 +46,9 @@ $conf=array(
     'forced_interface_language'=>false,
     'mw_api'=>'https://fr.wikipedia.org/w/api.php',
     'link_page'=>'https://fr.wikipedia.org/wiki/',
-
+    // Local/custom group names (key: group, value: description)
+    'groups'=>[],
+    
     'cache_key_global'=>'ws',
     'cache_key_site'=>'',
     'cache_path'=>'cache',

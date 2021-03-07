@@ -158,6 +158,12 @@ class TopListPage extends TopList
                 continue;
         }
     }
+    /**
+     * Generates a plain comma separated list of users (contributors), with the number of edits inside parentheses.
+     * 
+     * @param array $v Associative array of user statistics
+     * @return string Content that's not HTML-safe
+     */
     function user_list($v)
     {
         $ou=array();
@@ -168,9 +174,9 @@ class TopListPage extends TopList
         arsort($users);
         $j=0;
         foreach($users as $user=>$edits){
-            $ou[]=str_replace('"',"'",htmlspecialchars($user))." ($edits)";
+            $ou[]="$user ($edits)";
             if(++$j==15){
-                $ou[]='...';
+                $ou[]='…';
                 break;
             }
         }
@@ -190,16 +196,16 @@ class TopListPage extends TopList
 
     function render_list()
     {
-        global $conf;
         $o='<table class="list_list" cellspacing="0">';
         $o.=$this->view_filters();
         $hits=false;
         $max=$this->list_size*1.5;
+        $i=0;
         foreach($this->data as $v)
             if(@$v['hits']>0){
                 $hits=true;
                 break;
-            }elseif(@++$i>=$max)
+            }elseif(++$i>=$max)
                 break;
         if(!$hits)
             remove_value($this->sort_cols, 'hits');
@@ -225,7 +231,7 @@ class TopListPage extends TopList
             }
             if($hits)
                 $o.='<td>'.format_size(@$v['hits']).'</td>';
-            $o.='<td><span title="'.$ulist.'">'.@$v['utot'].'</td>';
+            $o.='<td><span title="'.htmlspecialchars($ulist).'">'.@$v['utot'].'</td>';
             $o.='<td>'.(int)@$v['edit'].'</td>';
             $o.='<td>'.@$v['revert'].'</td>';
             $o.='<td>'.format_diff(@$v['diff']).'</td>';
@@ -240,15 +246,15 @@ class TopListPage extends TopList
     }
     function render_list_mini()
     {
-        global $conf;
         $o='<table class="mini_list" cellspacing="0">';
         $hits=false;
         $max=$this->mini_size*1.5;
+        $i=0;
         foreach($this->data as $v)
             if(@$v['hits']>0){
                 $hits=true;
                 break;
-            }elseif(@++$i>=$max)
+            }elseif(++$i>=$max)
                 break;
         if(!$hits)
             remove_value($this->sort_cols, 'hits');
@@ -283,7 +289,7 @@ class TopListPage extends TopList
             }
             if($hits)
                 $o.='<td>'.format_size(@$v['hits']).'</td>';
-            $o.='<td><span title="'.$ulist.'">'.@$v['utot'].'</td>';
+            $o.='<td><span title="'.htmlspecialchars($ulist).'">'.@$v['utot'].'</td>';
             $o.='<td>'.(int)@$v['edit'].'</td>';
             $o.='<td>'.@$v['revert'].'</td>';
             $o.='<td>'.format_diff(@$v['diff']).'</td>';
@@ -299,12 +305,11 @@ class TopListPage extends TopList
         global $conf;
         if($fulltitle=='')
             $fulltitle=$title;
-        $tooltip=htmlspecialchars($tooltip);
         if(mb_strlen($title)>$this->link_max_len){
             $tooltip=$title.' : '.$tooltip;
-            $title=mb_substr($title,0,$this->link_max_len-2).'…';
+            $title=truncate($title,$this->link_max_len);
         }
-        return '<a href="'.$conf['link_page'].mwtools::title_url($fulltitle).'"'.($tooltip!=''?" title=\"$tooltip\"":'').'>'.htmlspecialchars($title).'</a>';
+        return '<a href="'.htmlspecialchars($conf['link_page'].mwtools::title_url($fulltitle)).'"'.($tooltip!=''?' title="'.htmlspecialchars($tooltip).'"':'').'>'.htmlspecialchars($title).'</a>';
     }
     static function javascript_mini()
     {

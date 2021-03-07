@@ -93,8 +93,8 @@ $messages = array(
     'urlpath-menu-grid'=>'grid',
     'urlpath-menu-dates'=>'calendar',
     'urlpath-menu-date'=>'date',
-    'urlpath-menu-userstats'=>'users',
-    'urlpath-menu-userstats_ip'=>'IP',
+    'urlpath-menu-userstats'=>'usuarios',
+    'urlpath-menu-userstats_ip'=>'ip',
     'urlpath-menu-pageview'=>'pageviews',
     'urlpath-menu-ranges'=>'ip_ranges',
     'urlpath-menu-active_users'=>'active_users',
@@ -559,7 +559,7 @@ $messages = array(
     'toplist-stats-dates-first'=>'Inicio',
     'toplist-stats-dates-last'=>'Fin',
     'toplist-stats-dates-update'=>'Actualizado',
-    'toplist-stats-time-text'=>"En base a 5 minutos por acción<br/>o hasta la siguiente acción,<br/>con un máximo de 15 minutos",
+    'toplist-stats-time-text'=>"En base a 5 minutos por acción o hasta la siguiente acción, con un máximo de 15 minutos",
     'toplist-stats-cumulated_time'=>'Tiempo acumulado',
     
     

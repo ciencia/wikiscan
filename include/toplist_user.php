@@ -119,11 +119,11 @@ class TopListUser extends TopList
                 $speed=round($speed).'/m';
             $o.='<td>'.$speed.'</td>';
             if($v['type']!='ip'){
-                $usert=mb_strlen($user)>$this->link_max_len ? mb_substr($user,0,$this->link_max_len-2).'..' : $user;
-                $o.='<td class="name"><a href="/utilisateur/'.mwtools::encode_user($user).'">'.htmlspecialchars($usert).'</a></td>';
+                $usert=truncate($user,$this->link_max_len);
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }else{
-                $usert=mb_strlen($user)>$this->link_max_len ? mb_substr($user,0,$this->link_max_len-2).'..' : $user;
-                $o.='<td class="name"><a href="/ip/'.mwtools::encode_user($user).'">'.htmlspecialchars($usert).'</a></td>';
+                $usert=truncate($user,$this->link_max_len);
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats_ip')).'/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }
             $o.'</tr>';
         }
@@ -132,7 +132,6 @@ class TopListUser extends TopList
     }
     function render_list_mini($size=10)
     {
-        global $conf;
         $o='<table class="mini_list" cellspacing="0">';
         remove_values($this->sort_cols, array('tot_size', 'tot_time', 'diff_tot'));
         if($this->filter=='ip')
@@ -147,7 +146,6 @@ class TopListUser extends TopList
             $v=current($this->data);
             next($this->data);
             $user=str_replace('_',' ',$user);
-            $icons='';
             if($i+1==$this->mini_size+1){
                 $o.="<tr class='mini_expand' style='display:table-row'><td class='mini_expand_link' colspan=10><a href='#' onclick='return tmin(this);'><img src='/imgi/icons/expand.png'/><img src='/imgi/icons/expand.png'/></a></td></tr>";
                 $o.="<tr class='mini_expand'><td class='mini_expand_link' colspan=10><a href='#' onclick='return tmin(this);'><img src='/imgi/icons/expand_up.png'/><img src='/imgi/icons/expand_up.png'/></a></td></tr>";
@@ -169,17 +167,17 @@ class TopListUser extends TopList
                 $speed=round($speed).'/m';
             $avg=round(@$v['tot_time2']/@$v['total']);
             $avg=round($avg/10)*10;
-            $o.='<td>'.format_time($avg).'</td>';
+            $o.='<td>'.htmlspecialchars(format_time($avg)).'</td>';
 
             if($v['type']!='ip'){
-                $usert=mb_strlen($user)>$this->link_max_len ? mb_substr($user,0,$this->link_max_len-2).'…' : $user;
-                $o.='<td class="name"><a href="/utilisateur/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $usert=truncate($user,$this->link_max_len);
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }else{
-                if(preg_match('/^((?:[\da-f]{1,4}:){4})([\da-f]{1,4}:){3}[\da-f]{1,4}$/i',$user,$res))
-                    $usert=strtolower(substr($res[1],0,-1)).'…';
+                if(preg_match('/^((?:[\da-f]{1,4}:){4})(?:[\da-f]{1,4}:){3}[\da-f]{1,4}$/i',$user))
+                    $usert=strtolower(truncate($user,$this->link_max_len));
                 else
-                    $usert=mb_strlen($user)>$this->link_max_len ? mb_substr($user,0,$this->link_max_len-2).'…' : $user;
-                $o.='<td class="name"><a href="/ip/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                    $usert=truncate($user,$this->link_max_len);
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats_ip')).'/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }
             $o.'</tr>';
         }

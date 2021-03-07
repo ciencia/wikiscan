@@ -37,6 +37,8 @@ $local_conf=array(
         // Wiki's name
         'site_host'=>'localhost',
     ),
+    // Local/custom group names (key: group, value: description)
+    'groups'=>[],
     // Display about link
     'view_about_link'=>false,
     // Robots policy

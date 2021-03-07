@@ -559,7 +559,7 @@ $messages = array(
     'toplist-stats-dates-first'=>'First',
     'toplist-stats-dates-last'=>'Last',
     'toplist-stats-dates-update'=>'Update',
-    'toplist-stats-time-text'=>"On a 5 min/action basis<br/>or until next action,<br/>with a maximum of 15 min.",
+    'toplist-stats-time-text'=>"On a 5 min/action basis or until next action, with a maximum of 15 min.",
     'toplist-stats-cumulated_time'=>'Cumulated time',
     
 

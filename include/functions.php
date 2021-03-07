@@ -56,6 +56,17 @@ function wiki_api($dest=false)
         return false;
 }
 
+/**
+ * Generates an HTML link
+ * 
+ * @param string $label Link label. It isn't html-escaped
+ * @param array $attr Array of URL parameters
+ * @param array|false $preserve Array of URL parameter names to preserve from current URL path if not present in $attr
+ * @param string $title Title of the URL (html-escaped)
+ * @param string $base Base URL
+ * @param string|false $id Hash target
+ * @return string
+ */
 function lnk($label,$attr,$preserve=false,$title='',$base='',$id=false)
 {
     if($preserve===false)
@@ -65,17 +76,17 @@ function lnk($label,$attr,$preserve=false,$title='',$base='',$id=false)
             $attr[$k]=$_GET[$k];
     if((@$attr['menu']=='dates'||@$attr['menu']=='live') && isset($attr['date']) && ((isset($attr['list']) && count($attr)==3)||(!isset($attr['list']) && count($attr)==2))){
         $list=!isset($attr['list']) ? 'pages' : $attr['list'];
-        $menu=$attr['menu']=='dates' ? msg('urlpath-menu-date') : msg('urlpath-menu-live');
-        return '<a href="/'.$menu.'/'.(int)$attr['date'].'/'.$list.'">'.$label.'</a>';
+        $menu=$attr['menu']=='dates' ? msg_site('urlpath-menu-date') : msg_site('urlpath-menu-live');
+        return '<a href="/'.htmlspecialchars($menu).'/'.(int)$attr['date'].'/'.htmlspecialchars($list).'">'.$label.'</a>';
     }
-    $o='<a href="'.$base;
+    $o='<a href="'.htmlspecialchars($base);
     if(!empty($attr))
-        $o.='?'.urlattr($attr);
+        $o.='?'.htmlspecialchars(urlattr($attr));
     if($id!==false)
-        $o.="#$id";
+        $o.='#'.htmlspecialchars($id);
     $o.='"';
     if($title!='')
-        $o.=" title=\"$title\"";
+        $o.=' title="'.htmlspecialchars($title).'"';
     return $o.'>'.$label.'</a>';
 }
 function lnkp($label,$attr,$preserve=array())
@@ -240,15 +251,15 @@ function format_jsstring($v)
 }
 function array_merge_recursive2($paArray1, $paArray2)
 {
-if (!is_array($paArray1) ){
-        return $paArray2;
-}elseif (!is_array($paArray2)){
-        return $paArray1;
-}
-foreach ($paArray2 AS $sKey2 => $sValue2){
-    $paArray1[$sKey2] = array_merge_recursive2(@$paArray1[$sKey2], $sValue2);
-}
-return $paArray1;
+    if (!is_array($paArray1) ){
+            return $paArray2;
+    }elseif (!is_array($paArray2)){
+            return $paArray1;
+    }
+    foreach ($paArray2 AS $sKey2 => $sValue2){
+        $paArray1[$sKey2] = array_merge_recursive2(@$paArray1[$sKey2], $sValue2);
+    }
+    return $paArray1;
 }
 function array_sum_recursive($a1, $a2)
 {
@@ -338,6 +349,18 @@ function pr($data)
     echo '</pre>';
 }
 
+/**
+ * Truncates a string to the specified length, including ellipsis if truncated
+ * 
+ * @param string $str String to truncate
+ * @param number $len Max Length
+ * @return string
+ */
+function truncate($str, $len) {
+    if(mb_strlen($str)>$len)
+        return mb_substr($str,0,$len-1).'…';
+    return $str;
+}
 
 
 ?>
