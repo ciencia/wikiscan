@@ -137,6 +137,12 @@ class Dates
         }
         return false;
     }
+    /**
+     * Formats a date. Returns unescaped HTML
+     * 
+     * @param string $date Date with year, month and/or day, or 24/48
+     * @return string|false
+     */
     static function format($date)
     {
         if(strlen($date)==4)
@@ -212,9 +218,9 @@ class Dates
         for($m=1;$m<=12;$m++){
             $o.= isset($d['m']) && $d['m']==$m ? '<td class="sel">' :'<td>';
             if(@$this->month[$d['y']][$m]['edits']>0)
-                $o.=lnk(msg("month-long-$m"), array('menu'=>'dates','date'=>$this->format_date($d['y'],$m)),array('list','filter','sort')).'</td>';
+                $o.=lnk(htmlspecialchars(msg("month-long-$m")), array('menu'=>'dates','date'=>$this->format_date($d['y'],$m)),array('list','filter','sort')).'</td>';
             else
-                $o.=msg("month-long-$m").'</td>';
+                $o.=htmlspecialchars(msg("month-long-$m")).'</td>';
         }
         $o.='</tr></table>';
         if($conf['base_calc']=='day' && isset($d['m'])&&$d['m']!=0){
@@ -265,7 +271,7 @@ class Dates
             else
                 $next='';
             $o.='<div class="date_title">';
-            $o.="<h1>".msg("toplist-dates-title-$list")."<br>$prev<span class=date_block>$title</span>$next</h1>";
+            $o.="<h1>".htmlspecialchars(msg("toplist-dates-title-$list"))."<br>$prev<span class=date_block>".htmlspecialchars($title)."</span>$next</h1>";
             $o.="</div>";
         }
         $o.='</div>';

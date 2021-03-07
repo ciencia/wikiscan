@@ -30,6 +30,7 @@ class GraphList
     static function toplist($date)
     {
         $o='';
+        // FIXME: Localize
         if($date<=1)
             $alt='pour la dernière heure';
         elseif($date<=48)
@@ -37,9 +38,10 @@ class GraphList
         else
             $alt=Dates::format($date);
         $graphs=array('edits'=>'des modifications','users'=>'des utilisateurs','nstypes'=>'des espaces de noms');
+        $date=htmlspecialchars($date);
         foreach($graphs as $t=>$v)
-            $oo[]="<a href='/gimg.php?type=$t&date=$date&size=big'>"
-                ."<img src='/gimg.php?type=$t&date=$date&size=medium' alt='Graphique $v $alt'/></a>";
+            $oo[]="<a href='/gimg.php?type=$t&amp;date=$date&amp;size=big'>"
+                ."<img src='/gimg.php?type=$t&amp;date=$date&amp;size=medium' alt='".htmlspecialchars("Graphique $v $alt")."'/></a>";
         $o.='<div class="graphs_toplist">'.implode('<br/>',$oo).'</div>';
         return $o;
     }
