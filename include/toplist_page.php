@@ -231,7 +231,7 @@ class TopListPage extends TopList
             }
             if($hits)
                 $o.='<td>'.format_size(@$v['hits']).'</td>';
-            $o.='<td><span title="'.htmlspecialchars($ulist).'">'.@$v['utot'].'</td>';
+            $o.='<td><span title="'.htmlspecialchars($ulist).'">'.@$v['utot'].'</span></td>';
             $o.='<td>'.(int)@$v['edit'].'</td>';
             $o.='<td>'.@$v['revert'].'</td>';
             $o.='<td>'.format_diff(@$v['diff']).'</td>';
@@ -289,7 +289,7 @@ class TopListPage extends TopList
             }
             if($hits)
                 $o.='<td>'.format_size(@$v['hits']).'</td>';
-            $o.='<td><span title="'.htmlspecialchars($ulist).'">'.@$v['utot'].'</td>';
+            $o.='<td><span title="'.htmlspecialchars($ulist).'">'.@$v['utot'].'</span></td>';
             $o.='<td>'.(int)@$v['edit'].'</td>';
             $o.='<td>'.@$v['revert'].'</td>';
             $o.='<td>'.format_diff(@$v['diff']).'</td>';
