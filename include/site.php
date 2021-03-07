@@ -691,7 +691,8 @@ class Site
         if($this->menu!='about' && (!isset($_GET['submenu']) || $_GET['submenu']!='about')){
             if($conf['view_about_link'])
                 $o.="<a href='/?menu=about'>".htmlspecialchars(msg('footer-about_link'))."</a> - ";
-            $o.=htmlspecialchars(msg('footer-license')).".";
+            $lic='<a href="'.htmlspecialchars($conf['license_statistics']['url']).'" rel="nofollow">'.htmlspecialchars($conf['license_statistics']['license']).'</a>';
+            $o.=str_replace('$1',$lic,htmlspecialchars(msg('footer-license'))).".";
         }
         $o.="</div>";
         $o.="</body>\n</html>";

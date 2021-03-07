@@ -30,6 +30,10 @@ $conf=array(
     'view_about_link'=>false,
     'robots_policy'=>'index,follow',
     
+    'license_statistics'=>[
+        'license'=>'CC BY-SA',
+        'url'=>'https://creativecommons.org/licenses/by-sa/3.0/'
+    ],
     
     'multi'=>false,
     'wiki_key'=>'',

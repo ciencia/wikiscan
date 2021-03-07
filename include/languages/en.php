@@ -51,7 +51,7 @@ $messages = array(
     'years'=>'years',
     
     'logo-alt'=>'Wikiscan',
-    'footer-license'=>'Statistics under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA</a> license',
+    'footer-license'=>'Statistics under $1 license',
     'footer-about_link'=>'About Wikiscan',
 
     'banner_text'=>'Statistics on',
