@@ -43,6 +43,8 @@ $local_conf=array(
     'view_about_link'=>false,
     // Robots policy
     'robots_policy'=>'index,follow',
+    // Do we have hits information available?
+    'hits_available'=>true,
     // use the revision_actor_temp table when building stats (needed for pre-1.35 wikis)
     'stats_join_revision_actor_temp'=>false,
     // use the revision_comment_temp table when building stats (needed for pre-1.35 wikis)

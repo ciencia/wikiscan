@@ -127,14 +127,21 @@ function format_time($time,$space=' ',$forceh=false)
     return $sign.((int)($time/365)).$space.msg('year-short') ;
 }
 
+/**
+ * Returns a date formated according to language format
+ * 
+ * @param string $date 
+ * @param boolean $timezone Display timezone
+ * @return string HTML-formatted date
+ */
 function format_date($date, $timezone=false)
 {
     $format=msg('datetime_format_long');
     $t=strtotime($date);
     $tz='';
     if($timezone){
-        $t+=date('Z',$t);
-        $tz=' <small>'.date('T',$t).'</small>';
+        $t+=htmlspecialchars(date('Z',$t));
+        $tz=' <small>'.htmlspecialchars(date('T',$t)).'</small>';
     }
     return date($format,$t).$tz;
 }

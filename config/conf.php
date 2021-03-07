@@ -29,6 +29,7 @@ $conf=array(
 
     'view_about_link'=>false,
     'robots_policy'=>'index,follow',
+    'hits_available'=>true,
     
     'license_statistics'=>[
         'license'=>'CC BY-SA',

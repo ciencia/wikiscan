@@ -35,7 +35,7 @@ class GridPage extends site_page
         $o.='<div class="last_update">';
         $o.= $last_update!='' ? format_date($last_update, true) : '';
         $o.='</div>';
-        $o.='<h1>'.msg('toplist-live-title').'</h1>';
+        $o.='<h1>'.htmlspecialchars(msg('toplist-live-title')).'</h1>';
         $o.='</div>';
         return $o;
     }
@@ -52,17 +52,17 @@ class GridPage extends site_page
         $o.=$this->title($date);
         $o.=TopListPage::javascript_mini();
         $o.='<table class=mep><tr><td>';
-        $o.='<div class="grid_item"><h3><a href="/live/'.$date.'/pages/">'.msg('grid-title-articles').'</a></h3>';
+        $o.='<div class="grid_item"><h3><a href="/'.htmlspecialchars(msg_site('urlpath-menu-live')).'/'.htmlspecialchars($date).'/pages/">'.htmlspecialchars(msg('grid-title-articles')).'</a></h3>';
         if($toplist=TopList::create('pages', $date, 'main', 'weight', true))
             $o.=$toplist->view();
         $o.='</div>';
-        $o.='<div class="grid_item"><h3>'.msg('grid-title-newarticles').'</h3>';
+        $o.='<div class="grid_item"><h3>'.htmlspecialchars(msg('grid-title-newarticles')).'</h3>';
         if($toplist=TopList::create('pages', $date, 'main', 'weight', true)){
             $toplist->new_only=true;
             $o.=$toplist->view();
         }
         $o.='</div>';
-        $o.='<div class="grid_item"><h3><a href="/?menu=live&filter=meta&sort=hits&date='.$date.'&list=pages">'.msg('grid-title-meta').'</a></h3>';
+        $o.='<div class="grid_item"><h3><a href="/?menu=live&amp;filter=meta&amp;sort=hits&amp;date='.htmlspecialchars($date).'&amp;list=pages">'.htmlspecialchars(msg('grid-title-meta')).'</a></h3>';
         if($toplist=TopList::create('pages', $date, 'meta', 'weight', true)){
             $toplist->pages_filter='admin';
             $toplist->pages_filter_invert=true;
@@ -70,7 +70,7 @@ class GridPage extends site_page
         }
         $o.='</div>';
         if(isset($conf['page_filters']['admin'])){
-            $o.='<div class="grid_item"><h3>'.msg('grid-title-adminpages').'</h3>';
+            $o.='<div class="grid_item"><h3>'.htmlspecialchars(msg('grid-title-adminpages')).'</h3>';
             if($toplist=TopList::create('pages', $date, 'meta', 'weight', true)){
                 $toplist->pages_filter='admin';
                 $o.=$toplist->view();
@@ -78,11 +78,13 @@ class GridPage extends site_page
             $o.='</div>';
         }
         $o.='</td><td>';
-        $o.='<div class="grid_item"><h3><a href="/?menu=live&filter=main&sort=hits&date='.$date.'&list=pages">'.msg('grid-title-views').'</a></h3>';
-        if($toplist=TopList::create('pages', $date, 'main', 'hits', true))
-            $o.=$toplist->view();
-        $o.='</div>';
-        $o.='<div class="grid_item"><h3><a href="/?menu=live&filter=talk&sort=weight&date='.$date.'&list=pages">'.msg('grid-title-talks').'</a></h3>';
+        if($conf['hits_available']){
+            $o.='<div class="grid_item"><h3><a href="/?menu=live&amp;filter=main&amp;sort=hits&amp;date='.htmlspecialchars($date).'&amp;list=pages">'.htmlspecialchars(msg('grid-title-views')).'</a></h3>';
+            if($toplist=TopList::create('pages', $date, 'main', 'hits', true))
+                $o.=$toplist->view();
+            $o.='</div>';
+        }
+        $o.='<div class="grid_item"><h3><a href="/?menu=live&amp;filter=talk&amp;sort=weight&amp;date='.htmlspecialchars($date).'&amp;list=pages">'.htmlspecialchars(msg('grid-title-talks')).'</a></h3>';
         if($toplist=TopList::create('pages', $date, 'talk', 'weight', true)){
             $toplist->view_ns=false;
             $toplist->pages_filter='deletion';
@@ -91,7 +93,7 @@ class GridPage extends site_page
         }
         $o.='</div>';
         if(isset($conf['page_filters']['admin'])){
-            $o.='<div class="grid_item"><h3>'.msg('grid-title-deletion').'</h3>';
+            $o.='<div class="grid_item"><h3>'.htmlspecialchars(msg('grid-title-deletion')).'</h3>';
             if($toplist=TopList::create('pages', $date, 'all', 'weight', true)){
                 $toplist->view_ns=false;
                 $toplist->pages_filter='deletion';
@@ -99,32 +101,34 @@ class GridPage extends site_page
             }
             $o.='</div>';
         }
-        $o.='<div class="grid_item"><h3><a href="/?menu=live&filter=model&sort=weight&date='.$date.'&list=pages">'.msg('grid-title-templates').'</a></h3>';
+        $o.='<div class="grid_item"><h3><a href="/?menu=live&amp;filter=model&amp;sort=weight&amp;date='.htmlspecialchars($date).'&amp;list=pages">'.htmlspecialchars(msg('grid-title-templates')).'</a></h3>';
         if($toplist=TopList::create('pages', $date, 'model', 'weight', true)){
             $o.=$toplist->view();
         }
         $o.='</div>';
-        $o.='<div class="grid_item"><h3><a href="/?menu=live&filter=other&sort=weight&date='.$date.'&list=pages">'.msg('grid-title-others').'</a></h3>';
+        $o.='<div class="grid_item"><h3><a href="/?menu=live&amp;filter=other&amp;sort=weight&amp;date='.htmlspecialchars($date).'&amp;list=pages">'.htmlspecialchars(msg('grid-title-others')).'</a></h3>';
         if($toplist=TopList::create('pages', $date, 'other', 'weight', true)){
             $o.=$toplist->view();
         }
         $o.='</div>';
         $o.='</td><td>';
-        $o.='<div class="grid_item"><h3>'.msg('grid-title-graph_edits').'</h3>';
-        $o.="<a href='/gimg.php?type=edits&date=$date&size=big'><img src='/gimg.php?type=edits&date=$date&size=small' alt='Graphique éditions'/></a>";
+        $o.='<div class="grid_item"><h3>'.htmlspecialchars(msg('grid-title-graph_edits')).'</h3>';
+        // FIXME: Localize graphic alt text
+        $o.='<a href="/gimg.php?type=edits&amp;date='.htmlspecialchars($date).'&amp;size=big"><img src="/gimg.php?type=edits&amp;date='.htmlspecialchars($date).'&amp;size=small" alt="Graphique éditions"/></a>';
         $o.='</div>';
-        $o.="<div class='grid_item'><h3>".msg('grid-title-graph_users')."</h3>";
-        $o.="<a href='/gimg.php?type=users&date=$date&size=big'><img src='/gimg.php?type=users&date=$date&size=small' alt='Graphique éditions'/></a>";
+        $o.="<div class='grid_item'><h3>".htmlspecialchars(msg('grid-title-graph_users'))."</h3>";
+        // FIXME: Localize graphic alt text
+        $o.='<a href="/gimg.php?type=users&amp;date='.htmlspecialchars($date).'&amp;size=big"><img src="/gimg.php?type=users&amp;date='.htmlspecialchars($date).'&amp;size=small" alt="Graphique éditions"/></a>';
         $o.='</div>';
-        $o.='<div class="grid_item"><h3><a href="/live/'.$date.'/utilisateurs">'.msg('stat-users').'</a></h3>';
+        $o.='<div class="grid_item"><h3><a href="/'.htmlspecialchars(msg_site('urlpath-menu-live')).'/'.$date.'/users">'.htmlspecialchars(msg('stat-users')).'</a></h3>';
         if($toplist=TopList::create('users', $date, 'user', 'weight', true))
             $o.=$toplist->view();
         $o.='</div>';
-        $o.='<div class="grid_item"><h3><a href="/?menu=live&filter=ip&sort=weight&date='.$date.'&list=users">'.msg('stat-ip').'</a></h3>';
+        $o.='<div class="grid_item"><h3><a href="/?menu=live&amp;filter=ip&amp;sort=weight&amp;date='.htmlspecialchars($date).'&amp;list=users">'.htmlspecialchars(msg('stat-ip')).'</a></h3>';
         if($toplist=TopList::create('users', $date, 'ip', 'weight', true))
             $o.=$toplist->view();
         $o.='</div>';
-        $o.='<div class="grid_item"><h3><a href="/?menu=live&filter=bot&sort=weight&date='.$date.'&list=users">'.msg('stat-bots').'</a></h3>';
+        $o.='<div class="grid_item"><h3><a href="/?menu=live&amp;filter=bot&amp;sort=weight&amp;date='.htmlspecialchars($date).'&amp;list=users">'.htmlspecialchars(msg('stat-bots')).'</a></h3>';
         if($toplist=TopList::create('users', $date, 'bot', 'weight', true))
             $o.=$toplist->view();
         $o.='</div>';
