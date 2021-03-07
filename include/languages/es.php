@@ -117,7 +117,7 @@ $messages = array(
     
     'navigation-page'=>'page',
     
-    'home_title'=>'Statistics',
+    'home_title'=>'Estadísticas',
     
     'home_table-contents-title'=>'Contenido',
     'home_table-contents-articles'=>'Artículos',

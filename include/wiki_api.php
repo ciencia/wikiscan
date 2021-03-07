@@ -47,6 +47,12 @@ class wiki_api
         return unserialize($data);
     }
 
+    /**
+     * Gets the wikitext contents of a page.
+     * 
+     * @param string $title Page title
+     * @return string|boolean Wikitext
+     */
     function content($title)
     {
         $attr=array(

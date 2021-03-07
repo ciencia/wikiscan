@@ -128,16 +128,29 @@ function format_date($date, $timezone=false)
     return date($format,$t).$tz;
 }
 
+/**
+ * Formats a decimal number into a string, for use in HTML. Returned HTML is safe
+ * 
+ * @param number $v Decimal value to format
+ * @param number $dec Number of decimal digits to use
+ * @return string
+ */
 function fnum($v, $dec=0)
 {
     $v=round($v, $dec);
     if($v==0)
-        return 0;
+        return '0';
     if(abs($v)<10 && $v-floor($v)!=0)
         return str_replace(' ','&nbsp;',number_format($v, $dec, msg('decimal_sep'), msg('thousands_sep')));
     return str_replace(' ','&nbsp;',number_format($v, 0, msg('decimal_sep'), msg('thousands_sep')));
 }
 
+/**
+ * Formats a number representing binary units of information, to the most convenient factor (Kibibyte, Mebibyte, Gibibyte...)
+ * 
+ * @param number $v Quantity
+ * @return string formatted value
+ */
 function format_sizei($v)
 {
     $av=abs($v);
@@ -153,10 +166,18 @@ function format_sizei($v)
         $v=round($v/1024).' k';
     elseif($av>=1024)
         $v=round($v/1024,1).' k';
+    else
+        $v=strval($v);
     $v=str_replace('.', msg('decimal_sep'), $v);
     return $v;
 }
 
+/**
+ * Formats a number representing decimal units of information, to the most convenient factor (Kilobyte, Megabyte, Gigabyte...)
+ *
+ * @param number $v Quantity
+ * @return string formatted value
+ */
 function format_size($v)
 {
     $av=abs($v);
@@ -172,6 +193,8 @@ function format_size($v)
         $v=round($v/1000).' k';
     elseif($av>=1000)
         $v=round($v/1000,1).' k';
+    else
+        $v=strval($v);
     $v=str_replace('.', msg('decimal_sep'), $v);
     return $v;
 }
@@ -205,7 +228,16 @@ function flength($t)
     else
         return round($t/60).'min';
 }
-
+/**
+ * Returns a string formatted as a JavaScript string, with delimiters
+ * 
+ * @param string $v String to format
+ * @return string
+ */
+function format_jsstring($v)
+{
+    return "'" . str_replace("\'", "\\'", $v) . "'";
+}
 function array_merge_recursive2($paArray1, $paArray2)
 {
 if (!is_array($paArray1) ){
@@ -253,6 +285,12 @@ function s($num)
 {
     return abs($num) >= 2 ? 's' : '';
 }
+/**
+ * Returns a + sign if the number is greater than 0, an empty string otherwise 
+ * 
+ * @param number $num
+ * @return string
+ */
 function plus($num)
 {
     return $num > 0 ? '+' : '';

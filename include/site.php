@@ -305,7 +305,9 @@ class Site
 
         $o.=$this->canonical();
         if($this->menu=='about' || ($this->menu=='ranges' && isset($_GET['whois']) && $_GET['whois'] !=''))
-            $o.='<meta name="robots" content="noindex,follow">';
+            $o.='<meta name="robots" content="noindex,nofollow">';
+        else
+            $o.='<meta name="robots" content="'.$conf['robots_policy'].'">';
         /*if(preg_match('!\.\w{2,}$!', $_SERVER['HTTP_HOST']))
             $o.=$this->analytics();*/
         $o.="</head><body>\n";
@@ -383,13 +385,13 @@ class Site
         }
         if($this->menu=='ranges'){
             if(isset($_GET['range']) && $_GET['range']!='' && (@$_GET['srt']!=''||@$_GET['page']!=''))
-                return "<link rel='canonical' href='/plage-ip/".htmlspecialchars($_GET['range'])."'/>\n";
+                return '<link rel="canonical" href="/'.msg_site('urlpath-menu-ranges').'/'.htmlspecialchars($_GET['range']).'"/>\n';
             if(isset($_GET['range']) && $_GET['range']!='' && @$_GET['whois']!=''){
                 if(preg_match('!^([\d\.]+)/(\d+)$!',$_GET['whois'],$res))
-                    return "<link rel='canonical' href='/plage-ip/".htmlspecialchars($_GET['whois'])."?whois=".htmlspecialchars($_GET['whois'])."'/>\n";
+                    return '<link rel="canonical" href="/'.msg_site('urlpath-menu-ranges').'/'.htmlspecialchars($_GET['whois'])."?whois=".htmlspecialchars($_GET['whois']).'"/>\n';
             }
             if(@$_GET['range']=='' && @$_GET['owner']!='' && @$_GET['srt']!='')
-                return "<link rel='canonical' href=\"/plage-ip/?owner=".htmlspecialchars($_GET['owner'])."\"/>\n";
+                return '<link rel="canonical" href="/'.msg_site('urlpath-menu-ranges').'/?owner='.htmlspecialchars($_GET['owner']).'"/>\n';
         }
     }
     function head_title()
@@ -398,9 +400,8 @@ class Site
         $o='';
         switch($this->menu){
             case 'home'  :
-                $name=$conf['wiki']['site_global_key'];
-                $name=mb_ucfirst($name);
-                $o.="$name - ".msg('window_title-statitics').' Wikiscan';
+                $name=$conf['multi']?mb_ucfirst($conf['wiki']['site_global_key']):$conf['wiki']['site_host'];
+                $o.=$name.' - '.msg('window_title-statitics').' - Wikiscan';
                 break;
             case 'live'  :
             case 'dates' :
@@ -470,7 +471,7 @@ class Site
     {
         global $conf;
         if(isset($conf['logo']) && $conf['logo']!='')
-            return '<div class="logo"><a href="'.$this->host_link().'"><img src="'.$conf['logo'].'" alt="'.msg('logo-alt').'"/></a></div>';
+            return '<div class="logo"><a href="'.htmlspecialchars($this->host_link()).'"><img src="'.htmlspecialchars($conf['logo']).'" alt="'.htmlspecialchars(msg('logo-alt')).'"/></a></div>';
     }
     function menu()
     {
@@ -689,8 +690,8 @@ class Site
         $o="<div class='footer'>";
         if($this->menu!='about' && (!isset($_GET['submenu']) || $_GET['submenu']!='about')){
             if($conf['view_about_link'])
-                $o.="<a href='/?menu=about'>".msg('footer-about_link')."</a> - ";
-            $o.=msg('footer-license').".";
+                $o.="<a href='/?menu=about'>".htmlspecialchars(msg('footer-about_link'))."</a> - ";
+            $o.=htmlspecialchars(msg('footer-license')).".";
         }
         $o.="</div>";
         $o.="</body>\n</html>";

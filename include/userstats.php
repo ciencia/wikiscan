@@ -194,10 +194,13 @@ class UserStats extends site_page
         $res=array();
         $this->userlist_page='';
         if($this->userlist!=''){
+            // If a colon is present in the provided user list, handle it as a namespace
+            // FIXME: This may fail if a user name contains a colon
             if(preg_match('/^.+:.+$/',$this->userlist)){
                 $this->userlist_page=$this->userlist;
                 $ns=mwns::get()->get_ns($this->userlist);
                 $api=wiki_api();
+                // If namespace is Category:, get user and user talk pages from that category
                 if($ns==NS_CATEGORY){
                     $users=$api->category_members($this->userlist,'2|3');
                     if(is_array($users)){
@@ -243,7 +246,7 @@ class UserStats extends site_page
     function canonical($user)
     {
         if($this->user_exist($user))
-            return '<link rel="canonical" href="'.($this->ip?self::ip_url($user):self::user_url($user)).'"/>';
+            return '<link rel="canonical" href="'.htmlspecialchars(($this->ip?self::ip_url($user):self::user_url($user))).'"/>';
         return false;
     }
     function view()
@@ -861,11 +864,11 @@ $(function () {
 
     static function user_url($user)
     {
-        return '/'.msg('urlpath-user').'/'.htmlspecialchars(mwtools::encode_user($user));
+        return '/'.msg_site('urlpath-user').'/'.mwtools::encode_user($user);
     }
     static function ip_url($user)
     {
-        return '/'.msg('urlpath-ip').'/'.htmlspecialchars(mwtools::encode_user($user));
+        return '/'.msg_site('urlpath-ip').'/'.mwtools::encode_user($user);
     }
 
     function format_val($k, $v, $percent=false)
@@ -875,11 +878,11 @@ $(function () {
         switch($k){
             case 'user':
                 if($this->ip)
-                    $val='<a href="'.self::ip_url($v[$k]).'">'
+                    $val='<a href="'.htmlspecialchars(self::ip_url($v[$k])).'">'
                         .htmlspecialchars(mb_strlen($v[$k])<=30 ? $v[$k] : mb_substr($v[$k],0,28).'…')
                         .'</a>';
                 else
-                    $val='<a href="'.self::user_url($v[$k]).'">'
+                    $val='<a href="'.htmlspecialchars(self::user_url($v[$k])).'">'
                         .htmlspecialchars(mb_strlen($v[$k])<=30 ? $v[$k] : mb_substr($v[$k],0,28).'…')
                         .'</a>';
                 break;

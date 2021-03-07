@@ -37,10 +37,10 @@ class WikiHome
             <script src="/libs/d3pie.min.js"></script>';
 
         $o.="<div class=home>";
-        $link='<a href="'.$conf['wiki']['url'].'">'.preg_replace('!^www\.|\.org$!', '', $conf['wiki']['site_host']).'</a>';
+        $link='<a href="'.htmlspecialchars($conf['wiki']['url']).'">'.htmlspecialchars($conf['wiki']['site_host']).'</a>';
         $dates='<div class=home_dates>'.date('Y',strtotime($this->data['total']['stats']['update']['first'])).' - '.date('Y',strtotime($this->data['total']['stats']['update']['last'])).'</div>';
         $lastupdate='<div class=home_lastupdate>'.date('Y-m-d',strtotime($this->data['total']['stats']['update']['last'])).'</div>';
-        $o.='<h1>'.msg('home_title').' '.$link.$dates.$lastupdate.'</h1>';
+        $o.='<h1>'.htmlspecialchars(msg('home_title')).' '.$link.$dates.$lastupdate.'</h1>';
         $o.='<div class="home_stats">';
         $o.='<div class="home_row">';
         $o.=$this->main_stats_table();
@@ -53,7 +53,7 @@ class WikiHome
         $o.='</div>';
         $o.=$this->history_graphs();
         $o.='</div>';
-        if(isset($_GET['debug']))
+        if(DEBUG&&isset($_GET['debug']))
             $o.=view_array($this->data);
         return $o;
     }
@@ -61,13 +61,13 @@ class WikiHome
     {
         $s=$this->data['total']['stats'];
         $o='<div class="home_stats_block">';
-        $o.='<h2 class="home_stats_title">'.msg('home_table-contents-title').'</h2>';
+        $o.='<h2 class="home_stats_title">'.htmlspecialchars(msg('home_table-contents-title')).'</h2>';
         $o.='<table class="home_stats_table">';
-        $o.='<tr><th></th><th>'.msg('home_table-contents-articles').'</th><th>'.msg('home_table-contents-total').'</th></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-contents-pages').'</th><td class=num>'.fnum($this->wiki['total_article']).'</td><td class=num>'.fnum($this->wiki['total_page']).'</td></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-contents-edits').'</th><td class=num>'.fnum($s['total']['ns'][0]).'</td><td class=num>'.fnum($s['total']['edit']).'</td></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-contents-actualsize').'</th><td class=num>'.format_sizei($s['total']['diff_ns']['article']).'</td><td class=num>'.format_sizei($s['total']['diff']).'</td></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-contents-totalsize').'</th><td class=num>'.format_sizei($s['total']['tot_size_ns']['article']).'</td><td class=num>'.format_sizei($s['total']['tot_size']).'</td></tr>';
+        $o.='<tr><th></th><th>'.htmlspecialchars(msg('home_table-contents-articles')).'</th><th>'.htmlspecialchars(msg('home_table-contents-total')).'</th></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-contents-pages')).'</th><td class=num>'.fnum($this->wiki['total_article']).'</td><td class=num>'.fnum($this->wiki['total_page']).'</td></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-contents-edits')).'</th><td class=num>'.fnum($s['total']['ns'][0]).'</td><td class=num>'.fnum($s['total']['edit']).'</td></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-contents-actualsize')).'</th><td class=num>'.format_sizei($s['total']['diff_ns']['article']).'</td><td class=num>'.format_sizei($s['total']['diff']).'</td></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-contents-totalsize')).'</th><td class=num>'.format_sizei($s['total']['tot_size_ns']['article']).'</td><td class=num>'.format_sizei($s['total']['tot_size']).'</td></tr>';
         $o.='</table>';
         $o.='</div>';
         return $o;
@@ -93,13 +93,13 @@ class WikiHome
             foreach($vv as $edit_limit=>$v)
                 $avg[$col][$edit_limit]=round(array_sum($v)/count($v));
         $o='<div class="home_stats_block">';
-        $o.='<h2 class="home_stats_title">'.msg('home_table-users-title').'</h2>';
+        $o.='<h2 class="home_stats_title">'.htmlspecialchars(msg('home_table-users-title')).'</h2>';
         $o.='<table class="home_stats_table">';
-        $o.='<tr><th></th><th>'.msg('home_table-users-actives').'</th><th>'.msg('home_table-users-total').'</th></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-users-users').'</th><td class=num>'.fnum(@$avg['users'][1]).'</td><td class=num>'.fnum(@$s['edit'][1]['users']).'</td></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-users-users5').'</th><td class=num>'.fnum(@$avg['users'][5]).'</td><td class=num>'.fnum(@$s['edit'][5]['users']).'</td></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-users-users100').'</th><td class=num>'.fnum(@$avg['users'][100]).'</td><td class=num>'.fnum(@$s['edit'][100]['users']).'</td></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-users-users1000').'</th><td class=num>'.fnum(@$avg['users'][1000]).'</td><td class=num>'.fnum(@$s['edit'][1000]['users']).'</td></tr>';
+        $o.='<tr><th></th><th>'.htmlspecialchars(msg('home_table-users-actives')).'</th><th>'.htmlspecialchars(msg('home_table-users-total')).'</th></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-users-users')).'</th><td class=num>'.fnum(@$avg['users'][1]).'</td><td class=num>'.fnum(@$s['edit'][1]['users']).'</td></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-users-users5')).'</th><td class=num>'.fnum(@$avg['users'][5]).'</td><td class=num>'.fnum(@$s['edit'][5]['users']).'</td></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-users-users100')).'</th><td class=num>'.fnum(@$avg['users'][100]).'</td><td class=num>'.fnum(@$s['edit'][100]['users']).'</td></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-users-users1000')).'</th><td class=num>'.fnum(@$avg['users'][1000]).'</td><td class=num>'.fnum(@$s['edit'][1000]['users']).'</td></tr>';
         $o.='</table>';
         $o.='</div>';
         return $o;
@@ -131,12 +131,12 @@ class WikiHome
         foreach($avg as $col=>$v)
             $avg[$col]=round(array_sum($v)/count($v));
         $o='<div class="home_stats_block">';
-        $o.='<h2 class="home_stats_title">'.msg('home_table-time-title').'</h2>';
+        $o.='<h2 class="home_stats_title">'.htmlspecialchars(msg('home_table-time-title')).'</h2>';
         $o.='<table class="home_stats_table">';
-        $o.='<tr><th></th><th>'.msg('home_table-time-articles').'</th><th>'.msg('home_table-time-total').'</th></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-time-edits').'</th><td class=num>'.fnum(@$avg['edits_article']).'</td><td class=num>'.fnum(@$avg['edits']).'</td></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-time-creations').'</th><td class=num>'.fnum(@$avg['new_articles']).'</td><td class=num>'.fnum(@$avg['new_pages']).'</td></tr>';
-        $o.='<tr><th class=key>'.msg('home_table-time-contents').'</th><td class=num>'.format_sizei(@$avg['diff_articles']).'</td><td class=num>'.format_sizei(@$avg['diff_pages']).'</td></tr>';
+        $o.='<tr><th></th><th>'.htmlspecialchars(msg('home_table-time-articles')).'</th><th>'.htmlspecialchars(msg('home_table-time-total')).'</th></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-time-edits')).'</th><td class=num>'.fnum(@$avg['edits_article']).'</td><td class=num>'.fnum(@$avg['edits']).'</td></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-time-creations')).'</th><td class=num>'.fnum(@$avg['new_articles']).'</td><td class=num>'.fnum(@$avg['new_pages']).'</td></tr>';
+        $o.='<tr><th class=key>'.htmlspecialchars(msg('home_table-time-contents')).'</th><td class=num>'.format_sizei(@$avg['diff_articles']).'</td><td class=num>'.format_sizei(@$avg['diff_pages']).'</td></tr>';
         $o.='</table>';
         $o.='</div>';
         return $o;
@@ -209,7 +209,7 @@ class WikiHome
     {
         return "<div id='$name' class='home_pie'></div>"
             .'<script>
-var pie = new d3pie("'.$name.'", {
+var pie = new d3pie('.format_jsstring($name).', {
     "size": {
         "canvasWidth": '.$size.',
         "canvasHeight": '.$size.',
@@ -218,7 +218,7 @@ var pie = new d3pie("'.$name.'", {
     },
     "header": {
         "title": {
-            "text": "'.$title.'",
+            "text": '.format_jsstring($title).',
             "fontSize": 12,
             "font": "open sans"
         },
@@ -231,7 +231,7 @@ var pie = new d3pie("'.$name.'", {
         "titleSubtitlePadding": 9
     },/*
     "footer": {
-        "text": "'.$title.'",
+        "text": '.format_jsstring($title).',
         "color": "#666666",
         "fontSize": 12,
         "font": "open sans",
@@ -335,7 +335,7 @@ var pie = new d3pie("'.$name.'", {
         foreach($cols as $cs){
             foreach($cs as $col){
                 $o.="<div class=home_graph><div class=home_graph_inner>";
-                $o.='<div class="home_graphs_title">'.msg("homegraphs-title-$col").'</div>';
+                $o.='<div class="home_graphs_title">'.htmlspecialchars(msg("homegraphs-title-$col")).'</div>';
                 $o.='<table class=mep><tr><td>';
                 $o.=$this->view_home_table($data_cols[$col]);
                 $o.='</td><td>';

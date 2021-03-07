@@ -28,6 +28,8 @@ $conf=array(
     'pageview_hour_url'=>'https://dumps.wikimedia.org/other/pageviews',
 
     'view_about_link'=>false,
+    'robots_policy'=>'index,follow',
+    
     
     'multi'=>false,
     'wiki_key'=>'',
