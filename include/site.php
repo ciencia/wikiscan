@@ -134,10 +134,6 @@ class Site
             }
         }
         if(isset($_GET['list'])){
-            if($_GET['list']=='utilisateurs')
-                $_GET['list']='users';
-            elseif($_GET['list']=='statistiques')
-                $_GET['list']='stats';
             $this->list=$_GET['list'];
         }elseif($this->date==0 || strlen($this->date)==4)
             $this->list='stats';

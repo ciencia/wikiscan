@@ -89,7 +89,7 @@ $messages = array(
     'menu-pageview'=>'Visitas',
     
     'urlpath-menu-home'=>'',
-    'urlpath-menu-live'=>'hours',
+    'urlpath-menu-live'=>'horas',
     'urlpath-menu-grid'=>'grid',
     'urlpath-menu-dates'=>'calendar',
     'urlpath-menu-date'=>'date',
