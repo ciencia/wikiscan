@@ -84,9 +84,12 @@ class TopListStats extends TopList
             arsort($s['groups']);
             foreach($s['groups'] as $k=>$v){
                 $groupdesc = $k;
-                if(array_key_exists($k,$conf['groups']))
-                    $groupdesc=$conf['groups'][$k];
-                elseif(msg_exists("group-$k"))
+                if(isset($conf['groups'][$k])){
+                    if(is_array($conf['groups'][$k]) && isset($conf['groups'][$k]['name']))
+                        $groupdesc=$conf['groups'][$k]['name'];
+                    else
+                        $groupdesc=$conf['groups'][$k];
+                }elseif(msg_exists("group-$k"))
                     $groupdesc=msg("group-$k");
                 else
                     $groupdesc=$k;

@@ -226,7 +226,7 @@ $messages = array(
     'userstat-total_title-texts'=>"Cambios en texto",
     'userstat-total_title-logs'=>"Registros",
     'userstat-total_title-sysop_logs'=>"Registros de administración",
-    
+
     'userstat-title-year_stats'=>"Estadísticas por años",
     'userstat-title-month_stats'=>"Estadísticas por meses",
     
@@ -237,6 +237,7 @@ $messages = array(
     'userstat-table_title-logs'=>"Registros",
     'userstat-table_title-time'=>"Tiempo",
     
+    'userstat-piechart-graph-title'=>'Ediciones',
     'userstat-piechart-talk'=>'Discusiones',
     'userstat-piechart-meta'=>'Proyecto',
     'userstat-piechart-ns_user'=>'Usuario',

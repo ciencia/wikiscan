@@ -238,6 +238,7 @@ $messages = array(
     'userstat-table_title-logs'=>"Journaux",
     'userstat-table_title-time'=>"Temps",
 
+    'userstat-piechart-graph-title'=>'Éditions',
     'userstat-piechart-talk'=>'Disc.',
     'userstat-piechart-meta'=>'Meta',
     'userstat-piechart-ns_user'=>'Utilisateur',

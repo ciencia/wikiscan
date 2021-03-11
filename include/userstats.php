@@ -270,12 +270,12 @@ class UserStats extends site_page
         $o.=$this->javascript();
         if($this->sort!='' && $this->sort!='total')
             $sorts[]='`'.$dbs->escape($this->sort).'` '.$this->order;
-        $filters[]='<a class="js" href="javascript:td(\'.up\',\'inline\')">'.msg('userstats-show_percent').'</a>';
+        $filters[]='<a class="js" href="javascript:td(\'.up\',\'inline\')">'.htmlspecialchars(msg('userstats-show_percent')).'</a>';
         $this->lusers=array();
         if($this->user!='')
             $o.=$this->view_user($this->user,$filters);
         else{
-            $o.='<h1>'.msg('userstats-title').'</h1>';
+            $o.='<h1>'.htmlspecialchars(msg('userstats-title')).'</h1>';
             $o.="<table class=mep>";
             $o.="<tr><td>";
             $o.="<div class=inputs>".$this->user_form().$this->userlist_form().'</div>';
@@ -314,12 +314,14 @@ class UserStats extends site_page
                         if($this->userlist_max > $this->limit)
                             $this->limit=$this->userlist_max;
                         $in=array();
+                        // FIXME: Localize
                         if(count($this->lusers)==$this->userlist_max)
                             $o.='<div class="userlist_limit">La limite des '.$this->userlist_max.' utilisateurs a été atteinte par la source, le reste est ignoré.</div>';
                         foreach($this->lusers as $v)
                             $in[]="'".$dbs->escape($v)."'";
                         $o.=$this->view_list($date_type, $in, $sorts, $filters, $where);
                     }else{
+                        // FIXME: Localize
                         $o.='<div class="error">Pas d\'utilisateurs trouvés</div>';
                     }
                 }else{
@@ -336,16 +338,16 @@ class UserStats extends site_page
     function user_form()
     {
         return '<div class="user_form"><form action="?" method="get">'
-            .'<input type="hidden" name="menu" value="'.$this->table.'"/>'
+            .'<input type="hidden" name="menu" value="'.htmlspecialchars($this->table).'"/>'
             .'<input type="input" name="user" value="" size="10"/>'
-            .'<input type="submit" value="'.($this->ip ? msg('userstats-button-ip') : msg('userstats-button-user')).'"/></form></div>';
+            .'<input type="submit" value="'.($this->ip ? htmlspecialchars(msg('userstats-button-ip')) : htmlspecialchars(msg('userstats-button-user'))).'"/></form></div>';
     }
     function userlist_form()
     {
         return '<div class="userlist_form"><form action="?" method="get">'
-            .'<input type="hidden" name="menu" value="'.$this->table.'"/>'
-            .'<input type="input" name="userlist" value="'.htmlspecialchars($this->userlist).'" size="15" placeholder="'.msg('userstats-list-placeholder').'"/>'
-            .'<input type="submit" value="'.msg('userstats-button-list').'" title="'.msg('userstats-button-list-title').'"/></form></div>';
+            .'<input type="hidden" name="menu" value="'.htmlspecialchars($this->table).'"/>'
+            .'<input type="input" name="userlist" value="'.htmlspecialchars($this->userlist).'" size="15" placeholder="'.htmlspecialchars(msg('userstats-list-placeholder')).'"/>'
+            .'<input type="submit" value="'.htmlspecialchars(msg('userstats-button-list')).'" title="'.htmlspecialchars(msg('userstats-button-list-title')).'"/></form></div>';
     }
     function view_date_filter()
     {
@@ -376,7 +378,7 @@ class UserStats extends site_page
             $this->cache=false;
             $o.=$this->user_form();
             $o.='<table class="mep" style="clear:left"><tr><td>';
-            $o.='<div class="error">'.msg('userstats-user_not_found').'</div>';
+            $o.='<div class="error">'.htmlspecialchars(msg('userstats-user_not_found')).'</div>';
             $o.='</td><td>';
             if($this->ip)
                 $o.=$this->user_links($user);
@@ -389,31 +391,31 @@ class UserStats extends site_page
         $o.='<table class="mep" style="clear:left">';
         $o.="<tr><td>";
         $o.='<table class="user_totall">';
-        $o.='<tr><td colspan="3" class="title"><h3>'.msg('userstat-total_title-global').'</h3></td></tr>';
+        $o.='<tr><td colspan="3" class="title"><h3>'.htmlspecialchars(msg('userstat-total_title-global')).'</h3></td></tr>';
         $o.=$this->user_rows(array('total'/*,'reduced'*/));
-        $o.='<tr><td colspan="3" class="title"><h4>'.msg('userstat-total_title-edits').'</h4></td></tr>';
+        $o.='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-edits')).'</h4></td></tr>';
         $o.=$this->user_rows(array('edit','article','main','annexe','ns_file','talk','meta','ns_user','other'));
-        $o.='<tr><td colspan="3" class="title"><h4>'.msg('userstat-total_title-edit_types').'</h4></td></tr>';
+        $o.='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-edit_types')).'</h4></td></tr>';
         $o.=$this->user_rows(array('redit','edit_chain','revert'));
-        $o.='<tr><td colspan="3" class="title"><h4>'.msg('userstat-total_title-newpages').'</h4></td></tr>';
+        $o.='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-newpages')).'</h4></td></tr>';
         $o.=$this->user_rows(array('new','new_main','new_chain_main','new_redir'));
         $o.='</table></td><td><table class="user_totall">';
-        $o.='<tr><td colspan="3" class="title"><h4>'.msg('userstat-total_title-time').'</h4></td></tr>';
+        $o.='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-time')).'</h4></td></tr>';
 
         if($conf['base_calc']=='month')
             $o.=$this->user_rows(array('months','tot_time2','total_hour','total_month'));
         else
             $o.=$this->user_rows(array('days','months','tot_time2','time_day','total_hour','total_day','total_month'));
 
-        $o.='<tr><td colspan="3" class="title"><h4>'.msg('userstat-total_title-texts').'</h4></td></tr>';
+        $o.='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-texts')).'</h4></td></tr>';
         $o.=$this->user_rows(array('diff_tot', 'diff_article_no_rv', 'diff_small', 'diff_medium', 'diff_big', 'diff', 'tot_size'));
         if(!$this->ip){
-            $o.='<tr><td colspan="3" class="title"><h4>'.msg('userstat-total_title-logs').'</h4></td></tr>';
+            $o.='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-logs')).'</h4></td></tr>';
             $o.=$this->user_rows(array('log','log_sysop','log_chain','move','upload','filter','rename','rights','newuser', 'feedback'));
         }
         $admin_stats='';
         if(!$this->ip && @$this->user_stats['log_sysop']>0){
-            $admin_stats='<tr><td colspan="3" class="title"><h4>'.msg('userstat-total_title-sysop_logs').'</h4></td></tr>';
+            $admin_stats='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-sysop_logs')).'</h4></td></tr>';
             $admin_stats.=$this->user_rows(array('log_sysop','delete','restore','revdelete','block','unblock','protect','unprotect','import'));
         }
         $o.='<tr><td colspan="3" class="title"><h4></h4></td></tr>';
@@ -425,8 +427,8 @@ class UserStats extends site_page
         $o.='</table>';
         if(($grp=$this->user_groups($user))!=''){
             $o.='<table class="user_totall usergroups">';
-            $o.='<tr><td class="title"><h4>'.msg('userstat-groups-long').'</h4></td></tr>';
-            $o.='<tr><td class=usergroups_text>'.$grp.'</td></tr>';
+            $o.='<tr><td class="title"><h4>'.htmlspecialchars(msg('userstat-groups-long')).'</h4></td></tr>';
+            $o.='<tr><td class=usergroups_text>'.htmlspecialchars($grp).'</td></tr>';
             $o.='</table>';
         }
         $o.='</td><td>';
@@ -436,29 +438,29 @@ class UserStats extends site_page
             $all=self::list_all_wikis($user);
             $o.='<div class=user_wikis>';
             $o.='<table class="user_totall">';
-            $o.='<tr><td colspan=2 class="title"><h3>'.msg('userstat-wikis_title-global').'</h3></td></tr>';
+            $o.='<tr><td colspan=2 class="title"><h3>'.htmlspecialchars(msg('userstat-wikis_title-global')).'</h3></td></tr>';
             $key='wikis';
-            $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
+            $label=msg("userstat-$key-long")!='' ? htmlspecialchars(msg("userstat-$key-long")) : htmlspecialchars(msg("userstat-$key-short"));
             $o.="<tr><td class='label'>".$label.'</td>';
             $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
             $key='total';
-            $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
+            $label=msg("userstat-$key-long")!='' ? htmlspecialchars(msg("userstat-$key-long")) : htmlspecialchars(msg("userstat-$key-short"));
             $o.="<tr><td class='label'>".$label.'</td>';
             $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
             $key='edit';
-            $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
+            $label=msg("userstat-$key-long")!='' ? htmlspecialchars(msg("userstat-$key-long")) : htmlspecialchars(msg("userstat-$key-short"));
             $o.="<tr><td class='label'>".$label.'</td>';
             $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
             $key='log';
-            $label=msg("userstat-$key-long")!='' ? msg("userstat-$key-long") : msg("userstat-$key-short");
+            $label=msg("userstat-$key-long")!='' ? htmlspecialchars(msg("userstat-$key-long")) : htmlspecialchars(msg("userstat-$key-short"));
             $o.="<tr><td class='label'>".$label.'</td>';
             $o.="<td>".fnum($all['global'][$key]).'</td></tr>';
             $o.='</table>';
             $o.='<table class="user_totall">';
-            $o.='<tr style="font-size:75%"><th>'.msg("userstat-wiki-short").'</th>';
+            $o.='<tr style="font-size:75%"><th>'.htmlspecialchars(msg("userstat-wiki-short")).'</th>';
             unset($all['global']['wikis']);
             foreach($all['global'] as $k=>$v)
-                $o.='<th>'.msg("userstat-$k-short").'</th>';
+                $o.='<th>'.htmlspecialchars(msg("userstat-$k-short")).'</th>';
             $o.='</tr>';
             unset($all['global']);
             foreach($all as $site=>$v){
@@ -478,7 +480,7 @@ class UserStats extends site_page
         $o.='</table>';
         if($this->user_stats['months']>1){
             $o.='<table class="mep"><tr>';
-            $o.='<td><a href="/gimg.php?type=user&size=big&user='.$user.($this->ip?'&ip=1':'&user_id='.$this->user_id).'"><img src="/gimg.php?type=user&size=medium2&user='.$user.($this->ip?'&ip=1':'&user_id='.$this->user_id).'"/></a></td>';
+            $o.='<td><a href="/gimg.php?type=user&amp;size=big&amp;user='.htmlspecialchars($user).($this->ip?'&amp;ip=1':'&amp;user_id='.$this->user_id).'"><img src="/gimg.php?type=user&amp;size=medium2&amp;user='.htmlspecialchars($user).($this->ip?'&amp;ip=1':'&amp;user_id='.$this->user_id).'"/></a></td>';
             if($this->user_stats['edit']>=3)
                 $o.='<td>'.$this->user_graph_nstype().'</td>';
             $o.='</tr></table>';
@@ -489,10 +491,10 @@ class UserStats extends site_page
         $this->fields['date']['hide']=true;
         $this->fields['user']['hide']=true;
         $this->fields['groups']['hide']=true;
-        $o.='<h3>'.msg('userstat-title-year_stats').'</h3>';
+        $o.='<h3>'.htmlspecialchars(msg('userstat-title-year_stats')).'</h3>';
         $this->fields['date']['hide']=false;
         $o.=$this->view_list('Y', !$this->ip ? $this->user_id : $this->user, $sorts, $filters);
-        $o.='<h3>'.msg('userstat-title-month_stats').'</h3>';
+        $o.='<h3>'.htmlspecialchars(msg('userstat-title-month_stats')).'</h3>';
         $this->fields['date']['hide']=false;
         $this->fields['months']['hide']=true;
         $this->fields['total_month']['hide']=true;
@@ -509,7 +511,7 @@ class UserStats extends site_page
             if(isset($old_sort))//restore for cache key
                 $this->sort=$old_sort;
         }
-        if(isset($_GET['debug'])){
+        if(DEBUG && isset($_GET['debug'])){
             require_once('include/update_stats.php');
             ini_set('memory_limit', '1000M');
             $s=UpdateStats::load_stat(date('Ym'), 'users');
@@ -549,7 +551,7 @@ $(function () {
             marginRight: 0
         },
         title: {
-            text: "Éditions"
+            text: '.format_jsstring(msg('userstat-piechart-graph-title')).'
         },
         tooltip: {
             pointFormat: "{series.name} : <b>{point.percentage:.1f}%</b>"
@@ -582,7 +584,7 @@ $(function () {
         },
         series: [{
             type: "pie",
-            name: "Éditions",
+            name: '.format_jsstring(msg('userstat-piechart-graph-title')).',
             animation:false,
             data: [
             ';
@@ -597,7 +599,7 @@ $(function () {
             );
         foreach($cols as $k=>$color){
             $p=$this->user_stats['edit']>0 ? @round(100*$this->user_stats[$k]/$this->user_stats['edit'], 1) : 0;
-            $o.='{name:"'.msg("userstat-piechart-$k").'", y:'.$p
+            $o.='{name:'.format_jsstring(msg("userstat-piechart-$k")).', y:'.$p
                 .($p<3?', dataLabels: {distance:20,enabled:false}':'')
                 .',color:"'.$color.'"'
                 ."},\n";
@@ -615,24 +617,25 @@ $(function () {
         global $conf;
         $u=$user;
         $user=htmlspecialchars(mwtools::encode_user($user));
-        $o='<div class="userlinks"><h3>'.msg('user-links_title').'</h3>';
+        $o='<div class="userlinks"><h3>'.htmlspecialchars(msg('user-links_title')).'</h3>';
         if($this->ip && preg_match('/^(\d{1,3}\.){3}\d{1,3}$/i',$user))
-            $o.='<ul><li><a href="/plage-ip?ip='.$user.'">Plage de l\'IP '.htmlspecialchars($u).'</a></li></ul>';
+            $o.='<ul><li><a href="/plage-ip?ip='.$user.'">Plage de l\'IP '.htmlspecialchars($u).'</a></li></ul>'; // FIXME: Localize
         $o.='<h4>Wiki</h4><ul>';
         $img="<img src='imgi/logos/Wikimedia-logo.svg' height='14'/>";
-        $special=urlencode(str_replace(' ', '_', mwns::get()->ns_string(NS_SPECIAL)));
-        $o.="<li>$img<a href=\"".$conf['link_page'].$special.":Contributions/$user\">".msg('user-link_label-contributions')."</a></li>";
-        $o.="<li>$img<a href=\"".$conf['link_page'].$special.":Log/$user\">".msg('user-link_label-logs')."</a></li>";
+        $special=htmlspecialchars(urlencode(str_replace(' ', '_', mwns::get()->ns_string(NS_SPECIAL))));
+        $o.="<li>$img<a href=\"".htmlspecialchars($conf['link_page']).$special.":Contributions/$user\">".htmlspecialchars(msg('user-link_label-contributions'))."</a></li>";
+        $o.="<li>$img<a href=\"".htmlspecialchars($conf['link_page']).$special.":Log/$user\">".htmlspecialchars(msg('user-link_label-logs'))."</a></li>";
         if(!$this->ip){
-            $o.="<li>$img<a href=\"".$conf['link_page'].urlencode(str_replace(' ', '_', mwns::get()->ns_string(NS_USER))).":$user\">".msg('user-link_label-userpage')."</a></li>";
-            $o.="<li>$img<a href=\"".$conf['link_page'].$special.":CentralAuth/$user\">".msg('user-link_label-globalaccount')."</a></li>";
+            $o.="<li>$img<a href=\"".htmlspecialchars($conf['link_page']).htmlspecialchars(urlencode(str_replace(' ', '_', mwns::get()->ns_string(NS_USER)))).":$user\">".htmlspecialchars(msg('user-link_label-userpage'))."</a></li>";
+            if($conf['centralauth'])
+                $o.="<li>$img<a href=\"".htmlspecialchars($conf['link_page']).$special.":CentralAuth/$user\">".htmlspecialchars(msg('user-link_label-globalaccount'))."</a></li>";
         }
         $o.='</ul>';
         if(isset($conf['wiki']['site_group'])){
             $o.='<h4>Tool Labs</h4><ul>';
-            $o.="<li>$img<a href=\"https://tools.wmflabs.org/supercount/index.php?project=".$conf['wiki']['site_host']."&user=".str_replace('_','+',$user)."\">".msg('user-link_label-editcounter')."</a></li>";
+            $o.="<li>$img<a href=\"https://tools.wmflabs.org/supercount/index.php?project=".htmlspecialchars($conf['wiki']['site_host'])."&amp;user=".str_replace('_','+',$user)."\">".htmlspecialchars(msg('user-link_label-editcounter'))."</a></li>";
             if(!$this->ip && isset($conf['wiki']['site_language']) && isset($conf['wiki']['site_group'])){
-                $o.="<li>$img<a href=\"https://tools.wmflabs.org/xtools/pages/index.php?lang=".$conf['wiki']['site_language']."&wiki=".$conf['wiki']['site_group']."&namespace=0&redirects=noredirects&user=$user\">".msg('user-link_label-articlescreated')."</a></li>";
+                $o.="<li>$img<a href=\"https://tools.wmflabs.org/xtools/pages/index.php?lang=".htmlspecialchars($conf['wiki']['site_language'])."&amp;wiki=".htmlspecialchars($conf['wiki']['site_group'])."&amp;namespace=0&amp;redirects=noredirects&amp;user=$user\">".htmlspecialchars(msg('user-link_label-articlescreated'))."</a></li>";
             }
             $o.='</ul>';
         }
@@ -691,7 +694,7 @@ $(function () {
         }
         $o='';
         if(is_array($user) && $this->userlist_page!='')
-            $o.='<h3><a href="'.$conf['link_page'].htmlspecialchars(str_replace(' ','_',$this->userlist_page)).'">'.htmlspecialchars($this->userlist_page).'</a></h3>';
+            $o.='<h3><a href="'.htmlspecialchars($conf['link_page']).htmlspecialchars(str_replace(' ','_',$this->userlist_page)).'">'.htmlspecialchars($this->userlist_page).'</a></h3>';
         if(!$this->sort_toggled && $this->sort!='' && ($pos=strpos(@$this->fields[$this->sort]['class'],' '))!==false){
             if(($cls='.'.substr($this->fields[$this->sort]['class'],$pos+1))!=''){
                 $o.="<script type='text/javascript'>td('$cls');</script>";
@@ -701,7 +704,7 @@ $(function () {
         if($this->user==''){
             $o.="<div class='userstats_count'><strong>";
             if(!$this->ip || $this->date_filter!='')
-                $o.=$this->ip ? msg('userstats-count-ip', fnum($total)) : msg('userstats-count-users', fnum($total));
+                $o.=str_replace('$1', fnum($total), ($this->ip ? msg('userstats-count-ip') : msg('userstats-count-users')));
             $o.='</strong></div>';
         }
         $o.='<table class="userstatsl">';
@@ -724,15 +727,15 @@ $(function () {
         }
         $head0=preg_replace('/\s+/',' ','<tr class="head0">
             <td colspan="'.$span.'"></td>
-            <td colspan="2">'.msg('userstat-table_title-edits').' <a class="tl js" href="javascript:td(\'.tedit\')">+</a></td>
+            <td colspan="2">'.htmlspecialchars(msg('userstat-table_title-edits')).' <a class="tl js" href="javascript:td(\'.tedit\')">+</a></td>
             <td colspan="10" class="uedit tedit"></td>
-            <td colspan="2">'.msg('userstat-table_title-newpages').' <a class="tl js" href="javascript:td(\'.tnew\')">+</a></td>
+            <td colspan="2">'.htmlspecialchars(msg('userstat-table_title-newpages')).' <a class="tl js" href="javascript:td(\'.tnew\')">+</a></td>
             <td colspan="2" class="unew tnew"></td>
-            <td colspan="1">'.msg('userstat-table_title-texts').' <a class="tl js" href="javascript:td(\'.ttext\')">+</a></td>
+            <td colspan="1">'.htmlspecialchars(msg('userstat-table_title-texts')).' <a class="tl js" href="javascript:td(\'.ttext\')">+</a></td>
             <td colspan="6" class="utext ttext"></td>
-            '.(!$this->ip?'<td colspan="1">'.msg('userstat-table_title-logs').' <a class="tl js" href="javascript:td(\'.tlog\')">+</a></td>
+            '.(!$this->ip?'<td colspan="1">'.htmlspecialchars(msg('userstat-table_title-logs')).' <a class="tl js" href="javascript:td(\'.tlog\')">+</a></td>
             <td colspan="16" class="ulog tlog"></td>':'').'
-            <td colspan="2">'.msg('userstat-table_title-time').' <a class="tl js" href="javascript:td(\'.ttime\')">+</a></td>
+            <td colspan="2">'.htmlspecialchars(msg('userstat-table_title-time')).' <a class="tl js" href="javascript:td(\'.ttime\')">+</a></td>
             <td colspan="7" class="utime ttime"></td>
             </tr>');
         $head='<tr class="head">';
@@ -753,11 +756,11 @@ $(function () {
                 $class.=$class==''?'sel':' sel';
             }
             $head.=$class!=''?"<td class='$class'>":'<td>';
-            $info=str_replace('<br/>',' ', msg("userstat-$k-text"));
+            $info=htmlspecialchars(str_replace('<br/>',' ', msg("userstat-$k-text")));
             if(@$v['sort']!='' && ($k!=$this->sort || $this->sort=='diff' || $this->sort=='diff_article_no_rv'))//remove asc link except for diff
                 $head.=lnk(msg("userstat-$k-short"), $sort_params,array('menu','page','userlist','date_filter'),$info);
             else
-                $head.='<span title="'.$info.'">'.msg("userstat-$k-short").'</span>';
+                $head.='<span title="'.$info.'">'.htmlspecialchars(msg("userstat-$k-short")).'</span>';
             $head.='</td>';
         }
         $head.='</tr>';
@@ -793,9 +796,9 @@ $(function () {
         if(!empty($lusers)){
             foreach($lusers as $k=>$user){
                 $user=htmlspecialchars($user);
-                $lusers[$k]='<a href="'.$conf['link_page'].urlencode(mwns::get()->ns_string(NS_SPECIAL)).":Contributions/$user\">$user</a>";
+                $lusers[$k]='<a href="'.htmlspecialchars($conf['link_page']).htmlspecialchars(urlencode(mwns::get()->ns_string(NS_SPECIAL))).":Contributions/$user\">$user</a>";
             }
-            $o.=msg('userstats-list-not_found').' ('.count($lusers).') : '.implode(', ',$lusers);
+            $o.=htmlspecialchars(msg('userstats-list-not_found')).' ('.count($lusers).') : '.implode(', ',$lusers);
         }
         return $o;
     }
@@ -806,7 +809,7 @@ $(function () {
             $o.="<span class='page_start'>".lnk("<img src='imgi/icons/start.png'/>",array('page'=>1),array('menu','usort','bot','detail','userlist','date_filter')).'</span>';
             $o.="<span class='page_prev'>".lnk("<img src='imgi/icons/prev.png'/>",array('page'=>$this->page-1),array('menu','usort','bot','detail','userlist','date_filter')).'</span>';
         }
-        $o.=msg('navigation-page')." {$this->page}";
+        $o.=htmlspecialchars(msg('navigation-page'))." {$this->page}";
         if($this->page<$this->totpages){
             $o.="<span class='page_next'>".lnk("<img src='imgi/icons/next.png'/>",array('page'=>$this->page+1),array('menu','usort','bot','detail','userlist','date_filter')).'</span>';
             if($this->max_pages!==false)
@@ -846,11 +849,13 @@ $(function () {
     {
         $f=$this->fields[$key];
         $class=@$f['class']!='' ? " class='$f[class]'" : '';
+        // FIXME: Can't HTML-escape this message because contains HTML
         $label=msg("userstat-$key-long");
         if($label=='')
-            $label=msg("userstat-$key-short");
-        if(msg("userstat-$key-text")!='' && msg("userstat-$key-text")!=$label)
-            $label='<span title="'.msg("userstat-$key-text").'">'.$label.'</span>';
+            $label=htmlspecialchars(msg("userstat-$key-short"));
+        $st=htmlspecialchars(msg("userstat-$key-text"));
+        if($st!='' && $st!=$label)
+            $label='<span title="'.$st.'">'.$label.'</span>';
         $o="<tr><td class='label'>".$label.'</td>';
         $val=$this->format_val($key, $this->user_stats);
         $o.="<td $class>".$val.'</td>';
@@ -887,7 +892,7 @@ $(function () {
                         .'</a>';
                 break;
             case 'date':
-                $val=Dates::format($v[$k]);
+                $val=htmlspecialchars(Dates::format($v[$k]));
                 break;
             case 'groups':
                 $val=$this->user_groups($v['user']);
@@ -922,7 +927,7 @@ $(function () {
                 elseif(is_numeric(@$v[$k]))
                     $val=fnum($v[$k]);
                 else
-                    $val=@$v[$k];
+                    $val=htmlspecialchars(@$v[$k]);
         }
         if($percent && @$f['percent']!=''){
             $p=@round(100*$v[$k]/$v[$f['percent']]).'%';
@@ -931,6 +936,12 @@ $(function () {
         return $val;
     }
 
+    /**
+     * Sorted comma separated list of abbreviations of user groups
+     * 
+     * @param string $user User to get groups from
+     * @return string Escaped HTML
+     */
     function user_groups($user)
     {
         if(!isset($this->groups[$user]))
@@ -964,16 +975,32 @@ $(function () {
     }
     static function group_name($group)
     {
+        global $conf;
+        if(isset($conf['groups'][$group])){
+            if(is_array($conf['groups'][$group]) && isset($conf['groups'][$group]['name']))
+                return $conf['groups'][$group]['name'];
+            return $conf['groups'][$group];
+        }
         if(msg_exists("group-$group"))
             return msg("group-$group");
         return $group;
     }
+    /**
+     * Returns group abbreviation (single character or similar)
+     * 
+     * @param string $group Group name
+     * @return string Escaped HTML
+     */
     static function group_abbr($group)
     {
-        if(msg_exists("group_abbr-$group")){
-            $abbr=msg("group_abbr-$group");
-            return '<span title="('.$abbr.') '.self::group_name($group).'">'.$abbr.'</span>';
-        }
+        global $conf;
+        $abbr=null;
+        if(isset($conf['groups'][$group]) && isset($conf['groups'][$group]['abbr']))
+            $abbr=htmlspecialchars($conf['groups'][$group]['abbr']);
+        elseif(msg_exists("group_abbr-$group"))
+            $abbr=htmlspecialchars(msg("group_abbr-$group"));
+        if($abbr)
+            return '<span title="('.$abbr.') '.htmlspecialchars(self::group_name($group)).'">'.$abbr.'</span>';
         return '';
     }
 
@@ -1384,6 +1411,8 @@ $(function () {
         if(!$this->months_graphs_data_load())
             return false;
         $last_m=date('Ym', strtotime("-1 month"));
+        $pie = [];
+        $pie_cumul = [];
         foreach($this->months_graphs_stats as $stat){
             foreach($this->months_graphs_dates[$stat] as $col=>$dates)
                 $pie[$stat][$col]=isset($dates[$last_m]) ? $dates[$last_m] : 0;
@@ -1402,12 +1431,12 @@ $(function () {
         $o.="</td></tr>";
         foreach($this->months_graphs_stats as $stat){
             $o.="<tr><td class=userstats_months_graph_name>";
-            $o.=msg("userstats-months_graphs-$stat");
+            $o.=htmlspecialchars(msg("userstats-months_graphs-$stat"));
             if(!isset($header)){
                 $header=true;
-                $o.="</td><td style='text-align:center'>".date('m/Y', strtotime("-1 month"))."</td><td style='text-align:center'>".msg('userstats-months_graphs-total');
+                $o.="</td><td style='text-align:center'>".htmlspecialchars(date('m/Y', strtotime("-1 month")))."</td><td style='text-align:center'>".htmlspecialchars(msg('userstats-months_graphs-total'));
                 if($details)
-                    $o.="</td><td style='text-align:center'>".msg('userstats-months_graphs-history');
+                    $o.="</td><td style='text-align:center'>".htmlspecialchars(msg('userstats-months_graphs-history'));
             }
             $o.="</td></tr>";
             $o.="<tr><td>";
@@ -1422,7 +1451,7 @@ $(function () {
             $o.="</td></tr>";
         }
         if(!$details)
-            $o.="<tr><td colspan=20><a href='/utilisateurs?graphs_details=1'>".msg('userstats-months_graphs-more')."</a></td></tr>";
+            $o.="<tr><td colspan=20><a href='/utilisateurs?graphs_details=1'>".htmlspecialchars(msg('userstats-months_graphs-more'))."</a></td></tr>";
         $o.="</table>";
         $o.='</div>';
         return $o;
@@ -1430,9 +1459,9 @@ $(function () {
     function months_graphs_legend()
     {
         $cols=array(1=>'≤ 1 '.msg('month'), 2=>'≤ 12 '.msg('months'), 3=>'≤ 3 '.msg('years'), 4=>'≤ 6 '.msg('years'), 5=>'≤ 9 '.msg('years'), 6=>'9+ '.msg('years'));
-        $o='<div class=months_graphs_legend>'.msg('userstats-months_graphs-legend').' : ';
+        $o='<div class=months_graphs_legend>'.htmlspecialchars(msg('userstats-months_graphs-legend')).' : ';
         foreach($cols as $k=>$v)
-            $o.="<div class=legend_item><div class='legend_color legend_color$k'>&nbsp;</div>$v</div>";
+            $o.='<div class="legend_item"><div class="legend_color legend_color'.htmlspecialchars($k)."\">&nbsp;</div>$v</div>";
         return $o."</div>";
     }
 

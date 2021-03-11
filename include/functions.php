@@ -216,17 +216,23 @@ function format_size($v)
     $v=str_replace('.', msg('decimal_sep'), $v);
     return $v;
 }
+/**
+ * Formats a number representing seconds to a number of hours and minutes  
+ * 
+ * @param number $time Seconds
+ * @return string HTML escaped
+ */
 function format_hour($time)
 {
     $h=floor($time/3600);
     $r = ($time/60) % 60;
     if($h<1)
-        return $r.'&nbsp;'.msg('minute-short');
+        return $r.'&nbsp;'.htmlspecialchars(msg('minute-short'));
     if($r==0||$h>=24)
-        return fnum($h).'&nbsp;'.msg('hour-short');
+        return fnum($h).'&nbsp;'.htmlspecialchars(msg('hour-short'));
     if($r<10)
         $r="0$r";
-    return $h.'&nbsp;'.msg('hour-short').'&nbsp;'.$r;
+    return $h.'&nbsp;'.htmlspecialchars(msg('hour-short')).'&nbsp;'.$r;
 }
 function format_diff($v)
 {

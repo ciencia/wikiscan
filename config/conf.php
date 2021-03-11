@@ -47,6 +47,8 @@ $conf=array(
     'forced_interface_language'=>false,
     'mw_api'=>'https://fr.wikipedia.org/w/api.php',
     'link_page'=>'https://fr.wikipedia.org/wiki/',
+    // CentralAuth installed? (to enable link in user stats)
+    'centralauth'=>false,
     // Local/custom group names (key: group, value: description)
     'groups'=>[],
     

@@ -38,7 +38,13 @@ $local_conf=array(
         'site_host'=>'localhost',
     ),
     // Local/custom group names (key: group, value: description)
-    'groups'=>[],
+    'groups'=>[
+        'reversor'=>[
+            'name'=>'Reversor',
+            'abbr'=>'R',
+        ],
+        'sexy'=>'Sexy',
+    ],
     // Display about link
     'view_about_link'=>false,
     // Robots policy
