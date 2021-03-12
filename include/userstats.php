@@ -256,6 +256,12 @@ class UserStats extends site_page
         $this->load_params();
         if($this->recalc_user)
             $this->recalc_user();
+
+        if(isset($_GET['user']) && $_GET['user']!='' && !$this->user_exist(UserStats::get_user_name())){
+            header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+            header("Status: 404 Not Found");
+        }
+
         if(!isset($_GET['purge'])||!$_GET['purge'])
             if($r=$this->get_cache())
                 return $r;

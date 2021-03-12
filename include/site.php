@@ -155,10 +155,6 @@ class Site
         if($this->menu=='userstats' || $this->menu=='userstats_ip'){
             if(!is_object($this->us))
                 $this->us=new UserStats($this->menu=='userstats_ip');
-            if(isset($_GET['user']) && $_GET['user']!='' && !$this->us->user_exist(UserStats::get_user_name())){
-                header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
-                header("Status: 404 Not Found");
-            }
         }
     }
 
