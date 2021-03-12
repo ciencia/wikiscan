@@ -30,6 +30,7 @@ $conf=array(
     'view_about_link'=>false,
     'robots_policy'=>'index,follow',
     'hits_available'=>true,
+    'wikilink_icon'=>'imgi/logos/Wikimedia-logo.svg',
     
     'license_statistics'=>[
         'license'=>'CC BY-SA',
@@ -49,6 +50,7 @@ $conf=array(
     'link_page'=>'https://fr.wikipedia.org/wiki/',
     // CentralAuth installed? (to enable link in user stats)
     'centralauth'=>false,
+    'userlist_enabled'=>true,
     // Local/custom group names (key: group, value: description)
     'groups'=>[],
     

@@ -145,7 +145,7 @@ class UserStats extends site_page
     {
         global $conf;
         $this->detail=isset($_GET['detail']) && $_GET['detail'] ? 1 : 0;
-        $this->userlist=isset($_GET['userlist']) ? trim($_GET['userlist']) : '';
+        $this->userlist= ($conf['userlist_enabled'] && isset($_GET['userlist'])) ? trim($_GET['userlist']) : '';
         $this->user=self::get_user_name();
         if($this->user!=''){
             $this->user=mwtools::format_user($this->user);
@@ -284,7 +284,7 @@ class UserStats extends site_page
             $o.='<h1>'.htmlspecialchars(msg('userstats-title')).'</h1>';
             $o.="<table class=mep>";
             $o.="<tr><td>";
-            $o.="<div class=inputs>".$this->user_form().$this->userlist_form().'</div>';
+            $o.="<div class=inputs>".$this->user_form(). ($conf['userlist_enabled'] ? $this->userlist_form() : '').'</div>';
             if($this->userlist=='' && !$this->ip){
                 $o.=$this->months_graphs();
                 $o.="</td><tr><tr><td>";
@@ -627,7 +627,8 @@ $(function () {
         if($this->ip && preg_match('/^(\d{1,3}\.){3}\d{1,3}$/i',$user))
             $o.='<ul><li><a href="/plage-ip?ip='.$user.'">Plage de l\'IP '.htmlspecialchars($u).'</a></li></ul>'; // FIXME: Localize
         $o.='<h4>Wiki</h4><ul>';
-        $img="<img src='imgi/logos/Wikimedia-logo.svg' height='14'/>";
+        if ($conf['wikilink_icon'])
+            $img='<img src="'.$conf['wikilink_icon'].'" height="14"/>';
         $special=htmlspecialchars(urlencode(str_replace(' ', '_', mwns::get()->ns_string(NS_SPECIAL))));
         $o.="<li>$img<a href=\"".htmlspecialchars($conf['link_page']).$special.":Contributions/$user\">".htmlspecialchars(msg('user-link_label-contributions'))."</a></li>";
         $o.="<li>$img<a href=\"".htmlspecialchars($conf['link_page']).$special.":Log/$user\">".htmlspecialchars(msg('user-link_label-logs'))."</a></li>";

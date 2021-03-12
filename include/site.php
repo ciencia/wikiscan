@@ -168,14 +168,14 @@ class Site
         if($this->redirects())
             return;
         $o=$this->header();
-        $o.=$this->title();
+        if($this->menu!='allsites')
+            $o.=$this->site_banner();
         $o.='<div class="main">';
         if($this->menu=='allsites'){
             $o.=$this->menu_allsites();
             if(isset($_GET['submenu']) && $_GET['submenu']=='about')
                 $o.=$this->menu_about();
         }else{
-            $o.=$this->site_banner();
             $o.=$this->menu();
             $o.=$this->contents();
         }
@@ -192,16 +192,6 @@ class Site
         if($conf['interface_language']=='fr')
             return "<div class=banner_msg>Maintenance du serveur en cours, les mises à jour des statistiques sont désactivées.</div>";
         return "<div class=banner_msg>Server maintenance in progress, statistics updates are disabled.</div>";
-    }
-
-    function site_banner()
-    {
-        global $conf;
-        if(!isset($conf['wiki']['url']) || $conf['wiki']['url']=='')
-            return;
-        $link='<a href="'.htmlspecialchars($conf['wiki']['url']).'">'.htmlspecialchars($conf['wiki']['site_host']).'</a>';
-        $o="<div class=site_banner><span class=banner_text>".htmlspecialchars(msg('banner_text'))."</span><br>".$link."</div>";
-        return $o;
     }
 
     function preload_cache($date)
@@ -314,7 +304,7 @@ class Site
     function remove_cookies()
     {
         foreach($_COOKIE as $k => $v)
-            setcookie($k, $v, time()-3600, '/', 'wikiscan.org');
+            setcookie($k, $v, time()-3600, '/');
     }
 
     function analytics_menus()
@@ -461,13 +451,21 @@ class Site
         }
         return $o;
     }
-
-    function title()
+    
+    function site_banner()
     {
         global $conf;
+        $o='<div class="site_banner">';
         if(isset($conf['logo']) && $conf['logo']!='')
-            return '<div class="logo"><a href="'.htmlspecialchars($this->host_link()).'"><img src="'.htmlspecialchars($conf['logo']).'" alt="'.htmlspecialchars(msg('logo-alt')).'"/></a></div>';
+            $o.='<div class="logo"><a href="'.htmlspecialchars($this->host_link()).'"><img src="'.htmlspecialchars($conf['logo']).'" alt="'.htmlspecialchars(msg('logo-alt')).'"/></a></div>';
+        if(isset($conf['wiki']['url']) && $conf['wiki']['url']!=''){
+            $link='<a href="'.htmlspecialchars($conf['wiki']['url']).'">'.htmlspecialchars($conf['wiki']['site_host']).'</a>';
+            $o.='<h1>'.str_replace('$1', $link, htmlspecialchars(msg('banner_text'))).'</h1>';
+        }
+        $o.='</div>';
+        return $o;
     }
+    
     function menu()
     {
         global $conf;
@@ -477,7 +475,7 @@ class Site
         if($conf['multi'])
             $o.="<div class='menu_item'><a href='//{$this->main_host}'>".htmlspecialchars(msg("menu-wikis"))."</a></div>";
         foreach($this->menus as $k)
-            $o.="<div class='menu_item".($k==$this->menu?'_sel':'')."'><a href='/".htmlspecialchars(msg_site("urlpath-menu-$k"))."'>".htmlspecialchars(msg("menu-$k"))."</a></div>";
+            $o.="<div class='menu_item".($k==$this->menu?' sel':'')."'><a href='/".htmlspecialchars(msg_site("urlpath-menu-$k"))."'>".htmlspecialchars(msg("menu-$k"))."</a></div>";
         $o.="</div>\n";
         return $o;
     }

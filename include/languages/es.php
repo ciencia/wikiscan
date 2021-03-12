@@ -54,7 +54,7 @@ $messages = array(
     'footer-license'=>'Estadísticas con licencia $1',
     'footer-about_link'=>'Acerca de Wikiscan',
     
-    'banner_text'=>'Estadísticas de',
+    'banner_text'=>'Estadísticas de $1',
     'window_title-statitics'=>'Estadísticas',
     
     'window_title-about'=>'Acerca de Wikiscan',
