@@ -399,7 +399,7 @@ $messages = array(
     'userstat-block-text'=>"",
     
     'userstat-unblock-short'=>"Desbloq.",
-    'userstat-unblock-long'=>"Bloqueos",
+    'userstat-unblock-long'=>"Desbloqueos",
     'userstat-unblock-text'=>"",
     
     'userstat-protect-short'=>"Protec.",
