@@ -1,3 +1,4 @@
+/*
 $(document).ready(function() {
     var title=encodeURIComponent(document.title);
     var page=encodeURIComponent(document.location);
@@ -8,3 +9,4 @@ $(document).ready(function() {
             console.log(data);
     });
 });
+*/
