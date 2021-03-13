@@ -177,9 +177,11 @@ class TopList extends site_page
     {
         $o='<div class="list_contents">';
         $o.=$this->menu_list();
-        if($this->loaded)
+        if($this->loaded){
+            $o.='<div class="wrap_max_fullwidth">';
             $o.=$this->render_list();
-        else
+            $o.='</div>';
+        }else
             $o.='<div class="message"></div>';
         $o.='</div>';
         return $o;
@@ -234,7 +236,7 @@ class TopList extends site_page
         foreach(array('pages', 'users', 'stats') as $k){
             $text=msg("toplist-menu-$k");
             $link='<a href="/'.htmlspecialchars(($Site->menu=='dates'? msg_site('urlpath-menu-date') : msg_site('urlpath-menu-live'))).'/'.htmlspecialchars($this->date).'/'.$k.'">'.htmlspecialchars($text).'</a>';
-            $o[]='<div class="list_menu_item'.($this->list==$k?'_sel':'').'">'.$link.'</div>';
+            $o[]='<div class="list_menu_item'.($this->list==$k?' sel':'').'">'.$link.'</div>';
         }
         return '<div class="list_menu">'.implode('',$o).'</div>';
     }

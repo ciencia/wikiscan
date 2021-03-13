@@ -206,34 +206,34 @@ class Dates
             return false;
         if(empty($this->year))
             return false;
-        $o='<table class="dates_menu" cellspacing="0"><tr>';
+        $o='<div class="dates_menu">';
         for($y=min(array_keys($this->year));$y<=max(array_keys($this->year));$y++){
-            $o.= @$d['date']==$y || @$d['y']==$y ? '<td class="sel">' :'<td>';
+            $o.= @$d['date']==$y || @$d['y']==$y ? '<div class="sel">' :'<div>';
             $m=isset($this->year[$y]['pages']) && $this->year[$y]['pages']>0 ? false : 1; //display year if pages are not truncated, else display first month
-            $o.=lnk(substr($y,-2), array('menu'=>'dates','date'=>$this->format_date($y, $m)),array('list','filter','sort')).'</td>';
+            $o.=lnk(substr($y,-2), array('menu'=>'dates','date'=>$this->format_date($y, $m)),array('list','filter','sort')).'</div>';
         }
-        $o.='</tr></table>';
+        $o.='</div>';
 
-        $o.='<table class="dates_menu" cellspacing="0"><tr>';
+        $o.='<div class="dates_menu">';
         for($m=1;$m<=12;$m++){
-            $o.= isset($d['m']) && $d['m']==$m ? '<td class="sel">' :'<td>';
+            $o.= isset($d['m']) && $d['m']==$m ? '<div class="sel">' :'<div>';
             if(@$this->month[$d['y']][$m]['edits']>0)
-                $o.=lnk(htmlspecialchars(msg("month-long-$m")), array('menu'=>'dates','date'=>$this->format_date($d['y'],$m)),array('list','filter','sort')).'</td>';
+                $o.=lnk(htmlspecialchars(msg("month-long-$m")), array('menu'=>'dates','date'=>$this->format_date($d['y'],$m)),array('list','filter','sort')).'</div>';
             else
-                $o.=htmlspecialchars(msg("month-long-$m")).'</td>';
+                $o.=htmlspecialchars(msg("month-long-$m")).'</div>';
         }
-        $o.='</tr></table>';
+        $o.='</div>';
         if($conf['base_calc']=='day' && isset($d['m'])&&$d['m']!=0){
-            $o.='<table class="dates_menu" cellspacing="0"><tr>';
+            $o.='<div class="dates_menu">';
             $nbd=date('t',mktime(0,0,0,$d['m'],1,$d['y']));
             for($v=1;$v<=$nbd;$v++){
-                $o.= isset($d['d']) && $d['d']==$v ? '<td class="sel">' :'<td>';
+                $o.= isset($d['d']) && $d['d']==$v ? '<div class="sel">' :'<div>';
                 if(@$this->day[$d['y']][$d['m']][$v]['edits']>0)
-                    $o.=lnk($v,array('menu'=>'dates','date'=>$this->format_date($d['y'],$d['m'],$v)),array('list','filter','sort')).'</td>';
+                    $o.=lnk($v,array('menu'=>'dates','date'=>$this->format_date($d['y'],$d['m'],$v)),array('list','filter','sort')).'</div>';
                 else
-                    $o.=$v.'</td>';
+                    $o.=$v.'</div>';
             }
-            $o.='</tr></table>';
+            $o.='</div>';
         }
         if($date!=0){
             switch($d['type']){
@@ -274,7 +274,6 @@ class Dates
             $o.="<h1>".htmlspecialchars(msg("toplist-dates-title-$list"))."<br>$prev<span class=date_block>".htmlspecialchars($title)."</span>$next</h1>";
             $o.="</div>";
         }
-        $o.='</div>';
         return $o;
     }
     function menu2($date, $list)

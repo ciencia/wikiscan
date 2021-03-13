@@ -532,14 +532,13 @@ class Site
         $oo=$this->view_toplist($this->list);
         if($this->wrong_params)
             return $oo;
-        $o='<table class="list_mep" border="0" cellspacing="0"><tr><td>';
+        $o='<div class="list_mep list_mep_live">';
         $o.="<div class=date_title><h1>".msg('toplist-live-title')."</h1></div>";
         $o.=Dates::menu_live($this->date, $this->list);
         $o.=$oo;
-        $o.='</td><td>';
         if($this->toplist && $this->toplist->loaded())
             $o.=GraphList::toplist($this->date);
-        $o.='</td></tr></table>';
+        $o.='</div>';
         return $o;
     }
 
@@ -551,15 +550,16 @@ class Site
         $oo=$this->view_toplist();
         if($this->wrong_params)
             return $oo;
-        $o='<table class="list_mep" border="0" cellspacing="0"><tr><td>';
+        $o='<div class="list_mep list_mep_dates">';
         $this->dates=new Dates();
         $this->dates->load();
+        $o.='<div class="list_calendar">';
         $o.=$this->dates->menu($this->date, $this->list);
+        $o.='</div>';
         $o.=$oo;
-        $o.='</td><td>';
         if($this->toplist && $this->toplist->loaded())
             $o.=GraphList::toplist($this->date);
-        $o.='</td></tr></table>';
+        $o.='</div>';
         return $o;
     }
 

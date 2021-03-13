@@ -282,17 +282,13 @@ class UserStats extends site_page
             $o.=$this->view_user($this->user,$filters);
         else{
             $o.='<h1>'.htmlspecialchars(msg('userstats-title')).'</h1>';
-            $o.="<table class=mep>";
-            $o.="<tr><td>";
             $o.="<div class=inputs>".$this->user_form(). ($conf['userlist_enabled'] ? $this->userlist_form() : '').'</div>';
             if($this->userlist=='' && !$this->ip){
                 $o.=$this->months_graphs();
-                $o.="</td><tr><tr><td>";
             }
             if(!isset($_GET['graphs_details']) || !$_GET['graphs_details']){
                 if($conf['stats_users_date_filter'])
                     $o.=$this->view_date_filter();
-                $o.="</td><tr><tr><td>";
                 $this->fields['date']['hide']=true;
                 $this->abbr_group=true;
                 if($this->date_filter)
@@ -334,7 +330,6 @@ class UserStats extends site_page
                     $o.=$this->view_list($date_type, false, $sorts, $filters, $where);
                 }
             }
-            $o.="</td><tr></table>";
         }
         $o.='</div>';
         if($this->cache)
@@ -359,17 +354,17 @@ class UserStats extends site_page
     {
         $dbs=get_dbs();
         $rows=$dbs->select('select distinct date from userstats_years order by date desc');
-        $o='<table class=userstats_date_filter><tr class=years>';
-        $o.='<td class="'.($this->date_filter==null ? 'selected' : '').'">'.lnk(msg('userstats-date_filter-all'), array(), array('menu','usort','bot','detail','userlist')).'</td>';
+        $o='<div class="userstats_date_filter years">';
+        $o.='<div class="'.($this->date_filter==null ? 'selected' : '').'">'.lnk(msg('userstats-date_filter-all'), array(), array('menu','usort','bot','detail','userlist')).'</div>';
         foreach($rows as $v)
-            $o.='<td class="'.($this->date_filter && substr($this->date_filter,0,4)==$v['date'] ? 'selected' : '').'">'.lnk($v['date'], array('date_filter'=>$v['date']), array('menu','usort','bot','detail','userlist')).'</td>';
+            $o.='<div class="'.($this->date_filter && substr($this->date_filter,0,4)==$v['date'] ? 'selected' : '').'">'.lnk($v['date'], array('date_filter'=>$v['date']), array('menu','usort','bot','detail','userlist')).'</div>';
         if($this->date_filter!=''){
-            $o.='</tr></table><table class=userstats_date_filter><tr class=months>';
+            $o.='</div><div class="userstats_date_filter months">';
             $rows=$dbs->select("select distinct date from userstats_months where date like '".(int)substr($this->date_filter,0,4)."%' order by date");
             foreach($rows as $v)
-                $o.='<td class="'.($this->date_filter && $this->date_filter==$v['date'] ? 'selected' : '').'">'.lnk(mb_ucfirst(msg('month-long-'.(int)substr($v['date'],4,2))), array('date_filter'=>$v['date']), array('menu','usort','bot','detail','userlist')).'</td>';
+                $o.='<div class="'.($this->date_filter && $this->date_filter==$v['date'] ? 'selected' : '').'">'.lnk(mb_ucfirst(msg('month-long-'.(int)substr($v['date'],4,2))), array('date_filter'=>$v['date']), array('menu','usort','bot','detail','userlist')).'</div>';
         }
-        $o.='</tr></table>';
+        $o.='</div>';
         return $o;
     }
 
@@ -715,6 +710,7 @@ $(function () {
                 $o.=str_replace('$1', fnum($total), ($this->ip ? msg('userstats-count-ip') : msg('userstats-count-users')));
             $o.='</strong></div>';
         }
+        $o.='<div class="wrap_max_fullwidth">';
         $o.='<table class="userstatsl">';
         $o.="<tr><td colspan=30 class=pages_row>";
         $o.='<table class="userstats_filters"><tr>';
@@ -794,13 +790,11 @@ $(function () {
             }
             $o.='</tr>'."\n";;
         }
-        if($this->user==''){
-            $o.="<tr><td colspan=20 class=pages_row>";
-            $o.='<table class="userstats_filters"><tr>';
-            $o.='<td>'.$this->pages_nav().'</td>';
-            $o.="</td></tr></table></tr>";
-        }
         $o.='</table>';
+        $o.='</div>';
+        if($this->user==''){
+            $o.=$this->pages_nav();
+        }
         if(!empty($lusers)){
             foreach($lusers as $k=>$user){
                 $user=htmlspecialchars($user);
@@ -812,7 +806,7 @@ $(function () {
     }
     function pages_nav()
     {
-        $o="<span class='userstats_pages'>";
+        $o="<div class='userstats_pages'>";
         if($this->page>1){
             $o.="<span class='page_start'>".lnk("<img src='imgi/icons/start.png'/>",array('page'=>1),array('menu','usort','bot','detail','userlist','date_filter')).'</span>';
             $o.="<span class='page_prev'>".lnk("<img src='imgi/icons/prev.png'/>",array('page'=>$this->page-1),array('menu','usort','bot','detail','userlist','date_filter')).'</span>';
@@ -823,7 +817,7 @@ $(function () {
             if($this->max_pages!==false)
                 $o.="<span class='page_end'>".lnk("<img src='imgi/icons/end.png'/>",array('page'=>$this->totpages),array('menu','usort','bot','detail','userlist','date_filter')).'</span>';
         }
-        $o.='</span>';
+        $o.='</div>';
         return $o;
     }
 

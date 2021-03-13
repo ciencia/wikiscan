@@ -28,7 +28,6 @@ class GridPage extends site_page
 
     static function title($date)
     {
-        global $conf, $Site;
         $row=Dates::get($date);
         $last_update=@$row['last_update'];
         $o='<div class="date_title_grid main_title">';
@@ -51,7 +50,7 @@ class GridPage extends site_page
         $o='<div class="grid">';
         $o.=$this->title($date);
         $o.=TopListPage::javascript_mini();
-        $o.='<table class=mep><tr><td>';
+        $o.='<div class="grid_cont"><div class="mep">';
         $o.='<div class="grid_item"><h3><a href="/'.htmlspecialchars(msg_site('urlpath-menu-live')).'/'.htmlspecialchars($date).'/pages/">'.htmlspecialchars(msg('grid-title-articles')).'</a></h3>';
         if($toplist=TopList::create('pages', $date, 'main', 'weight', true))
             $o.=$toplist->view();
@@ -77,7 +76,7 @@ class GridPage extends site_page
             }
             $o.='</div>';
         }
-        $o.='</td><td>';
+        $o.='</div><div class="mep">';
         if($conf['hits_available']){
             $o.='<div class="grid_item"><h3><a href="/?menu=live&amp;filter=main&amp;sort=hits&amp;date='.htmlspecialchars($date).'&amp;list=pages">'.htmlspecialchars(msg('grid-title-views')).'</a></h3>';
             if($toplist=TopList::create('pages', $date, 'main', 'hits', true))
@@ -111,7 +110,7 @@ class GridPage extends site_page
             $o.=$toplist->view();
         }
         $o.='</div>';
-        $o.='</td><td>';
+        $o.='</div><div class="mep mep_users">';
         $o.='<div class="grid_item"><h3>'.htmlspecialchars(msg('grid-title-graph_edits')).'</h3>';
         // FIXME: Localize graphic alt text
         $o.='<a href="/gimg.php?type=edits&amp;date='.htmlspecialchars($date).'&amp;size=big"><img src="/gimg.php?type=edits&amp;date='.htmlspecialchars($date).'&amp;size=small" alt="Graphique éditions"/></a>';
@@ -132,7 +131,7 @@ class GridPage extends site_page
         if($toplist=TopList::create('users', $date, 'bot', 'weight', true))
             $o.=$toplist->view();
         $o.='</div>';
-        $o.='</td></tr></table></div>';
+        $o.='</div></div></div>';
         $this->set_cache($o);
         return $o;
     }

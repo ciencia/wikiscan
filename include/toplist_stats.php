@@ -36,7 +36,7 @@ class TopListStats extends TopList
         global $conf;
 
         $s=$this->data;
-        $o='<table class="list_stats"><tr><td class="mep">';
+        $o='<div class="list_stats"><div class="mep">';
         //------------------  1  ------------------
         $o.='<h3>'.htmlspecialchars(msg('toplist-stats-title-general')).'</h3>';
         $o.='<table class="list_stats_item">';
@@ -98,7 +98,7 @@ class TopListStats extends TopList
         }
         $o.='</table>';
 
-        $o.='</td><td class="mep">';
+        $o.='</div><div class="mep">';
         //------------------  2  ------------------
         $o.='<h3>'.htmlspecialchars(msg('toplist-stats-title-dates')).'</h3>';
         $o.='<table class="list_stats_item">';
@@ -134,7 +134,7 @@ class TopListStats extends TopList
         $o.='<tr><td>'.htmlspecialchars(msg('stat-tot_size_latest')).' :</td><td>'.format_sizei(@$s['pages']['tot_size_latest_ns']['article']).'</td></tr>';
         $o.='<tr><td>'.htmlspecialchars(msg('stat-tot_size')).' :</td><td>'.format_sizei(@$s['total']['tot_size_ns']['article']).'</td></tr>';
         $o.='</table>';
-        $o.='</td><td class="mep">';
+        $o.='</div><div class="mep">';
         //------------------  3  ------------------
         $o.='<h3>'.htmlspecialchars(msg('toplist-stats-title-namespaces')).'</h3>';
         $o.='<table class="list_stats_item">';
@@ -151,7 +151,7 @@ class TopListStats extends TopList
                     $o.='<tr><td>'.htmlspecialchars($log).' '.htmlspecialchars($k).' :</td><td>'.fnum((int)$v).'</td></tr>';
         }
         $o.='</table>';
-        $o.='</td></tr></table>';
+        $o.='</div></div>';
         if(DEBUG || isset($_GET['debug']))
             $o.=$this->view_raw($s);
         return $o;
