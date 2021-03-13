@@ -277,6 +277,7 @@ background-image: linear-gradient(to right, #ffffff, #cacaca, #979797, #676767, 
 	.list_mep_live{
 	    display:grid;
 	    grid-template-columns: 1fr 510px;
+	    grid-template-rows: auto auto 1fr;
 	    align-items: start;
 	}
     .list_mep_live .date_title {
@@ -299,6 +300,7 @@ background-image: linear-gradient(to right, #ffffff, #cacaca, #979797, #676767, 
 	.list_mep_dates{
 	    display:grid;
 	    grid-template-columns: 1fr 510px;
+	    grid-template-rows: auto 1fr;
 	    align-items: start;
 	}
     .list_mep_dates .list_calendar {
