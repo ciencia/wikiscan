@@ -87,7 +87,7 @@ class mwTools
     }
     static function encode_user($name)
     {
-        return urlencode(self::format_user($name));
+        return str_replace(' ','_',strtoupper(mb_substr($name,0,1)).mb_substr($name,1));
     }
     static function title_url($title)
     {

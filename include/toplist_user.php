@@ -120,10 +120,10 @@ class TopListUser extends TopList
             $o.='<td>'.$speed.'</td>';
             if($v['type']!='ip'){
                 $usert=truncate($user,$this->link_max_len);
-                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }else{
                 $usert=truncate($user,$this->link_max_len);
-                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats_ip')).'/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats_ip')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }
             $o.'</tr>';
         }
@@ -171,13 +171,13 @@ class TopListUser extends TopList
 
             if($v['type']!='ip'){
                 $usert=truncate($user,$this->link_max_len);
-                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }else{
                 if(preg_match('/^((?:[\da-f]{1,4}:){4})(?:[\da-f]{1,4}:){3}[\da-f]{1,4}$/i',$user))
                     $usert=strtolower(truncate($user,$this->link_max_len));
                 else
                     $usert=truncate($user,$this->link_max_len);
-                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats_ip')).'/'.htmlspecialchars(mwtools::encode_user($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats_ip')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }
             $o.'</tr>';
         }

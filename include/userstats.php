@@ -622,7 +622,7 @@ $(function () {
     {
         global $conf;
         $u=$user;
-        $user=htmlspecialchars(mwtools::encode_user($user));
+        $user=htmlspecialchars(urlencode(mwtools::encode_user($user)));
         $o='<div class="userlinks"><h3>'.htmlspecialchars(msg('user-links_title')).'</h3>';
         if($this->ip && preg_match('/^(\d{1,3}\.){3}\d{1,3}$/i',$user))
             $o.='<ul><li><a href="/plage-ip?ip='.$user.'">Plage de l\'IP '.htmlspecialchars($u).'</a></li></ul>'; // FIXME: Localize
@@ -876,11 +876,11 @@ $(function () {
 
     static function user_url($user)
     {
-        return '/'.msg_site('urlpath-user').'/'.mwtools::encode_user($user);
+        return '/'.msg_site('urlpath-user').'/'.urlencode($user);
     }
     static function ip_url($user)
     {
-        return '/'.msg_site('urlpath-ip').'/'.mwtools::encode_user($user);
+        return '/'.msg_site('urlpath-ip').'/'.urlencode($user);
     }
 
     function format_val($k, $v, $percent=false)
