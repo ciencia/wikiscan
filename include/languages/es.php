@@ -98,9 +98,9 @@ $messages = array(
     'urlpath-menu-pageview'=>'pageviews',
     'urlpath-menu-ranges'=>'ip_ranges',
     'urlpath-menu-active_users'=>'active_users',
-    'urlpath-user'=>'user',
+    'urlpath-user'=>'usuario',
     'urlpath-ip'=>'ip',
-    'urlpath-userlist'=>'userlist',
+    'urlpath-userlist'=>'listausuarios',
     
     'menu-allsites-sites'=>"Wikis",
     'menu-allsites-status'=>"Status",
