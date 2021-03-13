@@ -39,6 +39,8 @@ $conf=array(
     
     'multi'=>false,
     'wiki_key'=>'',
+    // List of menus enabled. Leave it to false to not restrict any
+    'menus_enabled'=>false,
 
     'multi_db'=>true,//use site_db value in wikiscan/sites for stats mysql host (dbs)
 

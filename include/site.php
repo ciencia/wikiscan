@@ -110,7 +110,7 @@ class Site
         if(isset($_GET['menu'])){
             $this->menu='';
             $this->menu_func='';
-            if($_GET['menu']!=''){
+            if($_GET['menu']!='' && (!is_array($conf['menus_enabled']) || in_array($_GET['menu'], $conf['menus_enabled']))){
                 $menu=$_GET['menu'];
                 $func='menu_'.$menu;
                 if(method_exists($this,$func)){
@@ -474,8 +474,10 @@ class Site
         $o='<div class="menu">';
         if($conf['multi'])
             $o.="<div class='menu_item'><a href='//{$this->main_host}'>".htmlspecialchars(msg("menu-wikis"))."</a></div>";
-        foreach($this->menus as $k)
-            $o.="<div class='menu_item".($k==$this->menu?' sel':'')."'><a href='/".htmlspecialchars(msg_site("urlpath-menu-$k"))."'>".htmlspecialchars(msg("menu-$k"))."</a></div>";
+        foreach($this->menus as $k){
+            if(!is_array($conf['menus_enabled'])||in_array($k,$conf['menus_enabled']))
+                $o.="<div class='menu_item".($k==$this->menu?' sel':'')."'><a href='/".htmlspecialchars(msg_site("urlpath-menu-$k"))."'>".htmlspecialchars(msg("menu-$k"))."</a></div>";
+        }
         $o.="</div>\n";
         return $o;
     }

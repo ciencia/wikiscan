@@ -624,8 +624,9 @@ $(function () {
         $u=$user;
         $user=htmlspecialchars(urlencode(mwtools::encode_user($user)));
         $o='<div class="userlinks"><h3>'.htmlspecialchars(msg('user-links_title')).'</h3>';
-        if($this->ip && preg_match('/^(\d{1,3}\.){3}\d{1,3}$/i',$user))
-            $o.='<ul><li><a href="/plage-ip?ip='.$user.'">Plage de l\'IP '.htmlspecialchars($u).'</a></li></ul>'; // FIXME: Localize
+        //TODO: IPv6 Support
+        if($this->ip && preg_match('/^(\d{1,3}\.){3}\d{1,3}$/i',$user) && (!is_array($conf['menus_enabled']) || in_array('range', $conf['menus_enabled'])))
+            $o.='<ul><li><a href="/'.msg_site('urlpath-menu-ranges').'?ip='.$user.'">IP range of '.htmlspecialchars($u).'</a></li></ul>'; // FIXME: Localize
         $o.='<h4>Wiki</h4><ul>';
         if ($conf['wikilink_icon'])
             $img='<img src="'.$conf['wikilink_icon'].'" height="14"/>';

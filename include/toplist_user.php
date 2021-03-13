@@ -90,7 +90,6 @@ class TopListUser extends TopList
     }
     function render_list()
     {
-        global $conf;
         $o='<table class="list_list" cellspacing="0">';
         $o.=$this->view_filters();
         $o.=$this->view_sorts();
@@ -102,7 +101,6 @@ class TopListUser extends TopList
             $v=current($this->data);
             next($this->data);
             $user=str_replace('_',' ',$user);
-            $icons='';
             $o.='<tr>';
             $o.='<td>'.(int)@$v['edit'].'</td>';
             $o.='<td>'.@$v['revert'].'</td>';
@@ -120,10 +118,10 @@ class TopListUser extends TopList
             $o.='<td>'.$speed.'</td>';
             if($v['type']!='ip'){
                 $usert=truncate($user,$this->link_max_len);
-                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-user')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }else{
                 $usert=truncate($user,$this->link_max_len);
-                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats_ip')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-ip')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }
             $o.'</tr>';
         }
@@ -171,13 +169,13 @@ class TopListUser extends TopList
 
             if($v['type']!='ip'){
                 $usert=truncate($user,$this->link_max_len);
-                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-user')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }else{
                 if(preg_match('/^((?:[\da-f]{1,4}:){4})(?:[\da-f]{1,4}:){3}[\da-f]{1,4}$/i',$user))
                     $usert=strtolower(truncate($user,$this->link_max_len));
                 else
                     $usert=truncate($user,$this->link_max_len);
-                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-menu-userstats_ip')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
+                $o.='<td class="name"><a href="/'.htmlspecialchars(msg_site('urlpath-ip')).'/'.htmlspecialchars(urlencode($user)).'">'.htmlspecialchars($usert).'</a></td>';
             }
             $o.'</tr>';
         }
