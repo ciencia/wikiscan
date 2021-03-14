@@ -5,6 +5,7 @@ if(empty($conf))
 
 $robots='%SemrushBot|Googlebot|bingbot|BingPreview|YandexBot|YandexImages|MegaIndex|AhrefsBot|DotBot|ia_archiver|ltx71|Sogou web spider|SeznamBot|The Knowledge AI|netEstate|Applebot|BLEXBot|Cliqzbot|Baiduspider|MojeekBot|Twitterbot|coccocbot|RU_Bot|yacybot|archive.org_bot|ZoominfoBot|naver\.me|SEOkicks|MixnodeCache|TurnitinBot|Exabot|istellabot|Go-http-client|Yahoo! Slurp|Bleriot|TurnitinBot|Daum/|CCBot/|Seekport|UCBrowser|MQQBrowser|Mb2345Browser|LieBaoFast|Qwantify|Nimbostratus-Bot|curl/|python-requests|serpstatbot%';
 
+// This "undefined" $include variable is actually being defined when this analytics.php file is included from site.php
 if(!isset($include) && (@$_SERVER['HTTP_USER_AGENT']=='' || preg_match($robots, $_SERVER['HTTP_USER_AGENT'])))
     exit;
 if(!isset($_GET['_title']) || !isset($_GET['_page']))

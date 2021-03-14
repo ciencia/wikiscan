@@ -293,10 +293,10 @@ class Site
             $o.='<meta name="robots" content="noindex,nofollow">';
         else
             $o.='<meta name="robots" content="'.$conf['robots_policy'].'">';
-        /*if(preg_match('!\.\w{2,}$!', $_SERVER['HTTP_HOST']))
-            $o.=$this->analytics();*/
+        if(preg_match('!\.\w{2,}$!', $_SERVER['HTTP_HOST']))
+            $o.=$this->analytics();
         $o.="</head><body>\n";
-        $o.=$this->serveur_analytics();
+        //$o.=$this->serveur_analytics();
         $this->remove_cookies();
         return $o;
     }
@@ -339,17 +339,38 @@ class Site
         if(!isset($conf['google_analytics']) || $conf['google_analytics']=='')
             return;
         $menus=$this->analytics_menus();
-        $o="<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');";
-        $o.="ga('create', '".$conf['google_analytics']."', 'auto');";
-        $o.="ga('set', 'dimension1', '".$menus[0]."');";
-        $o.="ga('set', 'dimension2', '".$menus[1]."');";
-        $o.="ga('send', 'pageview');";
-        $o.="</script>";
+        $jsdimension1=format_jsstring($menus[0]);
+        $jsdimension2=format_jsstring($menus[1]);
+        $gaid=$conf['google_analytics'];
+        $jsgaid=format_jsstring($gaid);
+        $o=<<<EOT
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=$gaid"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // Default analytics_storage to 'denied'.
+  gtag('consent', 'default', {
+    'analytics_storage': 'denied'
+  });
+
+  gtag('js', new Date());
+  gtag('config', $jsgaid, {
+    'custom_map': {
+      'dimension1': $jsdimension1,
+      'dimension2': $jsdimension2,
+      'anonymize_ip': true
+    }
+  });
+</script>
+EOT;
         return $o;
     }
 
     function serveur_analytics()
     {
+        // This "unused" variable is actually being used in the included analytics.php file
         $include=true;
         $menus=$this->analytics_menus();
         $_GET['_menu']=$menus[0];
