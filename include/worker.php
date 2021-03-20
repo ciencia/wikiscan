@@ -149,7 +149,6 @@ class Worker
             'total_user'=>['table'=>'user', 'id'=>'user_id'],
             'total_rev_user'=>['table'=>'user', 'id'=>'user_id', 'where'=>'user_editcount>=1'],
             'total_page'=>['table'=>'page', 'id'=>'page_id'],
-            'total_redirect'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_is_redirect=1'],
             'total_article'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_namespace=0 and page_is_redirect=0'],
             'total_redirect'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_is_redirect=1'],
             'total_file'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_namespace=6 and page_is_redirect=0'],

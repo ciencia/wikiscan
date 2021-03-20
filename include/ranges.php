@@ -1135,6 +1135,7 @@ class ranges extends site_page
     function update($types=array('rir','block', 'log', 'edit', 'proxy'))
     {
         $types=array_flip($types);
+        // FIXME: Is this comparision to 4 correct? Default types are 5!!
         $full_update=count($types)==4;
         $this->total_stats=array();
         $this->s=array();
