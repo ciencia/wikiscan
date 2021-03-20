@@ -68,6 +68,9 @@ class Runner
         return '/tmp/'.$name.$conf['cache_key_site'].'.lock';
     }
 
+    /**
+     * Generates and saves an .htaccess file for the current wiki
+     */
     function ac_htaccess()
     {
         require_once('include/site.php');
@@ -471,29 +474,47 @@ class Runner
             $obj->fix_whois();
     }
 
-
-    function ac_cache($p)
+    /**
+     * Prints statistics about memcached
+     */
+    function ac_cache()
     {
         $Cache=get_cache();
         $Cache->info();
     }
 
+    /**
+     * Loads the global sites table from a local mediawiki sites table
+     */
     function ac_import_wikis()
     {
         require_once('include/wikis.php');
         wikis::import_wikis();
     }
+    
+    /**
+     * Prints data from sites and sites_stats tables
+     */
     function ac_export_wikis()
     {
         require_once('include/wikis.php');
         wikis::export();
     }
+    
+    /**
+     * Prints a command to mysqldump all databases
+     */
     function ac_export_db_list()
     {
         require_once('include/wikis.php');
         wikis::export_db_list();
     }
 
+    /**
+     * Executes an SQL query on every stats database
+     * 
+     * @param string $p SQL Query
+     */
     function ac_query_all($p)
     {
         require_once('include/wikis.php');

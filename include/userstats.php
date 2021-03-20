@@ -1058,6 +1058,12 @@ $(function () {
         else
             $this->sum($date);
     }
+    /**
+     * Reads data from stats files and stores it in the database
+     * 
+     * @param number $date Date or date part
+     * @param boolean $sum Update sums
+     */
     function update($date='',$sum=true)
     {
         $dbs=get_dbs();
@@ -1076,7 +1082,7 @@ $(function () {
         }else{
             echo " Invalid date\n";
             var_dump($date);
-            return false;
+            return;
         }
         $sub_stat=false;
         if(UpdateStats::$separate_ip)
@@ -1108,6 +1114,12 @@ $(function () {
             print_r($us);echo '<br>';
         }
     }
+    /**
+     * Saves user statistics to database
+     * 
+     * @param array $users User statistics
+     * @param number $date Date or date part
+     */
     function save($users, $date=false)
     {
         $table=$this->multi_table_name(Dates::type($date));

@@ -1676,9 +1676,15 @@ class UpdateStats
         return "file not found";
     }
 
+    /**
+     * Gets data path from a date. If no date is specified, returns the data path (wpstats). 
+     * Otherwise, the path for the year, year/month, year/month/day or live/hours
+     * 
+     * @param number $date Date or date part (only year, with month or with day, or number of hours < 10) 
+     * @return string Absolute path to the date directory
+     */
     static function path($date=0)
     {
-        global $conf;
         $path=getcwd().'/'.self::data_path;
         if($date!=0){
             $date=(int)$date;
@@ -1695,6 +1701,12 @@ class UpdateStats
         return $path;
     }
 
+    /**
+     * Gets a list of subdirectories for a date. Empty date: years. A year: months. A year/month: days.
+     * 
+     * @param number|null $date Date or date part (empty, year or year/month) 
+     * @return string[] Directory list
+     */
     static function subdirs($date='')
     {
         $path=self::path($date);
@@ -1864,8 +1876,17 @@ class UpdateStats
         return $months;
     }
 
+    /**
+     * Loads stat data from a file
+     * 
+     * @param number $date Date or date part (year, year/month, year/month/day)
+     * @param string $stat pages, stats, time, users
+     * @param string|false $sub_stat ip, user
+     * @return array
+     */
     static function load_stat($date, $stat, $sub_stat=false)
     {
+        // Single file
         $file=self::path($date).'/'.$stat;
         if(file_exists($file)){
             $data=self::read($file);
@@ -1875,6 +1896,7 @@ class UpdateStats
                         unset($data[$k]);
             return $data;
         }
+        // Not a single file, it has been split
         $res=array();
         foreach(self::get_stat_files($date, $stat, $sub_stat) as $f)
             if(file_exists($f)){
@@ -1894,6 +1916,14 @@ class UpdateStats
                 break;
         return $res;
     }
+    /**
+     * Get a list of files for a given stat and date. Sometimes a stat file may be split into different files. This will get them all
+     *  
+     * @param number $date Date or date part (year, year/month, year/month/day)
+     * @param string $stat pages, stats, time, users
+     * @param string|false $sub_stat ip, user
+     * @return array
+     */
     static function get_stat_files($date, $stat, $sub_stat=false)
     {
         $file=self::path($date).'/'.$stat;
