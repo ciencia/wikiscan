@@ -738,7 +738,72 @@ fill: steelblue;
     background-color:#fff;
 }
 
+.user_stats_graphs {
+	display: flex;
+	flex-wrap:wrap;
+	justify-content: center;
+}
+.user_stats_cont {
+	padding: 2px;
+}
+@media (max-width:1150px) and (min-width: 721px) {
+	.user_stats_cont {
+		display: grid;
+		column-gap: 10px;
+		row-gap: 10px;
+		align-items: start;
+		grid-template-columns: 1fr 1fr;
+	}
+	.user_stats_cont > .userlinks {
+		justify-self: end;
+	}
+	.user_stats_cont > .mep:nth-child(3) {
+		grid-row-start: 1;
+		grid-row-end: 3;
+		grid-column-start: 2;
+	}
+}
+@media (min-width: 1151px) {
+	.user_stats_cont {
+		display: grid;
+		column-gap: 10px;
+		row-gap: 10px;
+		align-items: start;
+		grid-template-columns: 3fr 3fr 2fr;
+		grid-template-rows: auto 1fr;
+	}
+	.user_stats_cont.multi {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+	}
+	.user_stats_cont > .userlinks {
+		justify-self: end;
+		grid-area: 1 / 3 / 2 / 4;
+	}
+	.user_stats_cont > .mep {
+		grid-row-start: 1;
+		grid-row-end: 3;
+	}
+	.user_stats_cont > .mep:nth-child(4) {
+		grid-row-start: 2;
+		grid-row-end: 3;
+	}
+	.user_stats_graphs {
+		display: flex;
+		justify-content: space-around;
+	}
+}
 
+.graph_user_timeline{
+	display:flex;
+	flex-wrap:wrap;
+}
+.graph_user_timeline a{
+    margin:5px;
+	flex: 1 1 auto;
+}
+.graph_user_timeline img{
+    max-width: 100%;
+}
 
 .userstatsl{
     border-collapse:collapse;
@@ -847,7 +912,7 @@ fill: steelblue;
 .user_total{
     border:#d5d5d5 1px solid;
     margin:0px;
-    padding:0 0 0 10px;
+    padding:5px;
 }
 .user_total h1{
     border-bottom:#d5d5d5 1px solid;
@@ -867,9 +932,13 @@ fill: steelblue;
 .user_total h4{
     font-size:110%;
 }
+.user_total .wrap_max_fullwidth {
+	max-width: 90vw;
+	max-width: calc(100vw - 30px);
+}
 .user_totall{
+	width: 100%;
     border-collapse:collapse;
-    margin:2px 10px;
 }
 .user_totall td{
     vertical-align:top;

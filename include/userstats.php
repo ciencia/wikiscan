@@ -388,9 +388,11 @@ class UserStats extends site_page
         }
         $this->user_id=isset($this->user_stats['user_id']) ? $this->user_stats['user_id'] : null;
         $this->user_stats['total_diffs']=$this->total_diffs($this->user_stats);
+        $o.=$this->user_form();
         $o.='<h1>'.htmlspecialchars($user).'</h1>';
-        $o.='<table class="mep" style="clear:left">';
-        $o.="<tr><td>";
+        $o.='<div class="user_stats_cont'.($conf['multi']?' multi':'').'">';
+        $o.=$this->user_links($user);
+        $o.='<div class="mep">';
         $o.='<table class="user_totall">';
         $o.='<tr><td colspan="3" class="title"><h3>'.htmlspecialchars(msg('userstat-total_title-global')).'</h3></td></tr>';
         $o.=$this->user_rows(array('total'/*,'reduced'*/));
@@ -400,7 +402,7 @@ class UserStats extends site_page
         $o.=$this->user_rows(array('redit','edit_chain','revert'));
         $o.='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-newpages')).'</h4></td></tr>';
         $o.=$this->user_rows(array('new','new_main','new_chain_main','new_redir'));
-        $o.='</table></td><td><table class="user_totall">';
+        $o.='</table></div><div class="mep"><table class="user_totall">';
         $o.='<tr><td colspan="3" class="title"><h4>'.htmlspecialchars(msg('userstat-total_title-time')).'</h4></td></tr>';
 
         if($conf['base_calc']=='month')
@@ -420,9 +422,7 @@ class UserStats extends site_page
             $admin_stats.=$this->user_rows(array('log_sysop','delete','restore','revdelete','block','unblock','protect','unprotect','import'));
         }
         $o.='<tr><td colspan="3" class="title"><h4></h4></td></tr>';
-        $o.='</table></td><td>';
-        $o.=$this->user_form();
-        $o.=$this->user_links($user);
+        $o.='</table></div><div class="mep">';
         $o.='<table class="user_totall">';
         $o.=$admin_stats;
         $o.='</table>';
@@ -432,11 +432,12 @@ class UserStats extends site_page
             $o.='<tr><td class=usergroups_text>'.htmlspecialchars($grp).'</td></tr>';
             $o.='</table>';
         }
-        $o.='</td><td>';
+        $o.='</div>';
 
         if($conf['multi']){
             $wikis=Wikis::list_all_full();
             $all=self::list_all_wikis($user);
+            $o.='<div class="mep">';
             $o.='<div class=user_wikis>';
             $o.='<table class="user_totall">';
             $o.='<tr><td colspan=2 class="title"><h3>'.htmlspecialchars(msg('userstat-wikis_title-global')).'</h3></td></tr>';
@@ -474,19 +475,16 @@ class UserStats extends site_page
             }
             $o.='</table>';
             $o.='</div>';
+            $o.='</div>';
         }
-
-        $o.='</td></tr>';
+        $o.='</div>';
         // *** Graph ****
-        $o.='</table>';
-        if($this->user_stats['months']>1){
-            $o.='<table class="mep"><tr>';
-            $o.='<td><a href="/gimg.php?type=user&amp;size=big&amp;user='.htmlspecialchars($user).($this->ip?'&amp;ip=1':'&amp;user_id='.$this->user_id).'"><img src="/gimg.php?type=user&amp;size=medium2&amp;user='.htmlspecialchars($user).($this->ip?'&amp;ip=1':'&amp;user_id='.$this->user_id).'"/></a></td>';
-            if($this->user_stats['edit']>=3)
-                $o.='<td>'.$this->user_graph_nstype().'</td>';
-            $o.='</tr></table>';
-        }elseif($this->user_stats['edit']>=3)
-            $o.="<div style='float:right'>".$this->user_graph_nstype()."</div>";
+        $o.='<div class="user_stats_graphs">';
+        if($this->user_stats['months']>1)
+            $o.='<div class="graph_user_timeline"><a href="/gimg.php?type=user&amp;size=big&amp;user='.htmlspecialchars($user).($this->ip?'&amp;ip=1':'&amp;user_id='.$this->user_id).'"><img src="/gimg.php?type=user&amp;size=medium2&amp;user='.htmlspecialchars($user).($this->ip?'&amp;ip=1':'&amp;user_id='.$this->user_id).'"/></a></div>';
+        if($this->user_stats['edit']>=3)
+            $o.=$this->user_graph_nstype();
+        $o.='</div>';
         $this->abbr_group=true;
         $sorts=array('`'.$dbs->escape($this->sort).'` '.$this->order);
         $this->fields['date']['hide']=true;
