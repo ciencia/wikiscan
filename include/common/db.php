@@ -508,6 +508,13 @@ class db
             call_user_func($this->callback, $q, $t, $c, $this);
         return $res;
     }
+    /**
+     * Returns the first row of a select
+     * 
+     * @param string $q Query
+     * @param boolean $debug
+     * @return array|null Values of the returned row
+     */
     function select1($q,$debug=false)
     {
         $res=$this->select($q,$debug);
@@ -515,6 +522,16 @@ class db
             return null;
         return $res[0];
     }
+    /**
+     * Returns the first column of the first row of the query.
+     * You can either pass the full query or individual bits
+     * 
+     * @param string $table Full query or individual table name
+     * @param boolean $col Column name to return
+     * @param string $where Where clause
+     * @param boolean $debug
+     * @return mixed|boolean
+     */
     function select_col($table,$col=false,$where='1',$debug=false)
     {
         if($col===false){

@@ -1105,7 +1105,6 @@ $(function () {
     }
     function save_user($user,$stats)
     {
-        $dbs=get_dbs();
         $this->last_update=gmdate('YmdHis');
         foreach($stats as $date=>$s){
             $us=$this->stat_row($user,$s['users'][$user],$date);

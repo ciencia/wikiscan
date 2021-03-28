@@ -262,6 +262,8 @@ class Runner
         $up=new UpdateStats();
         $up->sum(0,array('stats'));
         unset($up);
+        $worker = new Worker();
+        $worker->update_count();
         echo 'Memory : '.round(memory_get_usage(true)/1048576).'/'.round(memory_get_peak_usage(true)/1048576)."Mb\n";
     }
     function ac_fullupdate_months($p)
@@ -317,6 +319,8 @@ class Runner
         $obj=new UpdateStats();
         $obj->sum(0,array('time','stats'));
         unset($obj);
+        $worker = new Worker();
+        $worker->update_count();
         echo 'Memory : '.round(memory_get_usage(true)/1048576).'/'.round(memory_get_peak_usage(true)/1048576)."Mb\n";
     }
     function ac_fullupdate_refresh($p)

@@ -132,11 +132,11 @@ class Worker
         return call_user_func(array($this, "update_{$this->type}"), $site);
     }
 
-    function update_count($site)
+    function update_count($site=null)
     {
         global $conf;
         $db=get_db();
-        if(!$db->select_db($site."_p"))
+        if($site!='' && !$db->select_db($site."_p"))
             return false;
         $db->query('SET SESSION net_read_timeout=10800');
         $db->query('SET SESSION net_write_timeout=10800');
@@ -148,38 +148,53 @@ class Worker
             'total_archive'=>['table'=>'archive', 'id'=>'ar_id'],
             'total_user'=>['table'=>'user', 'id'=>'user_id'],
             'total_rev_user'=>['table'=>'user', 'id'=>'user_id', 'where'=>'user_editcount>=1'],
-            'total_page'=>['table'=>'page', 'id'=>'page_id'],
-            'total_article'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_namespace=0 and page_is_redirect=0'],
+            //'total_page'=>['table'=>'page', 'id'=>'page_id'],
+            'total_page'=>['local_stats_column' => 'ss_total_pages'],
+            //'total_article'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_namespace=0 and page_is_redirect=0'],
+            'total_article'=>['local_stats_column' => 'ss_good_articles'],
             'total_redirect'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_is_redirect=1'],
-            'total_file'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_namespace=6 and page_is_redirect=0'],
+            //'total_file'=>['table'=>'page', 'id'=>'page_id', 'where'=>'page_namespace=6 and page_is_redirect=0'],
+            'total_file'=>['local_stats_column' => 'ss_images'],
             ];
         $chunk=1000000;
         $maxs=[];
         foreach($stats as $stat=>$v){
-            if(!isset($maxs[$v['table']])){
-                $max=$db->selectcol("select /*SLOW_OK count*/ `$v[id]` from `$v[table]` order by `$v[id]` desc limit 1");
-                $maxs[$v['table']]=$max;
-            }else
-                $max=$maxs[$v['table']];
-            echo "$v[table] $max ".ceil($max/$chunk)." ";
-            $data[$stat]=null;
-            for($i=0;$i<=$max;$i+=$chunk){
-                $data[$stat]+=$db->selectcol("select /*SLOW_OK count*/ count(*) from `$v[table]` where `$v[id]` between $i and ".($i+$chunk-1).(isset($v['where']) ? " and ".$v['where'] : ''));
-                echo '.';
+            if(isset($v['local_stats_column'])){
+                echo "$v[local_stats_column] ";
+                $data[$stat]=$db->select_col("select $v[local_stats_column] from `site_stats`");
+            }else{
+                if(!isset($maxs[$v['table']])){
+                    $max=$db->selectcol("select /*SLOW_OK count*/ `$v[id]` from `$v[table]` order by `$v[id]` desc limit 1");
+                    $maxs[$v['table']]=$max;
+                }else
+                    $max=$maxs[$v['table']];
+                echo "$v[table] $max ".ceil($max/$chunk)." ";
+                $data[$stat]=null;
+                for($i=0;$i<=$max;$i+=$chunk){
+                    $data[$stat]+=$db->selectcol("select /*SLOW_OK count*/ count(*) from `$v[table]` where `$v[id]` between $i and ".($i+$chunk-1).(isset($v['where']) ? " and ".$v['where'] : ''));
+                    echo '.';
+                }
             }
             echo " ".$data[$stat]."\n";
         }
         $data['total_rev_log_user']=null;
         $data['last_count']=gmdate('Y-m-d H:i:s');
-        $data['size']=self::wiki_size($data);
+        if($conf['multi'])
+            $data['size']=self::wiki_size($data);
         $total=$data['total_log']+$data['total_rev'];
-        $data['base_calc']=$total<=$conf['base_calc_max_month'] ? 'month' : 'day';
+        if($conf['multi'])
+            $data['base_calc']=$total<=$conf['base_calc_max_month'] ? 'month' : 'day';
 
         print_r($data);
-        $dbg=get_dbg();
-        $dbg->update('sites_stats', 'site_global_key', $site, $data);
-        require_once('include/wikis.php');
-        Wikis::update_score($site);
+        if($conf['multi']){
+            $dbg=get_dbg();
+            $dbg->update('sites_stats', 'site_global_key', $site, $data);
+            require_once('include/wikis.php');
+            Wikis::update_score($site);
+        } else {
+            $dbs=get_dbs();
+            $dbs->update('site_stats', $data, '1=1');
+        }
     }
 
     function update_bench($site)
