@@ -26,7 +26,7 @@ class Worker
     var $config;
     var $lock_file="/tmp/worker_lock";
     var $count_after_stats=false;
-    var $count_after_sum=false;
+    var $count_after_sum=true;
     var $userstats_months_graphs_expire="15 days";
     static $size_names=[
         0=>'none',
@@ -132,7 +132,7 @@ class Worker
         return call_user_func(array($this, "update_{$this->type}"), $site);
     }
 
-    function update_count($site=null)
+    function update_count($site='')
     {
         global $conf;
         $db=get_db();
@@ -295,10 +295,15 @@ class Worker
         echo "end $site\n";
     }
 
-    function update_live($site)
+    /**
+     * Updates stats from last hours according to the live_hours configuration,
+     * and also recent past days
+     */
+    function update_live($site='')
     {
         global $conf;
-        $this->setup_multi($site);
+        if($site!='')
+            $this->setup_multi($site);
         require_once('include/update_stats.php');
         ini_set('memory_limit', '7000M');
         $t=time();
@@ -327,16 +332,25 @@ class Worker
         if(!isset($last['last_update']) || strtotime($conf['live_expire_curent_day'], strtotime($last['last_update']))<=time())
             $up->update_date($curd);
         $t=time()-$t;
-        $db=get_dbg();
-        $db->update("sites_stats", "site_global_key", $site, array("duration_live"=>$t));
+        if($site!=''){
+            $db=get_dbg();
+            $db->update("sites_stats", "site_global_key", $site, array("duration_live"=>$t));
+        }else{
+            $dbs=get_dbs();
+            $dbs->update('site_stats', array('duration_live'=>$t), '1=1');
+        }
     }
 
-    function update_sum($site)
+    /**
+     * Update sums from current month year, and previous mont (and year if past)
+     */
+    function update_sum($site='')
     {
         global $conf;
         require_once('include/update_stats.php');
         require_once('include/userstats.php');
-        $this->setup_multi($site);
+        if($site!='')
+            $this->setup_multi($site);
         date_default_timezone_set('GMT');
         ini_set('memory_limit', '6000M');
         $t=time();
@@ -365,7 +379,7 @@ class Worker
                 $us->ip_mode(false);
             }
         }
-        $stats=Wikis::get_site_stats(Wikis::current_site());
+        $stats=Wikis::get_site_stats($site);
         $limit= $conf['recent_sum_limit_min_pages'] && isset($stats['total_page']) && $stats['total_page']>=$conf['recent_sum_limit_min_pages'];
         if($limit)
             echo " [total page limit]";
@@ -404,8 +418,13 @@ class Worker
         unset($us);
 
         $t=time()-$t;
-        $db=get_dbg();
-        $db->update("sites_stats", "site_global_key", $site, array("duration_sum"=>$t));
+        if($site!=''){
+            $db=get_dbg();
+            $db->update("sites_stats", "site_global_key", $site, array("duration_sum"=>$t));
+        }else{
+            $dbs=get_dbs();
+            $dbs->update('site_stats', array('duration_sum'=>$t), '1=1');
+        }
         echo "$site done $t s\n";
         if($this->count_after_sum){
             $t=time();

@@ -132,6 +132,11 @@ class Runner
         $obj=new UpdateStats();
         $obj->update_months($start,$end);
     }
+    /**
+     * Updates stats from last hours
+     * 
+     * @param number $p Number of hours (usually 24 or 48)
+     */
     function ac_update_hours($p)
     {
         require_once('include/update_stats.php');
@@ -262,8 +267,6 @@ class Runner
         $up=new UpdateStats();
         $up->sum(0,array('stats'));
         unset($up);
-        $worker = new Worker();
-        $worker->update_count();
         echo 'Memory : '.round(memory_get_usage(true)/1048576).'/'.round(memory_get_peak_usage(true)/1048576)."Mb\n";
     }
     function ac_fullupdate_months($p)
@@ -284,7 +287,6 @@ class Runner
         $stats= isset($p[1]) ? explode(',',$p[1]) : false;
         $slow=@$p[2];
         echo 'Memory : '.round(memory_get_usage(true)/1048576).'/'.round(memory_get_peak_usage(true)/1048576)."Mb\n";
-        $t=time();
         do{
             $obj=new UpdateStats();
             if($stats)
@@ -319,8 +321,6 @@ class Runner
         $obj=new UpdateStats();
         $obj->sum(0,array('time','stats'));
         unset($obj);
-        $worker = new Worker();
-        $worker->update_count();
         echo 'Memory : '.round(memory_get_usage(true)/1048576).'/'.round(memory_get_peak_usage(true)/1048576)."Mb\n";
     }
     function ac_fullupdate_refresh($p)
@@ -643,9 +643,48 @@ class Runner
     {
         require_once('include/userstats.php');
         Userstats::list_all_wikis($p[0]);
-
-
     }
 
+    /**
+     * Updates stats from last hours according to the live_hours configuration,
+     * and also recent past days
+     */
+    function ac_update_live()
+    {
+        require_once('include/worker.php');
+        $worker = new Worker();
+        $worker->update_live();
+    }
+    
+    /**
+     * Update sums from current month year, and previous mont (and year if past)
+     */
+    function ac_update_sum()
+    {
+        require_once('include/worker.php');
+        $worker = new Worker();
+        $worker->update_sum();
+    }
+    
+    /**
+     * Update miscellaneous data
+     */
+    function ac_update_misc()
+    {
+        require_once('include/worker.php');
+        $worker = new Worker();
+        $worker->update_misc();
+    }
+    
+    /**
+     * Update miscellaneous data
+     */
+    function ac_update_count()
+    {
+        require_once('include/worker.php');
+        $worker = new Worker();
+        $worker->update_count();
+    }
+    
 }
 ?>

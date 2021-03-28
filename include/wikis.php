@@ -293,7 +293,7 @@ class Wikis extends site_page
         $dbg=get_dbg();
         return $dbg->select1("select count(*) sites, sum(total_rev) total_rev, sum(total_page) total_page, sum(total_redirect) total_redirect  from sites_stats where users>0");
     }
-    static function get_site_stats($site)
+    static function get_site_stats($site='')
     {
         global $conf;
         if($conf['multi']) {
