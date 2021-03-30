@@ -1435,35 +1435,38 @@ $(function () {
 
         for($i=1;$i<=6;$i++)
             $cols[]=$i;
-        $o='<div class=userstats_months_graphs>';
-        $o.="<table class=userstats_months_graphs_table>";
-        $o.="<tr><td colspan=20 class=userstats_months_graph_legend>";
+        $full_colspan=$details?'4':'3';
+        $o='<div class="userstats_months_graphs wrap_max_fullwidth">';
+        $o.='<table class="userstats_months_graphs_table">';
+        $o.='<tr><td colspan="'.$full_colspan.'" class="userstats_months_graph_legend">';
         $o.=$this->months_graphs_legend();
-        $o.="</td></tr>";
+        $o.='</td></tr>';
+        $header=false;
         foreach($this->months_graphs_stats as $stat){
-            $o.="<tr><td class=userstats_months_graph_name>";
+            $o.='<tr><td class="userstats_months_graph_name">';
             $o.=htmlspecialchars(msg("userstats-months_graphs-$stat"));
-            if(!isset($header)){
+            if(!$header){
                 $header=true;
                 $o.="</td><td style='text-align:center'>".htmlspecialchars(date('m/Y', strtotime("-1 month")))."</td><td style='text-align:center'>".htmlspecialchars(msg('userstats-months_graphs-total'));
                 if($details)
                     $o.="</td><td style='text-align:center'>".htmlspecialchars(msg('userstats-months_graphs-history'));
             }
-            $o.="</td></tr>";
-            $o.="<tr><td>";
+            $o.='</td></tr>';
+            $o.='<tr><td>';
             $o.=self::svg_graph($this->months_graphs_dates[$stat], $cols, $height, 3, false);
-            $o.="</td><td>";
+            $o.='</td><td>';
             $o.=$this->pie_graph($pie[$stat], $height);
-            $o.="</td><td>";
+            $o.='</td><td>';
             $o.=$this->pie_graph($pie_cumul[$stat], $height);
-            $o.="</td><td>";
-            if($details)
+            if($details){
+                $o.='</td><td>';
                 $o.=self::svg_graph($this->months_graphs_dates_cumul[$stat], $cols, $height, 2, false);
-            $o.="</td></tr>";
+            }
+            $o.='</td></tr>';
         }
         if(!$details)
-            $o.="<tr><td colspan=20><a href='/utilisateurs?graphs_details=1'>".htmlspecialchars(msg('userstats-months_graphs-more'))."</a></td></tr>";
-        $o.="</table>";
+            $o.='<tr><td colspan="'.$full_colspan.'"><a href="'.htmlspecialchars(msg_site('urlpath-menu-userstats')).'?graphs_details=1">'.htmlspecialchars(msg('userstats-months_graphs-more'))."</a></td></tr>";
+        $o.='</table>';
         $o.='</div>';
         return $o;
     }
