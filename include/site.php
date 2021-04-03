@@ -297,7 +297,7 @@ class Site
             $o.=$this->analytics();
         $o.="</head><body>\n";
         //$o.=$this->serveur_analytics();
-        $this->remove_cookies();
+        //$this->remove_cookies();
         return $o;
     }
 
@@ -350,10 +350,7 @@ class Site
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
 
-  // Default analytics_storage to 'denied'.
-  gtag('consent', 'default', {
-    'analytics_storage': 'denied'
-  });
+  gtag('consent', 'default');
 
   gtag('js', new Date());
   gtag('config', $jsgaid, {
