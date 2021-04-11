@@ -395,6 +395,15 @@ class db
         }
         return false;
     }
+    /**
+     * Executes a select query, calling a function for each row
+     * 
+     * @param string $q Query
+     * @param array $func Function that will be passed to call_user_func (1st param will be the row)
+     * @param mixed|null $param Second parameter to the callback function
+     * @param mixed|null $param2 Third parameter to the callback function
+     * @return boolean Whether the query returned any result
+     */
     function select_walk($q,$func,$param=null,$param2=null)
     {
         if($this->profile)

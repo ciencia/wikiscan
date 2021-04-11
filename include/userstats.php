@@ -1557,7 +1557,7 @@ $(function () {
             else
                 $max=$year.date('m');
             $where="where date>='$min' and date<'$max'";
-            $rows=$dbs->select_walk("select SQL_NO_CACHE /*months graphs $min-$max*/ $cols from userstats_months $where order by date", array($this, 'months_graphs_row'));
+            $dbs->select_walk("select SQL_NO_CACHE /*months graphs $min-$max*/ $cols from userstats_months $where order by date", array($this, 'months_graphs_row'));
         }
         $this->months_graphs_count_date();
         echo "\n";
@@ -1610,6 +1610,13 @@ $(function () {
         $this->last_month_users=$this->cur_month_users;
         $this->cur_month_users=array();
     }
+    /**
+     * Transforms the age in months of a user into a categorical variable
+     * (1 = 1m, 2 = 1y, 3 = 3y, 4 = 6y, 5 = 9y, 6 = 9y+)  
+     * 
+     * @param number $months Age (in months) of the user
+     * @return number Classification (between 1 and 6)
+     */
     function months_key($months)
     {
         $keys=array(1, 12, 3*12, 6*12, 9*12);

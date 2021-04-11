@@ -3,12 +3,10 @@ Installing Wikiscan
 Wikiscan is developed and tested on Linux platform, but it may also work on other platforms.
 
 Required softwares :
-* Web server with PHP (tested on 5.5.9), should be Apache for some url using mod_rewrite
+* Web server with PHP (tested on 5.5.9, 7.3), should be Apache for some url using mod_rewrite
 ** Apache modules : mod_rewrite
-** PHP modules : mbstring, curl, gd, mysqlnd
+** PHP modules : mbstring, curl, gd, mysqlnd, memcached
 * MySQL server (tested on 5.5, MariaDB 5.5 and 10.1)
-
-Recommended :
 * Memcached server and PHP extension memcache
 
 
@@ -21,7 +19,8 @@ Sample installation :
 extract Wikiscan to a directory (example /var/www/wikiscan/)
 create a new Mysql database (example wikiscan_stats)
 import ctrl/stats.sql to create the tables
-Create or configure a Mysql user with access rights to the database (example wikiscan_user with password 'passw')
+Create or configure a Mysql user with SELECT,INSERT,UPDATE,DELETE rights to the wikiscan database (example: wikiscan_user)
+Create or configure a Mysql user with SELECT rights to the wiki's database (it can be the same previously created user)
 
 go to config/ directory
 
@@ -54,7 +53,7 @@ edit local_conf.php to configure local paths and wiki urls
         ),
     );
 
-The directories cache/ and img/* must be writable.
+The directories wpstats/ cache/ and img/* must be writable.
 
 Wikiscan is not actually designed to work in a web root subdirectory, you should create a dedicated virtual host.
 The site should work at this stage but without any statistics yet.
@@ -63,10 +62,15 @@ The site should work at this stage but without any statistics yet.
 To update statistics :
 ********************
 
-Go to the ctrl/ directory
-To update all daily stats and user stats, execute : ./run fullupdate
-To update last hours/grid, execute : ./run updatestats_hours 24
+To update all daily stats and user stats, execute :
+ php ctrl/run.php fullupdate
+ php ctrl/run.php fullupdate_months
 
+To update last hours, execute :
+ php ctrl/run.php update_live
+
+To update grid, execute :
+ php ctrl/run.php update_sum
 
 
 *****************************************************************************************
