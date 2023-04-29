@@ -51,10 +51,10 @@ $local_conf=array(
     'robots_policy'=>'index,follow',
     // Do we have hits information available?
     'hits_available'=>true,
-    // use the revision_actor_temp table when building stats (needed for pre-1.35 wikis)
+    // use the revision_actor_temp table when building stats. Needs to be true before 1.39. This table no longer exists since MW 1.39
     'stats_join_revision_actor_temp'=>false,
-    // use the revision_comment_temp table when building stats (needed for pre-1.35 wikis)
-    'stats_join_revision_comment_temp'=>false,
+    // use the revision_comment_temp table when building stats. Needs to be true before 1.40. This table will be removed in future versions of MediaWiki, somewhere after 1.40
+    'stats_join_revision_comment_temp'=>true,
     // Log sql queries to the query_log table of dbg. Set it to false to not log queries
     'log_sql'=>false,
 */
