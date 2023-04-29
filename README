@@ -5,3 +5,60 @@ Wikiscan is a software package written in PHP. It compute and display statistics
 The development of Wikiscan started in 2011 by a single person on free time, it was only supporting fr.wikipedia.org.
 In 2016, with the help of a Wikimedia Foundation grant, Wikiscan is expended into a multi-wikis site, supporting hundreds of public Wikimedia wikis with the Labs database replicas. The source code is now open, the first public version is called 0.8.
 
+*********
+URL Paths
+*********
+
+See site.php, function canonical()
+
+- /
+	Home
+- /plage-ip/${range}
+	??
+- /plage-ip/${whois}?whois=${whois}
+	??
+- /plage-ip/?owner=${owner}
+	??
+
+********
+Sections
+********
+
+Home
+----
+
+General statistics
+
+Pie charts, and contents, average by day tables populated by: run.php fullupdate
+Histogram graphs populated by: run.php fullupdate_months
+
+
+Last hours
+__________
+
+Statistics from the last 24/48 hours
+
+Populated by: run.php update_hours 24, run.php update_hours 48
+
+
+Grid
+----
+
+Populated by: run.php update_hours 24
+
+
+Calendar
+--------
+
+Edit statistics per year, month, day
+
+Populated by: run.php fullupdate
+
+
+Users
+-----
+
+User statistics
+
+Populated by: run.php fullupdate
+
