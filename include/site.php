@@ -593,7 +593,7 @@ EOT;
         $this->toplist=TopList::create($list,$this->date,$this->filter);
         if($this->toplist!==false){
             if($this->toplist->load_params())
-                $o=$this    ->view();
+                $o=$this->toplist->view();
             else
                 return $this->wrong_params('toplist');
         }else
