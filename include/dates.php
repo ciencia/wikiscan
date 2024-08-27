@@ -25,9 +25,16 @@ class Dates
     static $cache=true;
     static $cache_expire=3600;
 
+    var $date;
+    var $year;
+    var $month;
+    var $day;
+    var $live;
+
     function __construct()
     {
     }
+
     static function get($date)
     {
         if($date!==0 && $date=='')

@@ -474,8 +474,8 @@ class awPHPFontDriver extends awFontDriver {
 			$function(
 				$driver->resource,
 				$font->font,
-				$driver->x + $point->x + $addX,
-				$driver->y + $point->y + $addY + $addAngle,
+				$driver->x + (int)$point->x + $addX,
+				$driver->y + (int)$point->y + $addY + $addAngle,
 				$line,
 				$rgb
 			);
@@ -631,8 +631,8 @@ class awFileFontDriver extends awFontDriver {
 			$driver->resource,
 			$font->getSize(),
 			$text->getAngle(),
-			$driver->x + $point->x + $textWidth * sin($text->getAngle() / 180 * M_PI),
-			$driver->y + $point->y + $textHeight,
+			$driver->x + (int)$point->x + $textWidth * (int)sin($text->getAngle() / 180 * M_PI),
+			$driver->y + (int)$point->y + $textHeight,
 			$rgb,
 			$filePath,
 			$textString

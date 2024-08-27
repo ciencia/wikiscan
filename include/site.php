@@ -38,6 +38,7 @@ class Site
     var $wrong_params=false;
     var $host;
     var $https=false;
+    var $toplist=false;
 
     function __construct()
     {
@@ -570,10 +571,10 @@ EOT;
         if($this->wrong_params)
             return $oo;
         $o='<div class="list_mep list_mep_dates">';
-        $this->dates=new Dates();
-        $this->dates->load();
+        $dates=new Dates();
+        $dates->load();
         $o.='<div class="list_calendar">';
-        $o.=$this->dates->menu($this->date, $this->list);
+        $o.=$dates->menu($this->date, $this->list);
         $o.='</div>';
         $o.=$oo;
         if($this->toplist && $this->toplist->loaded())
@@ -592,7 +593,7 @@ EOT;
         $this->toplist=TopList::create($list,$this->date,$this->filter);
         if($this->toplist!==false){
             if($this->toplist->load_params())
-                $o=$this->toplist->view();
+                $o=$this    ->view();
             else
                 return $this->wrong_params('toplist');
         }else
@@ -644,9 +645,9 @@ EOT;
     {
         ini_set('memory_limit', '130M');
         $o='<div>';
-        $this->dates=new Dates();
-        $this->dates->load(true);
-        $o.=$this->dates->view($this->date);
+        $dates=new Dates();
+        $dates->load(true);
+        $o.=$dates->view($this->date);
         $o.='</div>';
         return $o;
     }

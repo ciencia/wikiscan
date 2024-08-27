@@ -28,6 +28,7 @@ class TopListUser extends TopList
     var $sort='weight';
     var $mini_size=10;
     var $mini_expand_size=30;
+    var $graphs;
 
     function __construct($date=false, $filter=false, $sort=false, $mini=false)
     {

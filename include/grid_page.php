@@ -25,6 +25,7 @@ require_once('include/toplist_page.php');
 class GridPage extends site_page
 {
     var $cache=true;
+    var $date=0;
 
     static function title($date)
     {

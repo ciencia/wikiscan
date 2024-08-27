@@ -69,6 +69,8 @@ class UserStats extends site_page
     var $group=null;
     var $lusers=null;
     var $totpages=0;
+    var $groups;
+    var $user_stats;
 
     function __construct($ip=false)
     {
