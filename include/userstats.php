@@ -643,7 +643,7 @@ $(function () {
         $o.='</div>';
         return $o;
     }
-    function view_list($date_type, $user='', $sorts, $filters, $where='', $near_user='')
+    function view_list($date_type, $user, $sorts, $filters, $where='', $near_user='')
     {
         global $conf;
         $dbs=get_dbs();
