@@ -25,6 +25,8 @@ require_once('include/mw/mwns.php');
 
 class WikiHome
 {
+    var $wiki=null;
+    var $data=null;
 
     function view()
     {

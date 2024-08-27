@@ -56,6 +56,19 @@ class UserStats extends site_page
         'days'=>array(1, 3, 5, 10, 30, 100, 1000),
         'tot_time2'=>array(3600, 18000, 36000, 360000, 3600000),
         );
+    var $types=[];
+    var $fields=null;
+    var $detail=0;
+    var $userlist='';
+    var $sort='';
+    var $order='';
+    var $bot=0;
+    var $percent=0;
+    var $page=0;
+    var $recalc_user=false;
+    var $group=null;
+    var $lusers=null;
+    var $totpages=0;
 
     function __construct($ip=false)
     {

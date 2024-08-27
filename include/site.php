@@ -37,6 +37,7 @@ class Site
     var $pv;
     var $wrong_params=false;
     var $host;
+    var $https=false;
 
     function __construct()
     {

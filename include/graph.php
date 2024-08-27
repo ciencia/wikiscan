@@ -37,6 +37,12 @@ class WsGraph
     var $user_id;
     var $ip=false;
     var $antialiasing=true;
+    var $type;
+    var $date_type;
+    var $opts;
+    var $live=false;
+    var $hide_vertical=false;
+    var $lines;
     static $dates_opts=array(
         1=>array('step'=>1,'5m'=>true),
         2=>array('step'=>1,'10m'=>true),

@@ -21,6 +21,11 @@ class db
     var $query_time=0;
     var $query_count=0;
     var $callback;
+    var $host;
+    var $user;
+    var $pass;
+    var $base;
+    var $start_time;
 
     function __construct($host='localhost', $user='root', $pass='', $base = '', $port=false, $flags=false)
     {

@@ -225,7 +225,7 @@ function format_size($v)
 function format_hour($time)
 {
     $h=floor($time/3600);
-    $r = ($time/60) % 60;
+    $r = fdiv($time,60) % 60;
     if($h<1)
         return $r.'&nbsp;'.htmlspecialchars(msg('minute-short'));
     if($r==0||$h>=24)

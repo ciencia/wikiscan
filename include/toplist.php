@@ -24,12 +24,15 @@ require_once('include/site_page.php');
 class TopList extends site_page
 {
     var $data;
+    var $list;
     var $data_name;
     var $date;
     var $filters;
     var $filter;
     var $sorts;
     var $sort;
+    var $sort_cols;
+    var $sort_images;
     var $order=-1;
     var $list_size=150;
     var $mini_list_size=20;
