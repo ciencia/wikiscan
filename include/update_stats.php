@@ -466,7 +466,7 @@ class UpdateStats
         $t=microtime(true);
         $db->select_walk($q,array($this,'update_log'));
         $t=microtime(true)-$t;
-        echo (int)@$this->s['stats']['total']['log'].' '.flength($t).' '.round((@$this->s['stats']['total']['log']/1000)/$t,2).' k/s';
+        echo (int)@$this->s['stats']['total']['log'].' '.flength($t).' '.round(fdiv(@$this->s['stats']['total']['log']/1000,$t),2).' k/s';
     }
 
     function load_logs_query($start, $end)
@@ -549,7 +549,7 @@ class UpdateStats
         $t=microtime(true);
         $db2->select_walk($q,array($this,'update_archive'));
         $t=microtime(true)-$t;
-        echo ' '.(int)@$this->s['stats']['total']['archive_edit'].' arch '. round((@$this->s['stats']['total']['archive_edit']/1000)/$t,1)."k/s ";
+        echo ' '.(int)@$this->s['stats']['total']['archive_edit'].' arch '. round(fdiv(@$this->s['stats']['total']['archive_edit']/1000,$t),1)."k/s ";
         if($this->double_db)
             $db2->close();
     }
@@ -1245,7 +1245,7 @@ class UpdateStats
             $weight*=0.9;
         if(@$v['edit']>0){
             if(@$v['revert']>0){
-                $pr=@$v['revert']/@$v['edit'];
+                $pr=@$v['edit']!=0 ? @$v['revert']/@$v['edit'] : 0;
                 if($diffabs<=3){
                     if($pr>=0.70)
                         $weight*=0.6;
@@ -1826,11 +1826,12 @@ class UpdateStats
             $count=count($vals);
             foreach($vals as $stats)
                 foreach($stats as $key=>$val)
-                    if(!is_array($val))
+                    if(!is_array($val) && $count!=0)
                         @$total[$key]+=$val/$count;
                     else
                         foreach($val as $kk=>$vv)
-                            @$total[$key][$kk]+=$vv/$count;
+                            if($count!=0)
+                                @$total[$key][$kk]+=$vv/$count;
             $months[$month]=$total;
         }
         if($round!==false){
@@ -1865,11 +1866,12 @@ class UpdateStats
             if($count==$reduce){
                 if($average)
                     foreach($months[$last_month] as $key=>$val)
-                        if(!is_array($val))
+                        if(!is_array($val) && $count!=0)
                             @$months[$last_month][$key]/=$count;
                         else
                             foreach($val as $kk=>$vv)
-                                @$months[$last_month][$key][$kk]/=$count;
+                                if ($count!=0)
+                                    @$months[$last_month][$key][$kk]/=$count;
                 $count=0;
             }
         }

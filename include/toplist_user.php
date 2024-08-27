@@ -163,7 +163,7 @@ class TopListUser extends TopList
                 $speed=round($speed*60).'/h';
             else
                 $speed=round($speed).'/m';
-            $avg=round(@$v['tot_time2']/@$v['total']);
+            $avg=round(@$v['total']!=0 ? @$v['tot_time2']/@$v['total'] : 0);
             $avg=round($avg/10)*10;
             $o.='<td>'.htmlspecialchars(format_time($avg)).'</td>';
 

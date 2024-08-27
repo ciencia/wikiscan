@@ -859,7 +859,7 @@ $(function () {
         $o="<tr><td class='label'>".$label.'</td>';
         $val=$this->format_val($key, $this->user_stats);
         $o.="<td $class>".$val.'</td>';
-        if(@$f['percent']!='')
+        if(@$f['percent']!='' && $this->user_stats[$f['percent']]!=0)
             $o.='<td class="up">'.@round(100*$this->user_stats[$key]/$this->user_stats[$f['percent']]).'%</td>';
         else
             $o.='<td class="up"></td>';
@@ -903,17 +903,17 @@ $(function () {
                 $val=format_hour($v[$k]);
                 break;
             case 'time_day':
-                $val=@round(($v['tot_time2']/$v['days'])/300)*300;
+                $val=$v['days']>0 ? round(($v['tot_time2']/$v['days'])/300)*300 : 0;
                 $val=format_hour($val);
                 break;
             case 'total_hour':
-                $val=@round($v['total']/($v['tot_time2']/3600));
+                $val=$v['tot_time2']>0 ? round($v['total']/($v['tot_time2']/3600)) : 0;
                 break;
             case 'total_day':
-                $val=@round($v['total']/$v['days']);
+                $val=$v['days']>0 ? round($v['total']/$v['days']) : 0;
                 break;
             case 'total_month':
-                $val=@round($v['total']/$v['months']);
+                $val=$v['months'] > 0 ? round($v['total']/$v['months']) : 0;
                 break;
             case 'diff':
             case 'diff_article_no_rv':
@@ -930,7 +930,7 @@ $(function () {
                     $val=htmlspecialchars(@$v[$k]);
         }
         if($percent && @$f['percent']!=''){
-            $p=@round(100*$v[$k]/$v[$f['percent']]).'%';
+            $p=$v[$f['percent']]>0 ? round(100*$v[$k]/$v[$f['percent']]).'%' : 0
             $val.="<span class='up'>$p</span>";
         }
         return $val;
