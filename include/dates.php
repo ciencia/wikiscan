@@ -25,7 +25,6 @@ class Dates
     static $cache=true;
     static $cache_expire=3600;
 
-    var $date;
     var $year;
     var $month;
     var $day;
@@ -114,12 +113,10 @@ class Dates
             if(!$no_cache && self::$cache)
                 $Cache->set(cache_key('date:rows'),$rows,self::$cache_expire);
         }
-        $this->date=array();
         $this->year=array();
         $this->month=array();
         $this->day=array();
         foreach($rows as $v){
-            $this->dates[$v['date']]=$v;
             $date=$this->parse_date($v['date']);
             switch($v['type']){
                 case 'D' : $this->day[$date['y']][$date['m']][$date['d']]=$v; break;

@@ -20,6 +20,8 @@
 **/
 class TopListStats extends TopList
 {
+    var $graphs;
+
     function __construct($date=false, $filter=false, $sort=false, $mini=false)
     {
         parent::__construct($date, $filter, $sort, $mini);
