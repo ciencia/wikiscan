@@ -943,7 +943,7 @@ $(function () {
                     $val=htmlspecialchars(@$v[$k]);
         }
         if($percent && @$f['percent']!=''){
-            $p=$v[$f['percent']]>0 ? round(100*$v[$k]/$v[$f['percent']]).'%' : 0
+            $p=$v[$f['percent']]>0 ? round(100*$v[$k]/$v[$f['percent']]).'%' : 0;
             $val.="<span class='up'>$p</span>";
         }
         return $val;
