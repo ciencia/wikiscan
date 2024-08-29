@@ -114,7 +114,14 @@ class awLegend implements awPositionable {
 	 * @var array Array for left, right, top and bottom margins
 	 */
 	private $margin;
-	
+
+	/**
+	 * Padding
+	 *
+	 * @var array Array for left, right, top and bottom padding
+	 */
+	private $padding;
+
 	/**
 	 * Legend shadow
 	 *

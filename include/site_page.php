@@ -23,6 +23,7 @@ class site_page
 {
     var $cache=false;
     var $cache_expire=0;
+    var $loaded=false;
 
     function valid_cache_date($cache_date)
     {

@@ -876,16 +876,16 @@ class ranges extends site_page
     {
         require_once('include/common/phpwhois/whois.main.php');
         $whois = new Whois();
-        error_reporting(E_ALL^E_NOTICE);
+        $old_error_level=error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
         $src_ip=$this->whois_src_ip();
         @$this->i['source_ip'][$src_ip]++;
         $w = $whois->Lookup($ip,false,$src_ip);
-        error_reporting(E_ALL);
+        error_reporting($old_error_level);
         if(@$w['regrinfo']['owner']['organization']=='This network has been transferred to AFRINIC'){
             $whois->UseServer('ip','whois.afrinic.net');
-            error_reporting(E_ALL^E_NOTICE);
+            $old_error_level=error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
             $w = $whois->Lookup($ip,false,$src_ip);
-            error_reporting(E_ALL);
+            error_reporting($old_error_level);
         }
         return $w;
     }

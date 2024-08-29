@@ -21,6 +21,8 @@
 
 class wiki_api
 {
+    var $dest;
+    var $curl;
 
     function __construct($dest='https://fr.wikipedia.org/w/api.php')
     {

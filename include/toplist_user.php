@@ -28,6 +28,7 @@ class TopListUser extends TopList
     var $sort='weight';
     var $mini_size=10;
     var $mini_expand_size=30;
+    var $graphs;
 
     function __construct($date=false, $filter=false, $sort=false, $mini=false)
     {
@@ -163,7 +164,7 @@ class TopListUser extends TopList
                 $speed=round($speed*60).'/h';
             else
                 $speed=round($speed).'/m';
-            $avg=round(@$v['tot_time2']/@$v['total']);
+            $avg=round(@$v['total']!=0 ? @$v['tot_time2']/@$v['total'] : 0);
             $avg=round($avg/10)*10;
             $o.='<td>'.htmlspecialchars(format_time($avg)).'</td>';
 

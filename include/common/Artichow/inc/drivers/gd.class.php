@@ -23,7 +23,24 @@ class awGDDriver extends Driver {
 	 * @var $resource
 	 */
 	public $resource;
-	
+
+	/**
+	 * Driver X position
+	 *
+	 * @var int
+	 */
+	public $x;
+
+	/**
+	 * Driver Y position
+	 *
+	 * @var int
+	 */
+	public $y;
+
+	private $w;
+	private $h;
+
 	public function __construct() {
 		parent::__construct();
 		
@@ -109,15 +126,15 @@ class awGDDriver extends Driver {
 	public function setPosition($x, $y) {
 		
 		// Calculate absolute position
-		$this->x = round($x * $this->imageWidth - $this->w / 2);
-		$this->y = round($y * $this->imageHeight - $this->h / 2);
+		$this->x = (int)round($x * $this->imageWidth - $this->w / 2);
+		$this->y = (int)round($y * $this->imageHeight - $this->h / 2);
 	
 	}
 	
 	public function setAbsPosition($x, $y) {
 		
-		$this->x = $x;
-		$this->y = $y;
+		$this->x = (int)$x;
+		$this->y = (int)$y;
 	
 	}
 	
@@ -131,8 +148,8 @@ class awGDDriver extends Driver {
 	public function setSize($w, $h) {
 	
 		// Calcul absolute size
-		$this->w = round($w * $this->imageWidth);
-		$this->h = round($h * $this->imageHeight);
+		$this->w = (int)round($w * $this->imageWidth);
+		$this->h = (int)round($h * $this->imageHeight);
 		
 		return $this->getSize();
 	
@@ -140,8 +157,8 @@ class awGDDriver extends Driver {
 	
 	public function setAbsSize($w, $h) {
 	
-		$this->w = $w;
-		$this->h = $h;
+		$this->w = (int)$w;
+		$this->h = (int)$h;
 		
 		return $this->getSize();
 	
@@ -182,7 +199,7 @@ class awGDDriver extends Driver {
 		list($x2, $y2) = $p2->getLocation();
 	
 		$driver = $image->getDriver();
-		imagecopy($this->resource, $driver->resource, $this->x + $x1, $this->y + $y1, 0, 0, $x2 - $x1, $y2 - $y1);
+		imagecopy($this->resource, $driver->resource, $this->x + (int)$x1, $this->y + (int)$y1, 0, 0, (int)$x2 - (int)$x1, (int)$y2 - (int)$y1);
 	
 	}
 	
@@ -199,10 +216,10 @@ class awGDDriver extends Driver {
 		$function(
 			$this->resource,
 			$driver->resource,
-			$this->x + $d1->x, $this->y + $d1->y,
-			$s1->x, $s1->y,
-			$d2->x - $d1->x, $d2->y - $d1->y,
-			$s2->x - $s1->x, $s2->y - $s1->y
+			$this->x + (int)$d1->x, $this->y + (int)$d1->y,
+			(int)$s1->x, (int)$s1->y,
+			(int)$d2->x - (int)$d1->x, (int)$d2->y - (int)$d1->y,
+			(int)$s2->x - (int)$s1->x, (int)$s2->y - (int)$s1->y
 		);
 	
 	}
@@ -256,7 +273,7 @@ class awGDDriver extends Driver {
 	
 		if($p->isHidden() === FALSE) {
 			$rgb = $this->getColor($color);
-			imagesetpixel($this->resource, $this->x + round($p->x), $this->y + round($p->y), $rgb);
+			imagesetpixel($this->resource, $this->x + (int)round($p->x), $this->y + (int)round($p->y), $rgb);
 		}
 	
 	}
@@ -275,7 +292,7 @@ class awGDDriver extends Driver {
 			switch($line->getStyle()) {
 			
 				case awLine::SOLID :
-					imageline($this->resource, $this->x + round($p1->x), $this->y + round($p1->y), $this->x + round($p2->x), $this->y + round($p2->y), $rgb);
+					imageline($this->resource, $this->x + (int)round($p1->x), $this->y + (int)round($p1->y), $this->x + (int)round($p2->x), $this->y + (int)round($p2->y), $rgb);
 					break;
 					
 				case awLine::DOTTED :
@@ -383,8 +400,8 @@ class awGDDriver extends Driver {
 			
 			imagefilledellipse(
 				$this->resource,
-				$this->x + $x,
-				$this->y + $y,
+				$this->x + (int)$x,
+				$this->y + (int)$y,
 				$width,
 				$height,
 				$rgb
@@ -420,7 +437,7 @@ class awGDDriver extends Driver {
 				$thickness = $line->getThickness();
 				$this->startThickness($thickness);
 				$rgb = $this->getColor($color);
-				imagerectangle($this->resource, $this->x + $p1->x, $this->y + $p1->y, $this->x + $p2->x, $this->y + $p2->y, $rgb);
+				imagerectangle($this->resource, $this->x + (int)$p1->x, $this->y + (int)$p1->y, $this->x + (int)$p2->x, $this->y + (int)$p2->y, $rgb);
 				$this->stopThickness($thickness);
 				break;
 			
@@ -471,7 +488,7 @@ class awGDDriver extends Driver {
 	
 		if($background instanceof awColor) {
 			$rgb = $this->getColor($background);
-			imagefilledrectangle($this->resource, $this->x + $p1->x, $this->y + $p1->y, $this->x + $p2->x, $this->y + $p2->y, $rgb);
+			imagefilledrectangle($this->resource, $this->x + (int)$p1->x, $this->y + (int)$p1->y, $this->x + (int)$p2->x, $this->y + (int)$p2->y, $rgb);
 		} else if($background instanceof awGradient) {
 			$gradientDriver = new awGDGradientDriver($this);
 			$gradientDriver->filledRectangle($background, $p1, $p2);
@@ -526,7 +543,11 @@ class awGDDriver extends Driver {
 			$points = $this->getPolygonPoints($polygon);
 			$rgb = $this->getColor($background);
 			
-			imagefilledpolygon($this->resource, $points, $polygon->count(), $rgb);
+			if (version_compare(PHP_VERSION, '8.1.0') === -1) {
+				imagefilledpolygon($this->resource, $points, $polygon->count(), $rgb);
+			} else {
+				imagefilledpolygon($this->resource, $points, $rgb);
+			}
 			
 		} else if($background instanceof awGradient) {
 			

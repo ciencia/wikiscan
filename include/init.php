@@ -18,7 +18,7 @@
 * @file
 * @author Akeron
 **/
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 include('config/conf.php');
 
 require_once('include/debug.php');

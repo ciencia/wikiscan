@@ -56,6 +56,30 @@ class UserStats extends site_page
         'days'=>array(1, 3, 5, 10, 30, 100, 1000),
         'tot_time2'=>array(3600, 18000, 36000, 360000, 3600000),
         );
+    var $types=[];
+    var $fields=null;
+    var $detail=0;
+    var $userlist='';
+    var $sort='';
+    var $order='';
+    var $bot=0;
+    var $percent=0;
+    var $page=0;
+    var $recalc_user=false;
+    var $group=null;
+    var $lusers=null;
+    var $totpages=0;
+    var $groups;
+    var $user_stats;
+
+    var $last_month_date='';
+    var $last_count_date='';
+    var $months_users=array();
+    var $cur_month_users=array();
+    var $last_month_users=array();
+    var $months_graphs_dates=array();
+    var $months_graphs_dates_cumul=array();
+    var $months_graphs_dates_quit=array();
 
     function __construct($ip=false)
     {
@@ -643,7 +667,7 @@ $(function () {
         $o.='</div>';
         return $o;
     }
-    function view_list($date_type, $user='', $sorts, $filters, $where='', $near_user='')
+    function view_list($date_type, $user, $sorts, $filters, $where='', $near_user='')
     {
         global $conf;
         $dbs=get_dbs();
@@ -859,7 +883,7 @@ $(function () {
         $o="<tr><td class='label'>".$label.'</td>';
         $val=$this->format_val($key, $this->user_stats);
         $o.="<td $class>".$val.'</td>';
-        if(@$f['percent']!='')
+        if(@$f['percent']!='' && $this->user_stats[$f['percent']]!=0)
             $o.='<td class="up">'.@round(100*$this->user_stats[$key]/$this->user_stats[$f['percent']]).'%</td>';
         else
             $o.='<td class="up"></td>';
@@ -903,17 +927,17 @@ $(function () {
                 $val=format_hour($v[$k]);
                 break;
             case 'time_day':
-                $val=@round(($v['tot_time2']/$v['days'])/300)*300;
+                $val=$v['days']>0 ? round(($v['tot_time2']/$v['days'])/300)*300 : 0;
                 $val=format_hour($val);
                 break;
             case 'total_hour':
-                $val=@round($v['total']/($v['tot_time2']/3600));
+                $val=$v['tot_time2']>0 ? round($v['total']/($v['tot_time2']/3600)) : 0;
                 break;
             case 'total_day':
-                $val=@round($v['total']/$v['days']);
+                $val=$v['days']>0 ? round($v['total']/$v['days']) : 0;
                 break;
             case 'total_month':
-                $val=@round($v['total']/$v['months']);
+                $val=$v['months'] > 0 ? round($v['total']/$v['months']) : 0;
                 break;
             case 'diff':
             case 'diff_article_no_rv':
@@ -930,7 +954,7 @@ $(function () {
                     $val=htmlspecialchars(@$v[$k]);
         }
         if($percent && @$f['percent']!=''){
-            $p=@round(100*$v[$k]/$v[$f['percent']]).'%';
+            $p=$v[$f['percent']]>0 ? round(100*$v[$k]/$v[$f['percent']]).'%' : 0;
             $val.="<span class='up'>$p</span>";
         }
         return $val;

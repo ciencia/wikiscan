@@ -136,7 +136,7 @@ class mCache
         $o='<table class=cache_stats><tr><td>Key</td><td>Hits</td><td>Hits %</td><td>Miss</td></tr>';
         foreach(self::$stats as $k=>$v){
             $t=@$v['hits']+@$v['miss'];
-            $o.="<tr><td>$k</td><td>".(int)@$v['hits']."</td><td>".round(100*@$v['hits']/$t)."&nbsp;%</td><td>".(int)@$v['miss']."</td></tr>";
+            $o.="<tr><td>$k</td><td>".(int)@$v['hits']."</td><td>".($t!=0 ? round(100*@$v['hits']/$t) : 0)."&nbsp;%</td><td>".(int)@$v['miss']."</td></tr>";
         }
         $o.='</table>';
         return $o;

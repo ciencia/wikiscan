@@ -64,7 +64,7 @@ class GraphList
         $res['users']=self::svg_graph(array('uuser', 'uip', 'ubot'), 30, 1, $months);
         return $res;
     }
-    static function svg_graph($cols, $height, $xinc=1, $months, $min=false, $reduce=false)
+    static function svg_graph($cols, $height, $xinc, $months, $min=false, $reduce=false)
     {
         if(empty($months))
             return false;

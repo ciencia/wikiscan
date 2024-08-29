@@ -33,6 +33,7 @@ class TopListPage extends TopList
     var $pages_filter='';
     var $pages_filter_invert=false;
     var $ignore_title='__OTHER__';
+    var $graphs;
 
     function __construct($date=false, $filter=false, $sort=false, $mini=false)
     {

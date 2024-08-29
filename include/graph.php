@@ -37,21 +37,31 @@ class WsGraph
     var $user_id;
     var $ip=false;
     var $antialiasing=true;
+    var $type;
+    var $date_type;
+    var $opts;
+    var $live=false;
+    var $hide_vertical=false;
+    var $lines;
+    var $date=false;
+    var $xaxis;
+    var $yaxis;
+    var $graph;
+    var $colors=[];
     static $dates_opts=array(
         1=>array('step'=>1,'5m'=>true),
         2=>array('step'=>1,'10m'=>true),
         3=>array('step'=>5,'step_big'=>1,'30m'=>true),
         6=>array('step'=>5,'step_big'=>2,'step_large'=>1,'30m'=>true),
-    12=>array('step'=>10,'step_big'=>5,'step_large'=>1),
-    24=>array('step'=>10,'step_big'=>5,'step_large'=>5),
-    'default'=>array('step'=>10,'step_big'=>5,'step_large'=>5),
-    'M'=>array('step'=>1,'step_big'=>1),
-    'Y'=>array('step'=>1,'step_big'=>1),
-    'T'=>array('step'=>1,'step_big'=>1),
+        12=>array('step'=>10,'step_big'=>5,'step_large'=>1),
+        24=>array('step'=>10,'step_big'=>5,'step_large'=>5),
+        'default'=>array('step'=>10,'step_big'=>5,'step_large'=>5),
+        'M'=>array('step'=>1,'step_big'=>1),
+        'Y'=>array('step'=>1,'step_big'=>1),
+        'T'=>array('step'=>1,'step_big'=>1),
     );
     static $author='wikiscan.org';
     static $copyright='CC BY-SA 3.0';
-    var $date=false;
 
     function __construct($type,$date=false)
     {
@@ -671,7 +681,7 @@ class WsGraph
             }
             $plot->yAxis->auto(false);
             $group->add($plot);
-            $group->legend->add($plot, utf8_decode(msg("graph-line-$line")), Legend::LINE);
+            $group->legend->add($plot, mb_convert_encoding(msg("graph-line-$line"),'ISO-8859-1','UTF-8'), Legend::LINE);
         }
 
         $this->graph->add($group);

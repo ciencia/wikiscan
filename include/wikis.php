@@ -787,7 +787,7 @@ class Wikis extends site_page
             $o.="<td>".($local ? "<a href=\"//$url\">$name</a>" : $name)."</td>";
             $o.="<td>".fnum($v['total_rev'])."</td>";
             $o.="<td>".fnum($v['total_archive'])."</td>";
-            $o.="<td>".@round(100*$v['total_archive']/($v['total_rev']+$v['total_archive']))."%</td>";
+            $o.="<td>".($v['total_rev']+$v['total_archive'] > 0 ? round(100*$v['total_archive']/($v['total_rev']+$v['total_archive'])) : 0)."%</td>";
             $o.="<td>".fnum($v['total_log'])."</td>";
             $o.="<td>".fnum($v['total_user'])."</td>";
             $o.="<td>".fnum($v['total_page'])."</td>";
