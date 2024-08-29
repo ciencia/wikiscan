@@ -72,6 +72,15 @@ class UserStats extends site_page
     var $groups;
     var $user_stats;
 
+    var $last_month_date='';
+    var $last_count_date='';
+    var $months_users=array();
+    var $cur_month_users=array();
+    var $last_month_users=array();
+    var $months_graphs_dates=array();
+    var $months_graphs_dates_cumul=array();
+    var $months_graphs_dates_quit=array();
+
     function __construct($ip=false)
     {
         global $conf;

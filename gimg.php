@@ -18,7 +18,7 @@
 * @file
 * @author Akeron
 **/
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 require_once('include/graph.php');
 include('config/conf.php');
 include('include/init.php');
