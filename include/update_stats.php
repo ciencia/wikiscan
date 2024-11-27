@@ -1356,6 +1356,7 @@ class UpdateStats
                     switch($k){
                         case 'type':
                         case 'id':
+                        case 'last_page':
                             break;
                         case 'last_edit':
                             if(!isset($this->s['users'][$user]['last_edit'])||$this->s['users'][$user]['last_edit']<$v)
