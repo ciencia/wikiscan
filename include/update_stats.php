@@ -1408,6 +1408,7 @@ class UpdateStats
                         case 'uip':
                         case 'ubot':
                         case 'utot':
+                        case 'last_user':
                             break;
                         case 'size':
                             $this->s['pages'][$page]['size']=$v;
