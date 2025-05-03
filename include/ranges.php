@@ -1062,10 +1062,13 @@ class ranges extends site_page
     }
     function block_rows($ip)
     {
+        global $conf;
         if(!$db=get_db2())
             return [];
-        //return $db->select("select ipb_address, ipb_by_text, ipb_create_account, ipb_anon_only, ipb_timestamp, ipb_expiry from ipblocks where ipb_user=0 and ipb_address like '$ip' order by ipb_timestamp desc limit {$this->max_logs_limit}");
-        return $db->select("select ipb_address, actor_name ipb_by_text, ipb_create_account, ipb_anon_only, ipb_timestamp, ipb_expiry from ipblocks left join actor on ipb_by_actor=actor_id where ipb_user=0 and ipb_address like '$ip' order by ipb_timestamp desc limit {$this->max_logs_limit}");
+        if($conf['stats_blocks_migrated'])
+            return $db->select("select bt_address, actor_name ipb_by_text, bl_create_account, bl_anon_only, bl_timestamp, bl_expiry from block_target join block on bl_target = bt_id left join actor on bl_by_actor=actor_id where bt_user is null and bt_auto = 0 and bt_address like '$ip' order by bl_timestamp desc limit {$this->max_logs_limit}");
+        else
+            return $db->select("select ipb_address, actor_name ipb_by_text, ipb_create_account, ipb_anon_only, ipb_timestamp, ipb_expiry from ipblocks left join actor on ipb_by_actor=actor_id where ipb_user=0 and ipb_address like '$ip' order by ipb_timestamp desc limit {$this->max_logs_limit}");
     }
     function log_rows($ip,$comment=false)
     {
@@ -1134,6 +1137,7 @@ class ranges extends site_page
 
     function update($types=array('rir','block', 'log', 'edit', 'proxy'))
     {
+        global $conf;
         $types=array_flip($types);
         // FIXME: Is this comparision to 4 correct? Default types are 5!!
         $full_update=count($types)==4;
@@ -1149,7 +1153,10 @@ class ranges extends site_page
             return false;
         if(isset($types['block'])){
             echo "Active blocks ";
-            $db->select_walk_block("select ipb_address, actor_name ipb_by_text, ipb_create_account, ipb_anon_only from ipblocks left join actor on ipb_by_actor=actor_id where ipb_user=0 $limit",array($this,'blockrow'), 1000);
+            if($conf['stats_blocks_migrated'])
+                $db->select_walk_block("select bt_address, actor_name ipb_by_text, bl_create_account, bl_anon_only from block_target join block on bl_target = bt_id left join actor on bl_by_actor=actor_id where bt_user is null and bt_auto = 0 $limit",array($this,'blockrow'), 1000);
+            else
+                $db->select_walk_block("select ipb_address, actor_name ipb_by_text, ipb_create_account, ipb_anon_only from ipblocks left join actor on ipb_by_actor=actor_id where ipb_user=0 $limit",array($this,'blockrow'), 1000);
             echo " Total active block ranges : ".count($this->s)."\n";
             $cols[]='blocked';
             $cols[]='flags';

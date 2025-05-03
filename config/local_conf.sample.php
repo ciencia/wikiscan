@@ -55,6 +55,8 @@ $local_conf=array(
     'stats_join_revision_actor_temp'=>false,
     // use the revision_comment_temp table when building stats. Needs to be true before 1.40. This table will be removed in future versions of MediaWiki, somewhere after 1.40
     'stats_join_revision_comment_temp'=>true,
+    // use the new block and block_target tables since 1.42 instead of the old ipblocks removed in 1.43
+    'stats_blocks_migrated'=>false,
     // Log sql queries to the query_log table of dbg. Set it to false to not log queries
     'log_sql'=>false,
 */

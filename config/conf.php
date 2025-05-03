@@ -79,6 +79,7 @@ $conf=array(
     'stats_join_actor'=>true, //use the new actor table (june 2019) TODO remove
     'stats_join_revision_actor_temp'=>false, //use the revision_actor_temp table
     'stats_join_revision_comment_temp'=>false, //use the revision_comment_temp table
+    'stats_blocks_migrated'=>false, // use the new block and block_target tables since 1.42 instead of the old ipblocks removed in 1.43
     'stats_max_pages'=>50000,
     'stats_sum_pages_edits_limit'=>3000000,
     'stats_sum_users_edits_limit'=>5000000,
